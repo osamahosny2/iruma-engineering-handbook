@@ -72,3 +72,23 @@ Verification:
 - Do not silently fall back to the old static HTML parser when the API returns invalid data.
 - Do not fork or push changes to the upstream parser repository.
 - Do not claim the source is fixed merely because GitHub Actions passes.
+
+
+## 2026-11-10 — live reader-slot protocol correction
+
+- Re-read the current upstream Procomic.kt, Dto.kt, and assets/slot.js from keiyoushi/extensions-source at commit d9420cd1c66ecd3385946b616aacfcf8f6314f70. The reader script is an index-based slot function, not a generic image selector.
+- The slot function waits for /chapter-deferred-media/, locates [data-reader-image-row], scrolls each slot into view, checks image visibility/completion, and returns either one CDN URL or multiple pieces with relative geometry.
+- The slot may signal an interactive Turnstile state. The app maps this to the existing browser-verification flow; a failed 5xx/status row is an error/retry, not an empty successful page list.
+- The app already has a persistent ProComicReaderSession in AndroidKotatsuWebViewExecutor.kt; KotatsuSourceEngine.kt exposes page-count, page-descriptor and captured-image-byte operations. ConnectorEngine.kt delegates ProComic downloads to ProComicConnector. Keep this single session architecture; do not add a second hidden WebView implementation.
+- Commit d560fc54eff633f89d171c51c78dcbc7fbbc5ecd aligns the slot function with the upstream protocol and uses latest_chapter ordering with a 12-item page for text searches.
+- CI run 42896444353 for that commit is currently running. At the last check, setup had passed and Run unit tests was in progress; APK build and artifact upload had not started.
+- This is code-level progress only. No live Manga Pro search/chapter/page test on the phone has been performed.
+
+### Updated remaining work
+
+1. Confirm CI run 42896444353 completes unit tests and APK build; inspect any compile/test failure before proceeding.
+2. Add focused tests for content identity, Arabic/locked chapter filtering, slot descriptor parsing, trusted CDN validation, and composite-page geometry.
+3. Implement the upstream short-lived Turnstile token flow for later listing pages/filters; the five-second rate limit alone does not provide this token.
+4. Verify safe_browsing=off, mirror fallback between procomic.pro and procomic.net, and browser cookie/session reuse against the live site.
+5. On-device test search → details → Arabic chapters → first and later pages → composite stitching → download → offline open.
+6. Do not mark Manga Pro or task 3 complete until the real phone test passes.
