@@ -98,3 +98,14 @@
 - تم اكتشاف اختلاف commit في `THIRD_PARTY_NOTICES.md` عن commit المثبت في Gradle، ومخاطر دمج KSP/dependencies عند نقل المكتبة محليًا.
 - لا تزال المهمة 3 غير مكتملة؛ لا يوجد إثبات عملي جديد لظهور فصول وصور حقيقية على الهاتف.
 - التفاصيل والأدلة: [تقرير دراسة محرك المصادر](docs/SOURCE_ENGINE_RESEARCH_2026-11-10.md).
+
+
+## تحديث تنفيذ المهمة 3 — 2026-11-10 (جلسة التنفيذ)
+- HEAD الحالي وقت هذا التحديث: `31636df2317829a06254d10ab6117b1d6e40007c` على `fix/room-storage`.
+- commit `ad629006`: إصلاح default source activation، ترحيل قديم لتعطيل المصادر المفعّلة تلقائيًا، حفظ كائن الفصل الأصلي، منع null chapter list من التحول لنجاح فارغ، حماية stale chapter loads، واختبارات جديدة.
+- CI للـ commit `ad629006`: Unit tests وBuild Debug APK نجحا؛ Upload APK فشل بسبب GitHub Actions artifact storage quota.
+- commit `31636df`: إضافة `:source-parsers` وLocalSourceParserRegistry ومحلل Azora محلي واختبارات markup، مع تصحيح THIRD_PARTY_NOTICES.
+- CI للـ commit `31636df` كان قيد التنفيذ عند آخر تحقق؛ لا تسجل نجاحه حتى تظهر نتيجة نهائية.
+- Manga Pro لم يُصلح بعد؛ المحلل الحالي HTML ثابت بينما قارئ الموقع الحالي يعتمد على API وWebView slots.
+- لا اختبار عملي على الهاتف بعد؛ المهمة 3 غير مكتملة.
+- التفاصيل: `docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-10.md`.
