@@ -74,28 +74,30 @@ Verification:
 - Do not claim the source is fixed merely because GitHub Actions passes.
 
 
-## 2026-11-10 — App integration update (`0220e115`)
+## 2026-11-10 — live reader-slot protocol correction
 
-The app-side implementation is now committed in `osamahosny2/iruma_manga_v2` on `fix/room-storage`:
-
-- `0220e115d34d2e8c6758414be510a25a7a911d3b` — live API parser, persistent browser-backed reader, image byte capture, composite page stitching, host fallback, rate limiting, four Robolectric tests, and Apache-2.0 attribution/license files.
-- CI run `42896328650` (workflow run 84) was in progress at the unit-test step when this update was written. Check the final conclusion before calling the commit build-verified.
-
-The current code still needs the `safe_browsing=off` cookie integration to be committed and CI-tested. The short-lived Turnstile token flow for later listing pages remains an explicit follow-up. Neither a green build nor the four unit tests prove that a real Manga Pro chapter works on the user's phone.
+- Re-read the current upstream Procomic.kt, Dto.kt, and assets/slot.js from keiyoushi/extensions-source at commit d9420cd1c66ecd3385946b616aacfcf8f6314f70. The reader script is an index-based slot function, not a generic image selector.
+- The slot function waits for /chapter-deferred-media/, locates [data-reader-image-row], scrolls each slot into view, checks image visibility/completion, and returns either one CDN URL or multiple pieces with relative geometry.
+- The slot may signal an interactive Turnstile state. The app maps this to the existing browser-verification flow; a failed 5xx/status row is an error/retry, not an empty successful page list.
+- The app already has a persistent ProComicReaderSession in AndroidKotatsuWebViewExecutor.kt; KotatsuSourceEngine.kt exposes page-count, page-descriptor and captured-image-byte operations. ConnectorEngine.kt delegates ProComic downloads to ProComicConnector. Keep this single session architecture; do not add a second hidden WebView implementation.
+- Commit d560fc54eff633f89d171c51c78dcbc7fbbc5ecd aligns the slot function with the upstream protocol and uses latest_chapter ordering with a 12-item page for text searches.
+- CI run 42896444353 for that commit is currently running. At the last check, setup had passed and Run unit tests was in progress; APK build and artifact upload had not started.
+- This is code-level progress only. No live Manga Pro search/chapter/page test on the phone has been performed.
 
 ### Updated remaining work
 
-1. Confirm CI run `42896328650` and fix any compile/test failures.
-2. Commit and test the `safe_browsing=off` cookie propagation.
-3. Implement/cache the Turnstile token for listing pagination if the live API requires it.
-4. Verify real Manga Pro search, details, Arabic chapters, first page, later page, single-image and composite pages against the live site.
-5. Test 5xx retry, host fallback, cancellation, cookie/session reuse, trusted CDN validation and composite geometry.
-6. On the phone, test search → details → chapters → reader → download → offline open.
-7. Repeat the same source-specific validation for Azora and the other bundled sources before marking task 3 complete.
+1. Confirm CI run 42896444353 completes unit tests and APK build; inspect any compile/test failure before proceeding.
+2. Add focused tests for content identity, Arabic/locked chapter filtering, slot descriptor parsing, trusted CDN validation, and composite-page geometry.
+3. Implement the upstream short-lived Turnstile token flow for later listing pages/filters; the five-second rate limit alone does not provide this token.
+4. Verify safe_browsing=off, mirror fallback between procomic.pro and procomic.net, and browser cookie/session reuse against the live site.
+5. On-device test search → details → Arabic chapters → first and later pages → composite stitching → download → offline open.
+6. Do not mark Manga Pro or task 3 complete until the real phone test passes.
 
 
-### Follow-up: CI failure and correction (`a718ee66`)
+## 2026-11-10 — compile correction and regression tests
 
-The first app CI run for `0220e115` failed during Kotlin compilation because `RectF.width` and `RectF.height` were referenced as properties. The code now calls `width()` and `height()`; the fix is in `a718ee66cf0a27243891c8766c546c6aad6add2c`. The same commit added the `safe_browsing=off` cookie to both ProComic hosts and forwards the browser cookie state to API requests.
-
-New CI run `42897100762` (run 86) is the verification run for this correction. Its final result must be checked before declaring the source build clean.
+- Commit a718ee66cf0a27243891c8766c546c6aad6add2c added explicit ProComic chapter DTO parsing tests, safe_browsing cookie preparation, browser-cookie reuse for API/image requests, and bounded composite-page reconstruction.
+- The first compile attempt exposed two Kotlin errors: Android RectF exposes width() and height() methods, not width/height properties. The exact lines in ProComicConnector.kt were corrected in commit 8db92b23a10ec010a65543069a6cb80f4e0bc142.
+- The current branch head is 8db92b23a10ec010a65543069a6cb80f4e0bc142. Its CI run is 42897158863; Android/Gradle setup passed and unit tests were running at the last check.
+- Previous run 42896328650 failed at compileDebugKotlin due to those RectF calls. Do not treat that run as a passing test.
+- Turnstile token generation remains a separate required follow-up for API listing pages that return 403; the upstream helper requires a foreground-capable WebView interaction flow and must be integrated deliberately, not mistaken for ordinary Cloudflare cookie verification.

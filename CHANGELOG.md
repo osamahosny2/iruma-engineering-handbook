@@ -42,17 +42,19 @@
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
 
-## 2026-11-10 — ProComic API/reader app commit `0220e115`
+## 2026-11-10 — تصحيح بروتوكول قارئ Manga Pro
 
-- Added live JSON API mapping for Manga Pro search, details and paginated Arabic chapter lists.
-- Added persistent WebView reader sessions, real lazy slot enumeration, captured CDN image bytes, composite-page stitching and alternate reader-host fallback.
-- Added five-second listing rate limiting and four Robolectric parser/reader-contract tests.
-- Added Apache-2.0 license text and third-party attribution for the adapted ProComic implementation; no upstream fork or changes.
-- CI run `42896328650` was in progress during this documentation update; live website and phone tests remain outstanding.
+- مراجعة ملف upstream slot.js بدل الاعتماد على DOM selector تخميني.
+- ضبط البحث النصي على latest_chapter وحجم صفحة 12 نتيجة، مع الإبقاء على rate limit.
+- توثيق استخدام جلسة WebView الدائمة الحالية لتتبع lazy slots وحفظ bytes الصور، بما في ذلك الصفحات المركبة من قطع متعددة.
+- commit التطبيق: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
+- CI run 42896444353 قيد التنفيذ عند تسجيل هذا التحديث؛ لا يوجد تأكيد بعد على نجاح البناء أو اختبار الهاتف.
 
 
-### 2026-11-10 — ProComic follow-up fix `a718ee66`
+## 2026-11-10 — ProComic compile and session hardening
 
-- Fixed the Kotlin `RectF.width()` / `RectF.height()` compile errors found by CI run `42896328650`.
-- Added `safe_browsing=off` cookies for both ProComic reader hosts and preserved browser cookies on API requests.
-- Follow-up CI run: `42897100762` (run 86), pending at documentation time.
+- Added focused tests for ProComic chapter DTO parsing and identity/slot behavior.
+- Added safe_browsing=off cookie preparation and reused browser cookies for API and image requests.
+- Corrected RectF width()/height() calls after CI identified the compile failure.
+- Latest app commit: 8db92b23a10ec010a65543069a6cb80f4e0bc142.
+- Latest CI run: 42897158863, in progress at the time of this entry.
