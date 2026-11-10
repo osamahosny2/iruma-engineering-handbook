@@ -61,20 +61,20 @@
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
 
-## 2026-11-10 — ProComic parser tests and CI checkpoint
+## 2026-11-10 — Manga Pro reader slot regression
 
-The app commit `0220e115d34d2e8c6758414be510a25a7a911d3b` adds four Robolectric tests:
-
-1. Content API DTO → `MangaItem` mapping, cover CDN host, authors, genres, alternate titles, status, source identity and chapter count.
-2. Arabic chapter DTO mapping and the exact slug-number-ID reader route.
-3. Rejection of non-Arabic and locked chapter entries.
-4. Reader slot script contract for lazy rows, deferred media, CDN image paths and scrolling.
-
-CI run `42896328650` was in progress at the unit-test step when recorded. Even if it passes, it verifies only compilation and the tests above; it does not validate a live ProComic response or actual WebView image display. A phone smoke test remains mandatory.
+- App commit under test: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
+- Workflow: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/42896444353
+- Last observed state: Android SDK and Gradle setup succeeded; unit tests were in progress; APK build had not started.
+- Required live/device sequence: search for a known Manga Pro title; open details; confirm real Arabic chapters and stable chapter IDs; open a chapter; confirm nonzero page count; display page 1 and a later page; verify a composite page is stitched without gaps; download and reopen offline.
+- Also verify a blocked/locked chapter is not shown as readable, an empty API response is reported as an error rather than a fake list, and Turnstile/Cloudflare does not silently become an empty success.
+- A green CI run is only a build/unit-test result; it does not count as a live-source or phone test.
 
 
-### Follow-up compile failure and fix — 2026-11-10
+## 2026-11-10 — ProComic compile correction
 
-- Run `42896328650` failed compilation at `ProComicConnector.kt:270–271`: `RectF.width` and `RectF.height` must be called as methods.
-- Corrected in commit `a718ee66cf0a27243891c8766c546c6aad6add2c`; that commit also adds the `safe_browsing=off` cookie setup and browser-cookie forwarding.
-- Run `42897100762` (run 86) is the follow-up build/test run; result pending.
+- Previous run 42896328650 failed at app:compileDebugKotlin because RectF.width and RectF.height were accessed as properties.
+- Fixed in app commit 8db92b23a10ec010a65543069a6cb80f4e0bc142 by calling width() and height().
+- New run: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/42897158863
+- At last check: setup steps succeeded; Run unit tests was in progress; APK build and upload were pending.
+- After a green run, verify the resulting APK artifact, then perform live Manga Pro search/details/chapters/pages/download tests on-device. CI success alone is not source validation.

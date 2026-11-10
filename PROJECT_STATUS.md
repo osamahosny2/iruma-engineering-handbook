@@ -123,19 +123,21 @@
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
 
-## 2026-11-10 — Current task 3 checkpoint
+## تحديث المهمة 3 — تصحيح قارئ Manga Pro — 2026-11-10
 
-- Latest confirmed app commit: `0220e115d34d2e8c6758414be510a25a7a911d3b` on `fix/room-storage`.
-- Manga Pro/ProComic now has a dedicated live-API parser and browser-backed lazy reader path, with real Arabic chapter mapping and image-page handling.
-- Four ProComic Robolectric unit tests were added for content mapping/identity, Arabic unlocked chapter mapping and URL construction, and the reader slot script contract.
-- Apache-2.0 upstream license text and attribution are included in the app repository; the app's GPL-3.0 license is compatible with Apache-2.0. No fork or upstream repository modification was made.
-- CI run `42896328650` (run 84) was still executing unit tests at the time of this checkpoint; do not mark the commit verified until the final run conclusion is checked.
-- Task 3 remains **in progress**: `safe_browsing=off` cookie propagation and possible Turnstile token acquisition still need committed/tested handling; live source and phone validation remain outstanding.
-- Tasks 4–7 remain as previously listed. Task 8 has gained source-specific unit tests and CI runs, but the complete integration/device/regression test system is not finished.
+- أحدث commit على osamahosny2/iruma_manga_v2 / fix/room-storage: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
+- commit سابق في نفس السلسلة 0220e115d34d2e8c6758414be510a25a7a911d3b أضاف مسار API الحقيقي للمحتوى والفصول وربط قارئ ProComic بجلسة WebView الدائمة.
+- commit d560fc5 صحّح منطق slot script وفق ملف upstream assets/slot.js، وأضاف ترتيب البحث latest_chapter وحد 12 نتيجة للبحث النصي.
+- تم التأكد من أن القارئ يعتمد على ProComicReaderSession الموجودة، وأن تنزيل الصور يمر عبر ProComicConnector بدل إرسال روابط procomic-reader:// مباشرة إلى OkHttp.
+- CI run 42896444353 قيد التنفيذ وقت التحديث؛ إعداد Android وGradle نجحا، واختبارات الوحدة كانت تعمل. لا تسجل نجاح البناء قبل النتيجة النهائية.
+- لم يحدث اختبار حي أو اختبار هاتف بعد. الفصول والصور الحقيقية لم تثبت بعد.
+- الحالة: المهمة 3 ما زالت قيد التنفيذ. المهمة 4 وما بعدها لا تُعلن مكتملة بناءً على هذا التعديل.
 
 
-### Follow-up CI correction — 2026-11-10
+## تحديث لاحق — 2026-11-10 — CI وتصحيح التجميع
 
-- Run `42896328650` failed at Kotlin compilation with two `RectF.width`/`height` invocation errors; this was not a live-site failure.
-- Commit `a718ee66cf0a27243891c8766c546c6aad6add2c` fixes those calls and adds the ProComic `safe_browsing=off` cookie/cookie forwarding.
-- Verification run `42897100762` (run 86) is now the active run. Task 3 remains in progress pending its final conclusion and live/device testing.
+- commit a718ee66cf0a27243891c8766c546c6aad6add2c أضاف اختبار DTO للفصول، وتجهيز Cookie safe_browsing=off، ومشاركة Cookies المتصفح في طلبات API والصور، وحدودًا آمنة لتجميع الصور المركبة.
+- كشف CI run 42896328650 خطأ تجميع محددًا في RectF.width وRectF.height. تم تصحيحهما باستدعاء الدالتين width() وheight() في commit 8db92b23a10ec010a65543069a6cb80f4e0bc142.
+- أحدث رأس الفرع الآن: 8db92b23a10ec010a65543069a6cb80f4e0bc142.
+- CI run 42897158863 قيد التنفيذ؛ نجح إعداد Android وGradle وكانت اختبارات الوحدة تعمل عند آخر فحص.
+- لا تزال المهمة 3 قيد التنفيذ حتى ينجح CI ثم يثبت البحث والفصول والصور الحقيقية على الهاتف. لا يوجد تأكيد تشغيل حي بعد.
