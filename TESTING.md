@@ -59,3 +59,13 @@
 - The app is GPL-3.0 and the upstream ProComic extension is Apache-2.0; these licenses are compatible. The existing `THIRD_PARTY_NOTICES.md` already attributes the adapted files and `LICENSES/Apache-2.0.txt` retains the upstream license text. This is not a fork.
 - Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
+
+
+## 2026-11-10 — Manga Pro reader slot regression
+
+- App commit under test: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
+- Workflow: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/42896444353
+- Last observed state: Android SDK and Gradle setup succeeded; unit tests were in progress; APK build had not started.
+- Required live/device sequence: search for a known Manga Pro title; open details; confirm real Arabic chapters and stable chapter IDs; open a chapter; confirm nonzero page count; display page 1 and a later page; verify a composite page is stitched without gaps; download and reopen offline.
+- Also verify a blocked/locked chapter is not shown as readable, an empty API response is reported as an error rather than a fake list, and Turnstile/Cloudflare does not silently become an empty success.
+- A green CI run is only a build/unit-test result; it does not count as a live-source or phone test.
