@@ -68,3 +68,13 @@ Kotatsu-Redo:
 - https://github.com/Kotatsu-Redo/kotatsu-parsers-redo
 
 التفاصيل التي تم التحقق منها من الكود يجب تسجيلها في `KOTATSU_RESEARCH.md` مع مسار الملف ومرجع commit. لا تنسب تفاصيل إلى Kotatsu دون دليل مباشر.
+
+
+## نتائج فحص الكود الحالي — 2026-11-10
+- كل موقع يجب أن يظل في Parser مستقل، ويُجمع عبر سجل مركزي. هذا هو قرار المستخدم.
+- التطبيق الحالي يستخدم اعتماد Gradle خارجيًا `kotatsu-parsers-redo` مثبتًا على commit `b3c000024563920d3eecde5816f2e9d3734fa467`؛ المحللات ليست بعد ملفات محلية في مستودع التطبيق.
+- `ConnectorEngine` يوجه `PROCOMIC` إلى `ProComicConnector` وكل المصادر الأخرى إلى `KotatsuSourceEngine`. ملف `StarzConnector.kt` غير موصول بمسارات التوجيه التي تمت مراجعتها.
+- `KotatsuSourceEngine.fetchPages()` يعيد بناء فصل ناقصًا من URL فقط قبل استدعاء Parser؛ يجب التحقق مما إذا كانت بعض المحللات تحتاج حقول الفصل الأصلية.
+- `fetchChapters()` يحول `chapters == null` إلى نجاح بقائمة فارغة؛ يجب التمييز بين عدم وجود فصول وفشل الاستخراج.
+- `MangaViewModel.loadChaptersForManga()` يجلب التفاصيل ثم الفصول، والفصول تجلب التفاصيل مرة أخرى؛ كما لا يظهر guard لمنع نتيجة طلب قديم من تحديث العمل الحالي.
+- راجع [تقرير الدراسة الكامل](docs/SOURCE_ENGINE_RESEARCH_2026-11-10.md) قبل اقتراح التنفيذ. هذه نتائج قراءة وتحليل فقط، وليست تغييرات منفذة.
