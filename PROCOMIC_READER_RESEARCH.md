@@ -15,7 +15,7 @@ Repository: [keiyoushi/extensions-source](https://github.com/keiyoushi/extension
 - Reader slots: [`slot.js`](https://github.com/keiyoushi/extensions-source/blob/4591fbc9bb571ad03aaea0f7428f7f403350e/src/ar/procomic/assets/slot.js)
 - Turnstile helper: [`TurnstileHelper.kt`](https://github.com/keiyoushi/extensions-source/blob/d9420cd1c66ecd3385946b616aacfcf8f6314f70/core/src/main/kotlin/keiyoushi/utils/TurnstileHelper.kt)
 
-The upstream repository is GPL-3.0. The app is also GPL-3.0. Adaptation is allowed, but attribution and license notices must be retained. We are not forking the upstream repository or creating a shared upstream project.
+The upstream ProComic extension is Apache License 2.0, while the app is GPL-3.0. Apache-2.0 is compatible with GPL-3.0. The app already retains the upstream attribution in THIRD_PARTY_NOTICES.md and includes LICENSES/Apache-2.0.txt. This is a direct adaptation, not a fork or shared upstream project.
 
 ## Verified catalog contract
 
