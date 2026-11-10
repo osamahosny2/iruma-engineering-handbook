@@ -101,3 +101,16 @@ Kotatsu-Redo:
 - The app is GPL-3.0 and the upstream ProComic extension is Apache-2.0; these licenses are compatible. The existing `THIRD_PARTY_NOTICES.md` already attributes the adapted files and `LICENSES/Apache-2.0.txt` retains the upstream license text. This is not a fork.
 - Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
+
+
+## 2026-11-10 — ProComic API and reader implementation commit `0220e115`
+
+- `ProComicConnector.kt` now uses the live JSON endpoints for search, content details, and paginated chapters instead of depending on the old static HTML extraction path.
+- Content identity retains numeric ID, content type, and slug. Chapter URLs use `/ar/chapter/{slug}-{number}-{chapterId}`; only Arabic, unlocked, numeric chapter entries are accepted.
+- Reader page count and descriptors come from the live lazy reader slots. A persistent WebView session intercepts the site's `*.procomic.im` image requests through the shared OkHttp client and retains their bytes until the app consumes them.
+- A slot may be a single image or multiple positioned pieces; the app stitches pieces into one page. No placeholder chapters or cover-as-page fallback is introduced.
+- Listing requests are spaced by five seconds. Reader host fallback between `procomic.pro` and `procomic.net` is bounded to one alternate host.
+- Four Robolectric tests cover ContentDto mapping, stable content identity, Arabic/unlocked chapter DTOs and chapter URL shape, plus the reader slot script contract.
+- Current CI verification: run `42896328650` for commit `0220e115d34d2e8c6758414be510a25a7a911d3b` was still running its unit-test step at the time of this update.
+- Remaining ProComic work: commit and verify the `safe_browsing=off` cookie integration, implement short-lived Turnstile token handling for later listing pages if required, then perform live site and phone tests.
+- No phone-level validation has happened; task 3 remains incomplete.

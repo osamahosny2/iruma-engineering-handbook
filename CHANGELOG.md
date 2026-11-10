@@ -42,10 +42,10 @@
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
 
-## 2026-11-10 — تصحيح بروتوكول قارئ Manga Pro
+## 2026-11-10 — ProComic API/reader app commit `0220e115`
 
-- مراجعة ملف upstream slot.js بدل الاعتماد على DOM selector تخميني.
-- ضبط البحث النصي على latest_chapter وحجم صفحة 12 نتيجة، مع الإبقاء على rate limit.
-- توثيق استخدام جلسة WebView الدائمة الحالية لتتبع lazy slots وحفظ bytes الصور، بما في ذلك الصفحات المركبة من قطع متعددة.
-- commit التطبيق: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
-- CI run 42896444353 قيد التنفيذ عند تسجيل هذا التحديث؛ لا يوجد تأكيد بعد على نجاح البناء أو اختبار الهاتف.
+- Added live JSON API mapping for Manga Pro search, details and paginated Arabic chapter lists.
+- Added persistent WebView reader sessions, real lazy slot enumeration, captured CDN image bytes, composite-page stitching and alternate reader-host fallback.
+- Added five-second listing rate limiting and four Robolectric parser/reader-contract tests.
+- Added Apache-2.0 license text and third-party attribution for the adapted ProComic implementation; no upstream fork or changes.
+- CI run `42896328650` was in progress during this documentation update; live website and phone tests remain outstanding.

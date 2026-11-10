@@ -123,12 +123,12 @@
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
 
-## تحديث المهمة 3 — تصحيح قارئ Manga Pro — 2026-11-10
+## 2026-11-10 — Current task 3 checkpoint
 
-- أحدث commit على osamahosny2/iruma_manga_v2 / fix/room-storage: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
-- commit سابق في نفس السلسلة 0220e115d34d2e8c6758414be510a25a7a911d3b أضاف مسار API الحقيقي للمحتوى والفصول وربط قارئ ProComic بجلسة WebView الدائمة.
-- commit d560fc5 صحّح منطق slot script وفق ملف upstream assets/slot.js، وأضاف ترتيب البحث latest_chapter وحد 12 نتيجة للبحث النصي.
-- تم التأكد من أن القارئ يعتمد على ProComicReaderSession الموجودة، وأن تنزيل الصور يمر عبر ProComicConnector بدل إرسال روابط procomic-reader:// مباشرة إلى OkHttp.
-- CI run 42896444353 قيد التنفيذ وقت التحديث؛ إعداد Android وGradle نجحا، واختبارات الوحدة كانت تعمل. لا تسجل نجاح البناء قبل النتيجة النهائية.
-- لم يحدث اختبار حي أو اختبار هاتف بعد. الفصول والصور الحقيقية لم تثبت بعد.
-- الحالة: المهمة 3 ما زالت قيد التنفيذ. المهمة 4 وما بعدها لا تُعلن مكتملة بناءً على هذا التعديل.
+- Latest confirmed app commit: `0220e115d34d2e8c6758414be510a25a7a911d3b` on `fix/room-storage`.
+- Manga Pro/ProComic now has a dedicated live-API parser and browser-backed lazy reader path, with real Arabic chapter mapping and image-page handling.
+- Four ProComic Robolectric unit tests were added for content mapping/identity, Arabic unlocked chapter mapping and URL construction, and the reader slot script contract.
+- Apache-2.0 upstream license text and attribution are included in the app repository; the app's GPL-3.0 license is compatible with Apache-2.0. No fork or upstream repository modification was made.
+- CI run `42896328650` (run 84) was still executing unit tests at the time of this checkpoint; do not mark the commit verified until the final run conclusion is checked.
+- Task 3 remains **in progress**: `safe_browsing=off` cookie propagation and possible Turnstile token acquisition still need committed/tested handling; live source and phone validation remain outstanding.
+- Tasks 4–7 remain as previously listed. Task 8 has gained source-specific unit tests and CI runs, but the complete integration/device/regression test system is not finished.

@@ -60,3 +60,10 @@
 - كل مصادر الكتالوج تبدأ disabled.
 - صفحة الإعدادات تعرض الكتالوج حتى يختار المستخدم المصادر التي يريد تفعيلها؛ قائمة التصفح لا تعرض إلا المصادر المفعّلة.
 - الترقية من النسخة التي كانت تفعّل خمسة مصادر تلقائيًا تعطل هذه القيم مرة واحدة، ثم تحفظ اختيار المستخدم لاحقًا.
+
+
+### 11. Apache-2.0 ProComic source adaptation
+- The upstream ProComic extension in `keiyoushi/extensions-source` is Apache License 2.0; the app is GPL-3.0, which is compatible with Apache-2.0.
+- Any adapted code must retain upstream attribution and a copy of the Apache-2.0 license in the app repository.
+- Direct copying/adaptation is allowed where useful; no fork, shared development, or write access to the upstream repository is authorized.
+- The adapted parser and reader remain owned/maintained in `iruma_manga_v2`.
