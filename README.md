@@ -39,3 +39,7 @@
 
 ## تنفيذ محرك المصادر
 - [سجل تنفيذ محرك المصادر 2026-11-10](docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-10.md): commits، تغييرات الوحدة المحلية ومحلل Azora، حالة CI، وخطة Manga Pro.
+
+## Current source-engine research
+
+- [Manga Pro / ProComic reader research and implementation plan](PROCOMIC_READER_RESEARCH.md)
