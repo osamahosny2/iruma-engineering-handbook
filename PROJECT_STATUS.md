@@ -132,3 +132,10 @@
 - CI run `42896328650` (run 84) was still executing unit tests at the time of this checkpoint; do not mark the commit verified until the final run conclusion is checked.
 - Task 3 remains **in progress**: `safe_browsing=off` cookie propagation and possible Turnstile token acquisition still need committed/tested handling; live source and phone validation remain outstanding.
 - Tasks 4–7 remain as previously listed. Task 8 has gained source-specific unit tests and CI runs, but the complete integration/device/regression test system is not finished.
+
+
+### Follow-up CI correction — 2026-11-10
+
+- Run `42896328650` failed at Kotlin compilation with two `RectF.width`/`height` invocation errors; this was not a live-site failure.
+- Commit `a718ee66cf0a27243891c8766c546c6aad6add2c` fixes those calls and adds the ProComic `safe_browsing=off` cookie/cookie forwarding.
+- Verification run `42897100762` (run 86) is now the active run. Task 3 remains in progress pending its final conclusion and live/device testing.

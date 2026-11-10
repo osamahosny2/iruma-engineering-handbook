@@ -92,3 +92,10 @@ The current code still needs the `safe_browsing=off` cookie integration to be co
 5. Test 5xx retry, host fallback, cancellation, cookie/session reuse, trusted CDN validation and composite geometry.
 6. On the phone, test search → details → chapters → reader → download → offline open.
 7. Repeat the same source-specific validation for Azora and the other bundled sources before marking task 3 complete.
+
+
+### Follow-up: CI failure and correction (`a718ee66`)
+
+The first app CI run for `0220e115` failed during Kotlin compilation because `RectF.width` and `RectF.height` were referenced as properties. The code now calls `width()` and `height()`; the fix is in `a718ee66cf0a27243891c8766c546c6aad6add2c`. The same commit added the `safe_browsing=off` cookie to both ProComic hosts and forwards the browser cookie state to API requests.
+
+New CI run `42897100762` (run 86) is the verification run for this correction. Its final result must be checked before declaring the source build clean.

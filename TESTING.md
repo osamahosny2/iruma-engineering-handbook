@@ -71,3 +71,10 @@ The app commit `0220e115d34d2e8c6758414be510a25a7a911d3b` adds four Robolectric 
 4. Reader slot script contract for lazy rows, deferred media, CDN image paths and scrolling.
 
 CI run `42896328650` was in progress at the unit-test step when recorded. Even if it passes, it verifies only compilation and the tests above; it does not validate a live ProComic response or actual WebView image display. A phone smoke test remains mandatory.
+
+
+### Follow-up compile failure and fix — 2026-11-10
+
+- Run `42896328650` failed compilation at `ProComicConnector.kt:270–271`: `RectF.width` and `RectF.height` must be called as methods.
+- Corrected in commit `a718ee66cf0a27243891c8766c546c6aad6add2c`; that commit also adds the `safe_browsing=off` cookie setup and browser-cookie forwarding.
+- Run `42897100762` (run 86) is the follow-up build/test run; result pending.

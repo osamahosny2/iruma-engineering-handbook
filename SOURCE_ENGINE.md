@@ -114,3 +114,10 @@ Kotatsu-Redo:
 - Current CI verification: run `42896328650` for commit `0220e115d34d2e8c6758414be510a25a7a911d3b` was still running its unit-test step at the time of this update.
 - Remaining ProComic work: commit and verify the `safe_browsing=off` cookie integration, implement short-lived Turnstile token handling for later listing pages if required, then perform live site and phone tests.
 - No phone-level validation has happened; task 3 remains incomplete.
+
+
+### Follow-up commit `a718ee66` — compile and cookie correction
+
+- CI run `42896328650` exposed two Kotlin errors where `RectF.width` and `RectF.height` were used as properties. They were corrected to `width()` and `height()` in commit `a718ee66cf0a27243891c8766c546c6aad6add2c`.
+- Added the ProComic `safe_browsing=off` cookie for both reader hosts through `CookieManager`, and included the browser cookie jar in API requests.
+- The follow-up Actions run is `42897100762` (run 86); it was still in setup at the time of this note.

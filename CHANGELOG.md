@@ -49,3 +49,10 @@
 - Added five-second listing rate limiting and four Robolectric parser/reader-contract tests.
 - Added Apache-2.0 license text and third-party attribution for the adapted ProComic implementation; no upstream fork or changes.
 - CI run `42896328650` was in progress during this documentation update; live website and phone tests remain outstanding.
+
+
+### 2026-11-10 — ProComic follow-up fix `a718ee66`
+
+- Fixed the Kotlin `RectF.width()` / `RectF.height()` compile errors found by CI run `42896328650`.
+- Added `safe_browsing=off` cookies for both ProComic reader hosts and preserved browser cookies on API requests.
+- Follow-up CI run: `42897100762` (run 86), pending at documentation time.
