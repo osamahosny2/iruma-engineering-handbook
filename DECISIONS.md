@@ -67,3 +67,10 @@
 - Any adapted code must retain upstream attribution and a copy of the Apache-2.0 license in the app repository.
 - Direct copying/adaptation is allowed where useful; no fork, shared development, or write access to the upstream repository is authorized.
 - The adapted parser and reader remain owned/maintained in `iruma_manga_v2`.
+
+
+### 12. ProComic Turnstile token and reader check handling
+- Use the upstream ProComic Turnstile site key and an app-owned WebView token flow; do not bypass or automate away human interaction.
+- Show a dialog only when the Turnstile widget requests interaction; if the app is not foregrounded, fail clearly instead of pretending verification succeeded.
+- Cache tokens in memory for four minutes and send them only as the site's `x-turnstile-token` request header. Retry a 403 once after a rate-limited token refresh, then use the existing browser verification UI.
+- Reader security-check rows are surfaced to the user through the existing in-app browser verification screen.

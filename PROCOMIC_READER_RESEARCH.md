@@ -101,3 +101,12 @@ Verification:
 - The current branch head is 8db92b23a10ec010a65543069a6cb80f4e0bc142. Its CI run is 42897158863; Android/Gradle setup passed and unit tests were running at the last check.
 - Previous run 42896328650 failed at compileDebugKotlin due to those RectF calls. Do not treat that run as a passing test.
 - Turnstile token generation remains a separate required follow-up for API listing pages that return 403; the upstream helper requires a foreground-capable WebView interaction flow and must be integrated deliberately, not mistaken for ordinary Cloudflare cookie verification.
+
+
+## 2026-11-11 — Turnstile and reader security follow-up (`f2d86395`)
+
+The app now has an app-owned adaptation of the upstream `TurnstileHelper.kt` flow. It creates a Turnstile widget in a dedicated WebView, uses the upstream site's site key, displays the widget in a foreground dialog only when human interaction is required, and returns the token to the API request. Tokens are cached in memory for four minutes and sent as `x-turnstile-token`; a 403 causes one rate-limited token refresh/retry before falling back to the existing browser verification flow.
+
+The reader slot script now distinguishes a reader security `check` row from ordinary lazy loading. It scrolls the status row into view and routes the user to the existing in-app verification screen. Search pagination skips API pages with no readable works using `meta.page` / `meta.pages`. Six Robolectric tests cover the mapping, identity, chapter filters, unreadable content, pagination and reader script contract.
+
+Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1`; CI run `43056952825` (run 90) is pending. Previous run 89 attempt 2 passed unit tests and built the Debug APK, but GitHub rejected the artifact upload because the Actions storage quota was reached (one APK file was found). This is a storage limit, not a compile or APK-generation failure. Live site and phone validation remain mandatory.

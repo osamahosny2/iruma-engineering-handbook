@@ -58,3 +58,11 @@
 - Corrected RectF width()/height() calls after CI identified the compile failure.
 - Latest app commit: 8db92b23a10ec010a65543069a6cb80f4e0bc142.
 - Latest CI run: 42897158863, in progress at the time of this entry.
+
+
+## 2026-11-11 — ProComic Turnstile/reader follow-up `f2d86395`
+
+- Added Turnstile token acquisition, human-interaction UI, four-minute token cache, rate-limited 403 retry and browser-verification fallback.
+- Added readable-result pagination and reader security-check handling.
+- Expanded ProComic Robolectric coverage to six tests and documented Apache-2.0 TurnstileHelper attribution.
+- CI run 90 pending; previous run 89 passed tests and APK assembly but artifact upload hit the GitHub Actions storage quota.

@@ -95,3 +95,7 @@
 
 ## ProComic source distinction
 The current Manga Pro/ProComic parser reference is the separate `keiyoushi/extensions-source` ProComic extension, not a Kotatsu-Redo parser. Its API DTOs, lazy reader slot script and Turnstile helper were studied as a separate upstream implementation. The app ports the needed behavior into its own connector/WebView engine; it does not fork Kotatsu-Redo or Keiyoushi, and it does not add an upstream runtime dependency for ProComic. Licensing and attribution are recorded in `PROCOMIC_READER_RESEARCH.md` and the app's `THIRD_PARTY_NOTICES.md`.
+
+
+## Turnstile helper source
+The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` `core/src/main/kotlin/keiyoushi/utils/TurnstileHelper.kt` at commit `d0478bb62bbc485753d2830102aef4e1b87cb336` (Apache-2.0). This is not a Kotatsu-Redo component. The app contains its own adaptation and license attribution; no upstream runtime dependency or fork was added.

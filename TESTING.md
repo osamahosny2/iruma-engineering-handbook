@@ -78,3 +78,10 @@
 - New run: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/42897158863
 - At last check: setup steps succeeded; Run unit tests was in progress; APK build and upload were pending.
 - After a green run, verify the resulting APK artifact, then perform live Manga Pro search/details/chapters/pages/download tests on-device. CI success alone is not source validation.
+
+
+## 2026-11-11 — ProComic Turnstile test set
+
+Six Robolectric tests now cover: content mapping and stable identity; Arabic/unlocked chapter mapping and URL shape; locked chapter variants; rejection of text-only novels and login-blocked series; pagination past API pages with no readable results; and the reader slot/check protocol.
+
+Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `43056952825` (run 90). Previous run 89 attempt 2 passed tests and Debug APK assembly but failed only at Upload APK because GitHub Actions storage quota was reached.

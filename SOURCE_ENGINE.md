@@ -121,3 +121,15 @@ Kotatsu-Redo:
 - CI run `42896328650` exposed two Kotlin errors where `RectF.width` and `RectF.height` were used as properties. They were corrected to `width()` and `height()` in commit `a718ee66cf0a27243891c8766c546c6aad6add2c`.
 - Added the ProComic `safe_browsing=off` cookie for both reader hosts through `CookieManager`, and included the browser cookie jar in API requests.
 - The follow-up Actions run is `42897100762` (run 86); it was still in setup at the time of this note.
+
+
+## 2026-11-11 — ProComic Turnstile and reader-check follow-up (`f2d86395`)
+
+- Added an app-owned Turnstile token provider to `AndroidKotatsuWebViewExecutor`: a dedicated WebView renders the upstream site's widget; it displays a foreground dialog only when Cloudflare requires human interaction, and cleans up on success/cancel/timeout.
+- Added a four-minute in-memory token cache, `x-turnstile-token` header propagation, a rate-limited retry after HTTP 403, and fallback to the existing browser-verification UI if the token retry is still forbidden.
+- Search now advances past API pages containing only unreadable items, using `meta.page` / `meta.pages`; text-only novels and login-blocked series remain excluded.
+- Reader slot extraction now follows upstream's `check` / status-row protocol, scrolling the security row into view and routing the user through the app's existing in-app verification UI.
+- Added six Robolectric tests for content mapping/identity, Arabic and locked chapter filtering, novel/blocked-series exclusion, API pagination, and reader slot/check behavior.
+- Commit: `f2d863959bd5a3f2126d86a56a10936fde02c7c1` on `fix/room-storage`. CI run `43056952825` (run 90) is the verification run for this patch; its final result is pending.
+- Previous run 89 attempt 2 confirmed unit tests and Debug APK build succeeded, but the Upload APK step failed because GitHub Actions artifact storage quota was reached. The workflow found one APK file; this is an account/repository storage quota blocker, not a missing APK path. GitHub says usage is recalculated every 6–12 hours.
+- No live-site or phone test has been performed. Task 3 remains in progress.

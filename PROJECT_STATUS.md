@@ -141,3 +141,13 @@
 - أحدث رأس الفرع الآن: 8db92b23a10ec010a65543069a6cb80f4e0bc142.
 - CI run 42897158863 قيد التنفيذ؛ نجح إعداد Android وGradle وكانت اختبارات الوحدة تعمل عند آخر فحص.
 - لا تزال المهمة 3 قيد التنفيذ حتى ينجح CI ثم يثبت البحث والفصول والصور الحقيقية على الهاتف. لا يوجد تأكيد تشغيل حي بعد.
+
+
+## 2026-11-11 — ProComic Turnstile checkpoint
+
+- Latest app commit: `f2d863959bd5a3f2126d86a56a10936fde02c7c1` on `fix/room-storage`.
+- Implemented Turnstile token generation through a dedicated WebView, human-interaction dialog, four-minute in-memory token cache, 403 retry and fallback to the app browser-verification UI.
+- Improved readable search pagination and reader security-check handling. Six Robolectric tests now cover the new parser/reader contracts.
+- CI run `43056952825` (run 90) is pending.
+- Run 89 attempt 2: all unit tests passed; Debug APK build passed; Upload APK failed because GitHub Actions artifact storage quota was reached despite finding the APK file.
+- Task 3 remains in progress: wait for run 90; resolve artifact storage quota before an APK can be downloaded from Actions; perform live Manga Pro and phone tests; then build Azora to the same standard.
