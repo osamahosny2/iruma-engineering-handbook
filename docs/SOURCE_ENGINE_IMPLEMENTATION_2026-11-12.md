@@ -98,3 +98,20 @@
 - خطوة `Upload APK`: **فشلت فقط بسبب GitHub Actions artifact storage quota** (`Failed to CreateArtifact: Artifact storage quota has been hit`). هذا ليس خطأ Kotlin أو Gradle، ولا يعني أن APK لم يُبنَ؛ لكنه يعني أن الملف لم يُحفظ كـArtifact قابل للتنزيل.
 - GitHub يذكر أن إعادة احتساب المساحة قد تستغرق 6–12 ساعة. يلزم حذف Artifacts قديمة من إعدادات Actions أو انتظار إعادة احتساب الحصة ثم إعادة تشغيل workflow للحصول على APK قابل للتنزيل.
 - لا يوجد اختبار حي على Azora/Manga Pro ولا اختبار يدوي على الهاتف حتى الآن؛ لذلك المهمة 3 تظل قيد التنفيذ.
+
+
+## تحديث إضافي — 2026-11-12 (commit 8ce7065)
+
+### إصلاح تنزيل صفحات Manga Pro
+- اكتُشف أن القارئ يعرض صفحات Manga Pro عبر عنوان افتراضي `procomic-reader://` يتطلب `ConnectorEngine.downloadPageImageBytes` / `ProComicConnector` للوصول إلى WebView session واستخراج bytes.
+- كان `DownloadManager` يستدعي `downloadImageBytes` العام، متجاوزًا المعالج الخاص بالمصدر؛ وهذا قد يسمح بعرض الصفحة داخل القارئ لكنه يفشل في تنزيل الفصل للاستخدام دون اتصال.
+- تم تغيير التنزيل إلى `downloadPageImageBytes(page.imageUrl, source, page.headers)`، وهو نفس المسار المستخدم في القارئ ويحافظ على Referer والـ source context.
+- أضيف `DownloadManagerTest` باستخدام Robolectric: fake repository يرفض المسار العام وينجح فقط إذا استُخدم source-aware handler مع عنوان `procomic-reader://`.
+
+### توحيد تصنيف الروايات في Azoramoon
+- قائمة البحث والتفاصيل تستخدم الآن `AzoramoonApiMapper.isNovel` نفسها، فلا يختلف إخفاء الروايات بين نتائج البحث وصفحة التفاصيل.
+
+### CI
+- run 96 على commit `c9347644cd1b145c53de10eaef3467206f92f8d7`: Unit Tests **نجحت**، وDebug APK **بُني بنجاح**، لكن خطوة Upload APK فشلت بسبب رسالة GitHub الصريحة `Artifact storage quota has been hit`؛ لم يُرفع APK قابل للتنزيل.
+- run 97 للـ commit الحالي `8ce70650772a4ad6a50a522ce5a813fda58074b0` كان في مرحلة Unit Tests عند آخر فحص. لا تُسجل نتيجة نهائية قبل اكتماله.
+- لا يوجد اختبار حي على الهاتف حتى الآن؛ هذه النتائج لا تثبت عمل مواقع Azora/Manga Pro فعليًا.

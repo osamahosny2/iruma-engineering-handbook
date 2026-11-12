@@ -94,3 +94,10 @@
 - خطوة `Upload APK`: **فشلت فقط بسبب GitHub Actions artifact storage quota** (`Failed to CreateArtifact: Artifact storage quota has been hit`). هذا ليس خطأ Kotlin أو Gradle، ولا يعني أن APK لم يُبنَ؛ لكنه يعني أن الملف لم يُحفظ كـArtifact قابل للتنزيل.
 - GitHub يذكر أن إعادة احتساب المساحة قد تستغرق 6–12 ساعة. يلزم حذف Artifacts قديمة من إعدادات Actions أو انتظار إعادة احتساب الحصة ثم إعادة تشغيل workflow للحصول على APK قابل للتنزيل.
 - لا يوجد اختبار حي على Azora/Manga Pro ولا اختبار يدوي على الهاتف حتى الآن؛ لذلك المهمة 3 تظل قيد التنفيذ.
+
+
+## 2026-11-12 — Manga Pro offline download fix
+- Route DownloadManager page bytes through the source-aware handler, preserving ProComic WebView virtual reader URLs and page headers.
+- Add Robolectric regression coverage for the Manga Pro offline page downloader.
+- Use the same Azoramoon novel classifier in list/search and details.
+- Commit `8ce70650772a4ad6a50a522ce5a813fda58074b0`; run 97 pending. Previous run 96 passed unit tests and APK build but artifact upload failed due to GitHub Actions storage quota.
