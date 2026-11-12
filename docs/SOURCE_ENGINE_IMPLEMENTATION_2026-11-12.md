@@ -62,3 +62,29 @@
 5. تقرير مكان Parser Manga Pro النهائي مع الإبقاء على WebView bridge المطلوب للقارئ.
 6. بعد نجاح الموقعين، تعميم العقد والسجل على بقية المصادر واحدًا واحدًا.
 
+
+
+
+
+## تنفيذ محلي هجين — 2026-11-12 (تحديث أحدث)
+
+- `:source-parsers` Module محلي داخل التطبيق. يعتمد على مكتبة Gradle `kotatsu-parsers-redo` المثبتة على `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8` لتوفير Parser contracts/base classes وبقية المصادر، بينما `IrumaAzoramoonParser.kt` محلل محلي يتم اختياره عبر `LocalSourceParserRegistry`.
+- Azoramoon endpoints المستخدمة: `/api/post?postSlug=...` للتفاصيل، `/api/chapters?postId=...` لقائمة الفصول، `/api/chapter?mangaslug=...&chapterslug=...` لصور الفصل. `AzoramoonApiMapper` مسؤول عن mapping الحالات، تصنيف الروايات، استبعاد الفصول المقفلة، الاحتفاظ برقم وعنوان الفصل، وترتيب الصور حسب `order`.
+- لا يُعد رابط الفصل وحده هوية كافية عند إعادة إنشاء كائن Parser؛ لذلك أصبح التطبيق يمرر كائن الفصل الأصلي وسياق العمل، ويعيد مطابقته من قائمة التفاصيل بعد الاستعادة باستخدام URL. لا يتم التخمين عند غياب المطابقة.
+- تفعيل المصادر: الكتالوج كله متاح في Settings، لكن Browse يجب أن يعرض `isEnabled=true` فقط. التهيئة الأولى تكتب disabled rows لكل المصادر. Marker v3 يعيد تنفيذ هذا التهيئة على الأجهزة التي سبق أن خزنت marker v2 مع صفوف مفعّلة قديمة.
+- `THIRD_PARTY_NOTICES.md` يطابق commit المكتبة الحالي؛ احتفظ بنص GPL-3.0 والإشعارات عند النسخ أو التعديل أو التوزيع.
+
+## Manga Pro — مراجعة تدفق الهوية والصفحات
+
+- `ProComicConnector.fetchDetails()` يقرأ `/api/public/content/{id}` ويعيد هوية العمل المشفرة التي تتضمن content type وnumeric id وslug.
+- `fetchChapters()` يقرأ صفحات `/api/public/{type}/{id}/chapters?limit=100&order=desc&page=...` ويحتفظ بمعرف الفصل ورقمه وعنوانه وتاريخ النشر والمترجم. يستبعد الروايات والفصول غير العربية والمقفلة.
+- `fetchChapterPages()` لا يخمّن عددًا ثابتًا للصفحات؛ يقرأ عدد slots من قارئ الموقع داخل WebView. `procomic-reader://` رابط وصفي داخلي لكل slot، وليس رابط صورة HTTP مباشرًا. عند عرضه، `downloadPageImageBytes()` يحل slot إلى صورة CDN مباشرة أو مجموعة قطع تُركب في صفحة واحدة.
+- `ReaderScreen` يحمّل bytes عبر callback إلى ViewModel ثم Repository ثم `ConnectorEngine.downloadPageImageBytes()`، الذي يوجه ProComic إلى `ProComicConnector`. هذا هو مسار العرض؛ يجب عدم إرسال الـvirtual URI مباشرة إلى Coil أو OkHttp.
+- **نقطة مهمة للمهمة 6:** `DownloadManager` ما زال يستخدم `sourceRepository.downloadImageBytes(page.imageUrl)` العام. `ConnectorEngine.downloadImageBytes()` الحالي يتعامل مع روابط CDN المباشرة ولا يحل `procomic-reader://` أو `procomic-pieces://`. يجب ربط تنزيلات Manga Pro بمسار ProComic المخصص وتمرير headers والسياق قبل اعتبار التنزيل مكتملًا.
+
+## التحقق الحالي
+
+- اختبارات `AzoramoonApiMapper` تغطي ترتيب الفصول والصور، الفصول المقفلة، status mapping، تصنيف الروايات، والاحتفاظ بعنوان الفصل ورقمه.
+- اختبارات `KotatsuChapterIdentity` تغطي استعادة كائن الفصل الأصلي من URL، ورفض المطابقة المفقودة، وعدم تجاهل query parameters.
+- اختبارات `SourceCatalogActivation` تغطي تعطيل كل المصادر عند التهيئة، وتعطيل أي مصدر جديد افتراضيًا.
+- آخر CI للـHEAD `c9347644cd1b145c53de10eaef3467206f92f8d7` هو run `43242711623` (run 96)، وكان قيد التنفيذ عند آخر فحص. لا يوجد تأكيد حي على Azora أو Manga Pro من جهاز Android بعد.

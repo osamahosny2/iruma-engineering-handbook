@@ -75,3 +75,12 @@
 - Recorded durable restoration of the original parser chapter object after app restart.
 - Reviewed Manga Pro's JSON API and persistent WebView lazy-reader pipeline; documented that its custom connector is still outside the local parser module.
 - App commit `8041716bcc3919f34234de33fd3ab7e398059501`; CI run 94 `43242033999` was in progress. No live/phone verification; task 3 remains open.
+
+
+## 2026-11-12 — تصحيح التفعيل واستكمال مراجعة المصدرين الأولين
+- commit `8041716bcc3919f34234de33fd3ab7e398059501`: تحسين تصنيف الروايات في Azora وحفظ عنوان الفصل مع رقمه، مع اختبارات إضافية.
+- commit `97e2992e8c9dd35b4c7b2bc804e61ab18bb66c27`: عند تهيئة الكتالوج لأول مرة، كتابة حالة تعطيل صريحة لكل مصدر حتى لا تبقى سجلات `enabled=true` قديمة.
+- commit `c9347644cd1b145c53de10eaef3467206f92f8d7`: رفع marker إلى v3 لإجبار الأجهزة التي سبق أن طبقت التهيئة v2 المعيبة على تنفيذ التصحيح مرة واحدة.
+- تم تأكيد أن Settings تعرض الكتالوج للتفعيل اليدوي، وأن Browse يعرض المصادر المفعّلة فقط.
+- مراجعة Manga Pro أثبتت من الكود أن صفحات Reader تعتمد على lazy slots داخل WebView وتُحل إلى صور مباشرة أو صفحات مركبة. تم تسجيل فجوة تنزيل الـvirtual URI ضمن المهمة 6.
+- CI run `43242711623` (run 96) للـHEAD الحالي كان قيد التنفيذ عند آخر تحقق؛ لم يُسجل نجاح نهائي أو اختبار هاتف.
