@@ -84,3 +84,13 @@
 - تم تأكيد أن Settings تعرض الكتالوج للتفعيل اليدوي، وأن Browse يعرض المصادر المفعّلة فقط.
 - مراجعة Manga Pro أثبتت من الكود أن صفحات Reader تعتمد على lazy slots داخل WebView وتُحل إلى صور مباشرة أو صفحات مركبة. تم تسجيل فجوة تنزيل الـvirtual URI ضمن المهمة 6.
 - CI run `43242711623` (run 96) للـHEAD الحالي كان قيد التنفيذ عند آخر تحقق؛ لم يُسجل نجاح نهائي أو اختبار هاتف.
+
+
+## النتيجة النهائية لـ CI run 96 — 2026-11-12
+
+- workflow run: `43242711623` للـHEAD `c9347644cd1b145c53de10eaef3467206f92f8d7`.
+- خطوة `Run unit tests`: **نجحت**.
+- خطوة `Build Debug APK`: **نجحت**؛ Gradle أكد `BUILD SUCCESSFUL` ووجد workflow ملف APK واحدًا في المسار المتوقع.
+- خطوة `Upload APK`: **فشلت فقط بسبب GitHub Actions artifact storage quota** (`Failed to CreateArtifact: Artifact storage quota has been hit`). هذا ليس خطأ Kotlin أو Gradle، ولا يعني أن APK لم يُبنَ؛ لكنه يعني أن الملف لم يُحفظ كـArtifact قابل للتنزيل.
+- GitHub يذكر أن إعادة احتساب المساحة قد تستغرق 6–12 ساعة. يلزم حذف Artifacts قديمة من إعدادات Actions أو انتظار إعادة احتساب الحصة ثم إعادة تشغيل workflow للحصول على APK قابل للتنزيل.
+- لا يوجد اختبار حي على Azora/Manga Pro ولا اختبار يدوي على الهاتف حتى الآن؛ لذلك المهمة 3 تظل قيد التنفيذ.
