@@ -66,3 +66,12 @@
 - Added readable-result pagination and reader security-check handling.
 - Expanded ProComic Robolectric coverage to six tests and documented Apache-2.0 TurnstileHelper attribution.
 - CI run 90 pending; previous run 89 passed tests and APK assembly but artifact upload hit the GitHub Actions storage quota.
+
+
+## 2026-11-12 — Azoramoon API and Manga Pro review
+- Updated local Azoramoon details/chapter/page extraction to the current JSON API.
+- Added a shared novel classifier and chapter-title/number mapping regression tests.
+- Verified default-disabled source activation and settings-only manual enablement.
+- Recorded durable restoration of the original parser chapter object after app restart.
+- Reviewed Manga Pro's JSON API and persistent WebView lazy-reader pipeline; documented that its custom connector is still outside the local parser module.
+- App commit `8041716bcc3919f34234de33fd3ab7e398059501`; CI run 94 `43242033999` was in progress. No live/phone verification; task 3 remains open.

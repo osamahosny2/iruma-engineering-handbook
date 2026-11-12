@@ -133,3 +133,10 @@ Kotatsu-Redo:
 - Commit: `f2d863959bd5a3f2126d86a56a10936fde02c7c1` on `fix/room-storage`. CI run `43056952825` (run 90) is the verification run for this patch; its final result is pending.
 - Previous run 89 attempt 2 confirmed unit tests and Debug APK build succeeded, but the Upload APK step failed because GitHub Actions artifact storage quota was reached. The workflow found one APK file; this is an account/repository storage quota blocker, not a missing APK path. GitHub says usage is recalculated every 6–12 hours.
 - No live-site or phone test has been performed. Task 3 remains in progress.
+
+
+## تحديث 2026-11-12
+- تم تحديث اعتماد parser إلى upstream `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8`، مع إضافة مسار Azoramoon API محلي واختبارات mapping؛ راجع `docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-12.md`.
+- تم تأكيد أن المصادر معطلة افتراضيًا في التثبيت الجديد، وأن Browse يعرض المفعّل فقط وSettings تعرض الكتالوج للتفعيل اليدوي؛ توجد اختبارات لهذه السياسة.
+- تمت مراجعة Manga Pro: API للفصول والتفاصيل، وقارئ WebView للصفحات الحقيقية والصفحات المركبة. لا يوجد Parser upstream مطابق؛ `ProComicConnector` ما زال في طبقة التطبيق، وتوحيد مكانه داخل وحدة المحللات نقطة مفتوحة.
+- آخر commit للتطبيق `8041716bcc3919f34234de33fd3ab7e398059501`. CI run `43242033999` كان قيد الاختبار وقت التوثيق. لم يحدث اختبار هاتف/موقع حي بعد؛ المهمة 3 غير مكتملة.

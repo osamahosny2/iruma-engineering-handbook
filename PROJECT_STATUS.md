@@ -1,6 +1,6 @@
 # حالة المشروع وخطة المهام الثمانية
 
-**آخر تحديث لهذا السجل:** 2026-11-10  
+**آخر تحديث لهذا السجل:** 2026-11-12  
 **المستودع:** `osamahosny2/iruma_manga_v2`  
 **فرع العمل:** `fix/room-storage`
 
@@ -151,3 +151,16 @@
 - CI run `43056952825` (run 90) is pending.
 - Run 89 attempt 2: all unit tests passed; Debug APK build passed; Upload APK failed because GitHub Actions artifact storage quota was reached despite finding the APK file.
 - Task 3 remains in progress: wait for run 90; resolve artifact storage quota before an APK can be downloaded from Actions; perform live Manga Pro and phone tests; then build Azora to the same standard.
+
+
+## تحديث المهمة 3 — 2026-11-12
+
+- أحدث commit موثق على `fix/room-storage`: `8041716bcc3919f34234de33fd3ab7e398059501` (`fix(azora): filter novels and preserve chapter titles`).
+- تم تحديث Azoramoon إلى API الحالي للبحث/التفاصيل/الفصول/الصفحات، وإضافة mapper واختبارات تمنع خلط الروايات وتضمن حفظ رقم الفصل وعنوانه.
+- تم تثبيت اعتماد `kotatsu-parsers-redo` على commit `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8` مع استمرار وجود المحللات المحلية في `:source-parsers`.
+- تم تأكيد أن كل المصادر غير مفعلة عند التثبيت الجديد؛ Settings تتيح التفعيل اليدوي وBrowse يخفي غير المفعّل.
+- تم إصلاح استعادة كائن الفصل الأصلي من تفاصيل العمل بعد إعادة تشغيل التطبيق، بدل إعادة إنشاء فصل ناقص من الرابط فقط.
+- تمت مراجعة Manga Pro: API حقيقي للفصول والتفاصيل، وقارئ WebView دائم للصور وslots المركبة، مع Turnstile/Cloudflare handling. يظل `ProComicConnector` خارج وحدة `:source-parsers` حاليًا، ويحتاج قرار توحيد معماري.
+- CI run `43242033999` (run 94) كان في خطوة Unit Tests عند آخر فحص؛ لم يتم تسجيل نتيجة نهائية.
+- لا يوجد حتى الآن اختبار حي أو اختبار هاتف بعد هذه التعديلات؛ لم يثبت إصلاح مشكلة Placeholder/الغلاف فقط عمليًا. المهمة 3 ما زالت غير مكتملة.
+- التفاصيل: `docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-12.md`.
