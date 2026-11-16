@@ -102,3 +102,10 @@
 - Workflow `43919309140`: اختبارات `testDebugUnitTest` و`:source-parsers:test` نجحت (`BUILD SUCCESSFUL in 3m 5s`).
 - فشل الـworkflow بعد ذلك بسبب بلوغ GitHub Actions artifact storage quota في خطوة رفع التقارير المؤقتة، لذلك تم تخطي APK build وschema commit في ذلك التشغيل.
 - أزيلت خطوة الرفع المؤقتة في commit التطبيق `026832d967cb0c9ccc016fc22efc5859f8d03155`، والتشغيل الجديد سيعيد الاختبارات ثم البناء وحفظ schema.
+
+
+## تجهيز 1.4.1 — 2026-11-16
+
+- تم تحديث `versionName=1.4.1` و`versionCode=10401` في commit التطبيق `7f9a25288da20faf7a981648d9bf830fa15e6110`.
+- اختبارات Room نجحت في Workflow 105؛ تعطل الـworkflow بعدها بسبب امتلاء حصة artifacts، وأزيلت خطوة رفع التقارير.
+- الإصدار الجديد لم يُنشر بعد، وRelease `v1.4.0` لا يزال محفوظًا. النشر والحذف مؤجلان حتى ينجح workflow النهائي ويتحقق وجود APK وschema snapshot.

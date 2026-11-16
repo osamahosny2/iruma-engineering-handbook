@@ -112,3 +112,11 @@
 - فشل التشغيل ككل بعد الاختبارات فقط لأن خطوة رفع JUnit XML لم تستطع إنشاء artifact بسبب امتلاء حصة GitHub Actions storage؛ لم يكن الفشل في الاختبارات.
 - أزيلت خطوة رفع التقارير المؤقتة حتى لا تمنع البناء؛ commit التطبيق `026832d967cb0c9ccc016fc22efc5859f8d03155`: [إصلاح workflow](https://github.com/osamahosny2/iruma_manga_v2/commit/026832d967cb0c9ccc016fc22efc5859f8d03155).
 - التشغيل التالي مطلوب لإثبات APK build وتوليد/حفظ Room schema snapshots.
+
+
+## تجهيز إصدار 1.4.1 — 2026-11-16
+
+- بعد نجاح اختبارات Room في Workflow 105 (`BUILD SUCCESSFUL in 3m 5s`)، رُفع `versionName` إلى `1.4.1` و`versionCode` إلى `10401` كما طلب المستخدم.
+- commit التطبيق: `7f9a25288da20faf7a981648d9bf830fa15e6110` — [تجهيز 1.4.1](https://github.com/osamahosny2/iruma_manga_v2/commit/7f9a25288da20faf7a981648d9bf830fa15e6110).
+- حدّث workflow default `release_version` إلى `1.4.1`.
+- لم يُحذف Release `v1.4.0` ولم يُنشر `v1.4.1` بعد؛ يلزم نجاح تشغيل workflow يدويًا مع `publish_release=true` و`release_version=1.4.1`، والتحقق من APK وRoom schema snapshot أولًا.
