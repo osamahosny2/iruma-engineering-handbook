@@ -43,3 +43,6 @@
 
 ## Current source-engine research
 - [Manga Pro / ProComic reader research and implementation plan](PROCOMIC_READER_RESEARCH.md)
+
+## مراجعة التخزين وسجل القراءة
+- [تقرير تدقيق المهمة 1 — Room وسجل القراءة 2026-11-16](docs/ROOM_TASK_1_AUDIT_2026-11-16.md): فحص قراءة فقط للتخزين الحالي ومقارنة SQL الفعلية مع Tachiyomi وMihon، مع اتجاه تصميم مبدئي وخطة اختبار بانتظار الاعتماد.
