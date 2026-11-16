@@ -1,5 +1,16 @@
 # سجل تغييرات مستودع المعرفة
 
+## 2026-11-16 — تحديث قاعدة التوثيق وترتيب المهام ونتائج الهاتف
+- اعتماد قاعدة إلزامية: تحديث مستودع التعليم مع كل تعديل في التطبيق مهما كان صغيرًا، وفي نفس جولة العمل.
+- توضيح أن الإذن الدائم بتحديث مستودع التعليم لا يوسّع صلاحية تعديل كود التطبيق.
+- توثيق ترتيب العمل: مراجعة وإصلاح المهام 1 ثم 2 ثم 3 والتحقق منها، ثم 4 ثم 5 ثم 6 ثم 7 ثم 8.
+- تصحيح وصف الاختبار العملي: المستخدم أكد ظهور أعمال وفصول وصفحات حقيقية في المصادر التي جربها؛ نتائج البحث ظهرت لكن مطابقة العمل المقصود لم تُحسم.
+- تسجيل MANGA Plus كمصدر يعمل، وAsuraScansGg وAsuraScans.us كمصدرين موجودين لكن يتعذر الاتصال بهما، وMangaDex وWebtoon وExHentai كمصادر غير موجودة في كتالوج التطبيق حسب اختبار المستخدم.
+- توثيق أن مصادر 18+ مخفية افتراضيًا مع زر إظهار، ولا يلزم تعديل هذا السلوك.
+- توثيق أن تداخل المصادر غير مؤكد في الإصدار الحالي ويظل نقطة مراقبة.
+- توثيق قرار جعل اختبار CAPTCHA يدويًا بزر داخل صفحة كل مصدر محمي، وإلغاء ظهوره التلقائي عند فتح التطبيق.
+- توضيح حدود المسؤولية: البحث وParser ضمن المهمة 3؛ إدارة التنزيلات وقائمة التنزيلات والعمل دون اتصال ضمن المهمة 6.
+
 ## 2026-11-10 — إنشاء المستودع
 - إنشاء الهيكل الأولي لدليل هندسة ايروما منجا.
 - إضافة تعليمات الذكاء الاصطناعي.
@@ -9,7 +20,6 @@
 - إضافة خطة المهام الثمانية وحالة الإنجاز المعروفة.
 - توثيق معايير الاختبار وسجل القرارات وخطة دراسة Kotatsu-Redo.
 - توضيح أن الدراسة العميقة لـ Kotatsu-Redo لا تزال بحاجة إلى فحص ملفات المصدر الفعلية.
-
 
 ## 2026-11-10 — دراسة محرك المصادر
 - فحص قراءة فقط لفرع `fix/room-storage` في التطبيق ومكتبة `kotatsu-parsers-redo` على commit المثبت في Gradle.
@@ -21,7 +31,6 @@
 - لم يتم تعديل كود التطبيق أو مستودعات Kotatsu؛ المهمة 3 ما زالت قيد البحث وغير مكتملة.
 - إضافة التقرير التفصيلي `docs/SOURCE_ENGINE_RESEARCH_2026-11-10.md`.
 
-
 ## 2026-11-10 — تنفيذ أولي للمهمة 3
 - commit `ad629006`: تعطيل المصادر افتراضيًا وترحيل التفعيل التلقائي القديم، الحفاظ على بيانات الفصل الأصلية، عدم إخفاء null chapter lists، وحماية من نتائج طلبات قديمة؛ إضافة اختبارات.
 - CI: اختبارات الوحدة وبناء APK نجحا، لكن رفع artifact فشل بسبب امتلاء حصة GitHub Actions.
@@ -30,7 +39,6 @@
 - توثيق مشكلات Manga Pro الحالية وخطته في `docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-10.md`.
 
 ## 2026-11-10 — ProComic/Manga Pro reader reconstruction
-
 - The previous HTML-only path was not a reliable source of real chapter data. Manga Pro now uses its public JSON API for search, content details and paginated chapter lists; the app must reject placeholder chapters and report an empty/invalid API response instead of inventing data.
 - The reader path is being rebuilt around the site's actual lazy reader slots. A chapter page is not assumed to be one image: the slot can expose one CDN image or several positioned pieces that must be composed in order.
 - A persistent WebView session is required because page slots load lazily and the site may only serve image requests in browser context. The app proxies the reader's image requests through its shared OkHttp client and retains captured bytes until the reader consumes them.
@@ -41,32 +49,25 @@
 - Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
 - No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
 
-
 ## 2026-11-10 — تصحيح بروتوكول قارئ Manga Pro
-
 - مراجعة ملف upstream slot.js بدل الاعتماد على DOM selector تخميني.
 - ضبط البحث النصي على latest_chapter وحجم صفحة 12 نتيجة، مع الإبقاء على rate limit.
 - توثيق استخدام جلسة WebView الدائمة الحالية لتتبع lazy slots وحفظ bytes الصور، بما في ذلك الصفحات المركبة من قطع متعددة.
 - commit التطبيق: d560fc54eff633f89d171c51c78dcbc7fbbc5ecd.
 - CI run 42896444353 قيد التنفيذ عند تسجيل هذا التحديث؛ لا يوجد تأكيد بعد على نجاح البناء أو اختبار الهاتف.
 
-
 ## 2026-11-10 — ProComic compile and session hardening
-
 - Added focused tests for ProComic chapter DTO parsing and identity/slot behavior.
 - Added safe_browsing=off cookie preparation and reused browser cookies for API and image requests.
 - Corrected RectF width()/height() calls after CI identified the compile failure.
 - Latest app commit: 8db92b23a10ec010a65543069a6cb80f4e0bc142.
 - Latest CI run: 42897158863, in progress at the time of this entry.
 
-
 ## 2026-11-11 — ProComic Turnstile/reader follow-up `f2d86395`
-
 - Added Turnstile token acquisition, human-interaction UI, four-minute token cache, rate-limited 403 retry and browser-verification fallback.
 - Added readable-result pagination and reader security-check handling.
 - Expanded ProComic Robolectric coverage to six tests and documented Apache-2.0 TurnstileHelper attribution.
 - CI run 90 pending; previous run 89 passed tests and APK assembly but artifact upload hit the GitHub Actions storage quota.
-
 
 ## 2026-11-12 — Azoramoon API and Manga Pro review
 - Updated local Azoramoon details/chapter/page extraction to the current JSON API.
@@ -76,7 +77,6 @@
 - Reviewed Manga Pro's JSON API and persistent WebView lazy-reader pipeline; documented that its custom connector is still outside the local parser module.
 - App commit `8041716bcc3919f34234de33fd3ab7e398059501`; CI run 94 `43242033999` was in progress. No live/phone verification; task 3 remains open.
 
-
 ## 2026-11-12 — تصحيح التفعيل واستكمال مراجعة المصدرين الأولين
 - commit `8041716bcc3919f34234de33fd3ab7e398059501`: تحسين تصنيف الروايات في Azora وحفظ عنوان الفصل مع رقمه، مع اختبارات إضافية.
 - commit `97e2992e8c9dd35b4c7b2bc804e61ab18bb66c27`: عند تهيئة الكتالوج لأول مرة، كتابة حالة تعطيل صريحة لكل مصدر حتى لا تبقى سجلات `enabled=true` قديمة.
@@ -85,16 +85,12 @@
 - مراجعة Manga Pro أثبتت من الكود أن صفحات Reader تعتمد على lazy slots داخل WebView وتُحل إلى صور مباشرة أو صفحات مركبة. تم تسجيل فجوة تنزيل الـvirtual URI ضمن المهمة 6.
 - CI run `43242711623` (run 96) للـHEAD الحالي كان قيد التنفيذ عند آخر تحقق؛ لم يُسجل نجاح نهائي أو اختبار هاتف.
 
-
 ## النتيجة النهائية لـ CI run 96 — 2026-11-12
-
 - workflow run: `43242711623` للـHEAD `c9347644cd1b145c53de10eaef3467206f92f8d7`.
 - خطوة `Run unit tests`: **نجحت**.
 - خطوة `Build Debug APK`: **نجحت**؛ Gradle أكد `BUILD SUCCESSFUL` ووجد workflow ملف APK واحدًا في المسار المتوقع.
-- خطوة `Upload APK`: **فشلت فقط بسبب GitHub Actions artifact storage quota** (`Failed to CreateArtifact: Artifact storage quota has been hit`). هذا ليس خطأ Kotlin أو Gradle، ولا يعني أن APK لم يُبنَ؛ لكنه يعني أن الملف لم يُحفظ كـArtifact قابل للتنزيل.
-- GitHub يذكر أن إعادة احتساب المساحة قد تستغرق 6–12 ساعة. يلزم حذف Artifacts قديمة من إعدادات Actions أو انتظار إعادة احتساب الحصة ثم إعادة تشغيل workflow للحصول على APK قابل للتنزيل.
-- لا يوجد اختبار حي على Azora/Manga Pro ولا اختبار يدوي على الهاتف حتى الآن؛ لذلك المهمة 3 تظل قيد التنفيذ.
-
+- خطوة `Upload APK`: **فشلت فقط بسبب GitHub Actions artifact storage quota** (`Failed to CreateArtifact: Artifact storage quota has been hit`).
+- لا يوجد اختبار حي على Azora/Manga Pro ولا اختبار يدوي على الهاتف في ذلك التاريخ؛ لذلك المهمة 3 ظلت قيد التنفيذ.
 
 ## 2026-11-12 — Manga Pro offline download fix
 - Route DownloadManager page bytes through the source-aware handler, preserving ProComic WebView virtual reader URLs and page headers.
