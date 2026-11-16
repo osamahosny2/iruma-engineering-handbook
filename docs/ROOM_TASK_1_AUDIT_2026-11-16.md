@@ -88,3 +88,11 @@
 - لم يتغير `versionName` أو `versionCode`؛ ما زالا `1.4.0` و`10400`.
 - لم يُنشأ Release جديد ولم يُحذف Release `v1.4.0`.
 - لا تُعد المهمة مكتملة قبل نجاح الاختبارات والبناء والتحقق من schema snapshot وملف APK الجديد.
+
+
+## تصحيح حالة الاختبارات بعد Workflow 103 — 2026-11-16
+
+- Workflow `43917994377` وصل إلى `:app:testDebugUnitTest`، واكتمل تنزيل الاعتماد الخارجي في هذه المحاولة.
+- النتيجة: `27 tests completed, 1 failed`. الفشل المحدد: `AppDatabaseTest > initializationError FAILED` مع `org.junit.runners.model.InvalidTestClassError`. لم يُنشأ APK في هذا التشغيل، ولم تُولّد schema snapshots.
+- لذلك لا تزال اختبارات ترحيل Room واحتفاظ السجل غير مثبتة النجاح؛ لم يتغير الإصدار `1.4.0` ولم يُنشر Release جديد.
+- أضيف في commit `391aff48920e00ea57f1033d7a98384524af286d` رفع ملفات JUnit XML كـActions artifact حتى يمكن قراءة رسالة `InvalidTestClassError` الكاملة في التشغيل التالي.
