@@ -120,3 +120,25 @@
 - commit التطبيق: `7f9a25288da20faf7a981648d9bf830fa15e6110` — [تجهيز 1.4.1](https://github.com/osamahosny2/iruma_manga_v2/commit/7f9a25288da20faf7a981648d9bf830fa15e6110).
 - حدّث workflow default `release_version` إلى `1.4.1`.
 - لم يُحذف Release `v1.4.0` ولم يُنشر `v1.4.1` بعد؛ يلزم نجاح تشغيل workflow يدويًا مع `publish_release=true` و`release_version=1.4.1`، والتحقق من APK وRoom schema snapshot أولًا.
+
+
+## اكتمال المهمة 1 وإصدار 1.4.1 — 2026-11-16
+
+### النتيجة النهائية
+- Workflow `43920986069` على `fix/room-storage` انتهى `conclusion=success`. الخطوات المؤكدة: `Run unit tests`, `Build Debug APK`, `Commit Room schema snapshots`, `Publish APK as private GitHub pre-release` كلها `success`.
+- التطبيق: `versionName=1.4.1`, `versionCode=10401`.
+- Release الجديد: `Iruma Manga v1.4.1 (Private Test)`, ID `447385559`, tag `v1.4.1`, private prerelease: https://github.com/osamahosny2/iruma_manga_v2/releases/tag/v1.4.1
+- APK asset: `app-debug.apk`, الحجم `53,290,489` bytes، SHA-256 `84393dd00fc9827591d2737f93617c8187f4892ad1d0b6a3e0b63335a36278f8`.
+- رابط APK: https://github.com/osamahosny2/iruma_manga_v2/releases/download/v1.4.1/app-debug.apk
+- حُذف Release القديم `v1.4.0` (ID `445229644`) بعد التحقق من الإصدار الجديد؛ الاستعلام عن `v1.4.0` أعاد 404، بينما `v1.4.1` ما زال موجودًا.
+
+### Room schema snapshot
+- GitHub Actions أنشأ commit `38819eb4034059142340a18c4f9432def35ee600` بعنوان `chore(database): update Room schema snapshots`.
+- الملف الملتزم: `app/schemas/com.example.data.AppDatabase/3.json`، حجمه 9,961 bytes.
+- تم فك الملف والتحقق منه: Room schema version 3؛ جدول `chapter_state` وجدول `reading_progress` كلاهما بمفتاح مركب `(mangaId, chapterId)`؛ جدول السجل يتضمن index على `timestamp`.
+- آخر commit للفرع `fix/room-storage`: `38819eb4034059142340a18c4f9432def35ee600`.
+
+### حدود التحقق
+- اختبارات الوحدة والترحيل الآلية نجحت في workflow النهائي.
+- لم يتم اختبار الترقية على قاعدة البيانات الفعلية الموجودة على هاتف المستخدم، ولم يُجر اختبار تثبيت/استخدام يدوي على الجهاز بعد. يجب الاحتفاظ بقاعدة البيانات الموجودة قبل تثبيت النسخة الجديدة، ومراجعة سلوك الترحيل بعد تثبيت المستخدم.
+- المهمة 1 مكتملة برمجيًا وآليًا؛ لا يبدأ تنفيذ المهمة 2 قبل موافقة المستخدم حسب ترتيب العمل المعتمد.

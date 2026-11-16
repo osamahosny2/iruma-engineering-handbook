@@ -109,3 +109,15 @@
 - تم تحديث `versionName=1.4.1` و`versionCode=10401` في commit التطبيق `7f9a25288da20faf7a981648d9bf830fa15e6110`.
 - اختبارات Room نجحت في Workflow 105؛ تعطل الـworkflow بعدها بسبب امتلاء حصة artifacts، وأزيلت خطوة رفع التقارير.
 - الإصدار الجديد لم يُنشر بعد، وRelease `v1.4.0` لا يزال محفوظًا. النشر والحذف مؤجلان حتى ينجح workflow النهائي ويتحقق وجود APK وschema snapshot.
+
+
+## المهمة 1 — مكتملة برمجيًا وآليًا — 2026-11-16
+
+- Room v3 منفذ، سجل القراءة غير محدود، حالة الفصل منفصلة، الهوية مركبة، Migration v2→v3 محافظة على البيانات، stale-write guards، واختبارات file-based migration/reopen و>100 record وduplicate chapter IDs.
+- Workflow النهائي `43920986069` نجح بالكامل: unit tests + Debug APK + schema snapshot + private pre-release.
+- الإصدار الحالي `1.4.1` (`versionCode=10401`).
+- Release `v1.4.1`: https://github.com/osamahosny2/iruma_manga_v2/releases/tag/v1.4.1
+- APK: https://github.com/osamahosny2/iruma_manga_v2/releases/download/v1.4.1/app-debug.apk
+- Release `v1.4.0` القديم حُذف بعد التحقق من الجديد.
+- schema snapshot `app/schemas/com.example.data.AppDatabase/3.json` محفوظ في commit `38819eb4034059142340a18c4f9432def35ee600`.
+- لا يزال اختبار التثبيت والترقية على قاعدة بيانات الهاتف الفعلية غير منفذ. المهمة 2 لا تبدأ تلقائيًا؛ تنتظر موافقة المستخدم.
