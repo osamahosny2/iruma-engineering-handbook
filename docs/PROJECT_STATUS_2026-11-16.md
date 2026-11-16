@@ -89,3 +89,9 @@
 - لم يصل هذا التشغيل إلى APK build أو Room schema commit.
 - أضيف رفع JUnit XML artifacts في commit التطبيق `391aff48920e00ea57f1033d7a98384524af286d` لتشخيص الخطأ بدقة في التشغيل التالي.
 - لا إصدار `1.4.1` ولا حذف Release `v1.4.0` حتى ينجح التحقق.
+
+
+## إصلاح اختبار JUnit — 2026-11-16
+
+- سبب `InvalidTestClassError` كان أن اختبار ترحيل قاعدة البيانات أعاد `Boolean` ضمنيًا من `Context.deleteDatabase` بدل `Unit` المطلوب من JUnit 4.
+- أصلح في commit التطبيق `f0c160cf6df9f403711be06444d470549c86c99c`، والتحقق جارٍ في Workflow `43919309140`.

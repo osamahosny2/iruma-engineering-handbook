@@ -96,3 +96,11 @@
 - النتيجة: `27 tests completed, 1 failed`. الفشل المحدد: `AppDatabaseTest > initializationError FAILED` مع `org.junit.runners.model.InvalidTestClassError`. لم يُنشأ APK في هذا التشغيل، ولم تُولّد schema snapshots.
 - لذلك لا تزال اختبارات ترحيل Room واحتفاظ السجل غير مثبتة النجاح؛ لم يتغير الإصدار `1.4.0` ولم يُنشر Release جديد.
 - أضيف في commit `391aff48920e00ea57f1033d7a98384524af286d` رفع ملفات JUnit XML كـActions artifact حتى يمكن قراءة رسالة `InvalidTestClassError` الكاملة في التشغيل التالي.
+
+
+## إصلاح تهيئة JUnit — 2026-11-16
+
+- مراجعة `AppDatabaseTest` كشفت أن اختبار ترحيل قاعدة v2 كان ينتهي باستدعاء `context.deleteDatabase(name)` الذي يعيد `Boolean`؛ لذلك استنتج Kotlin نوع إرجاع Boolean للاختبار، بينما JUnit 4 يشترط أن يعيد اختبار `Unit`/void.
+- أضيف `Unit` صراحةً في نهاية الاختبار.
+- commit التطبيق: `f0c160cf6df9f403711be06444d470549c86c99c` — [إصلاح توقيع اختبار JUnit](https://github.com/osamahosny2/iruma_manga_v2/commit/f0c160cf6df9f403711be06444d470549c86c99c).
+- Workflow `43919309140` بدأ على هذا التعديل؛ النتيجة لم تتأكد بعد.
