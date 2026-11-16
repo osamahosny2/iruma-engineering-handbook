@@ -95,3 +95,10 @@
 
 - سبب `InvalidTestClassError` كان أن اختبار ترحيل قاعدة البيانات أعاد `Boolean` ضمنيًا من `Context.deleteDatabase` بدل `Unit` المطلوب من JUnit 4.
 - أصلح في commit التطبيق `f0c160cf6df9f403711be06444d470549c86c99c`، والتحقق جارٍ في Workflow `43919309140`.
+
+
+## نجاح اختبارات الوحدة وعائق GitHub artifact — 2026-11-16
+
+- Workflow `43919309140`: اختبارات `testDebugUnitTest` و`:source-parsers:test` نجحت (`BUILD SUCCESSFUL in 3m 5s`).
+- فشل الـworkflow بعد ذلك بسبب بلوغ GitHub Actions artifact storage quota في خطوة رفع التقارير المؤقتة، لذلك تم تخطي APK build وschema commit في ذلك التشغيل.
+- أزيلت خطوة الرفع المؤقتة في commit التطبيق `026832d967cb0c9ccc016fc22efc5859f8d03155`، والتشغيل الجديد سيعيد الاختبارات ثم البناء وحفظ schema.

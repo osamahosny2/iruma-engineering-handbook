@@ -108,3 +108,8 @@
 
 ### 18. توقيع اختبارات JUnit — 2026-11-16
 - اختبارات JUnit 4 المكتوبة بـKotlin يجب أن تعيد `Unit`؛ يجب ألا يكون آخر تعبير في `runBlocking` قيمة مثل `Boolean` من `deleteDatabase`.
+
+
+### 19. عدم جعل تقارير الاختبارات الاختيارية شرطًا لنجاح البناء — 2026-11-16
+- لا يجوز لرفع JUnit artifacts أن يمنع APK build عند امتلاء GitHub Actions artifact storage quota؛ أزيلت خطوة الرفع المؤقتة بعد تشخيصها.
+- النتيجة الفعلية لاختبارات Workflow 105: `BUILD SUCCESSFUL in 3m 5s`؛ لكن البناء وschema snapshot لم ينفذا بسبب فشل خطوة artifact اللاحقة.

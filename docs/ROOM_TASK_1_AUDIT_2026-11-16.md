@@ -104,3 +104,11 @@
 - أضيف `Unit` صراحةً في نهاية الاختبار.
 - commit التطبيق: `f0c160cf6df9f403711be06444d470549c86c99c` — [إصلاح توقيع اختبار JUnit](https://github.com/osamahosny2/iruma_manga_v2/commit/f0c160cf6df9f403711be06444d470549c86c99c).
 - Workflow `43919309140` بدأ على هذا التعديل؛ النتيجة لم تتأكد بعد.
+
+
+## نجاح اختبارات Room وإصلاح عائق artifact — 2026-11-16
+
+- Workflow `43919309140` على commit التطبيق `f0c160cf6df9f403711be06444d470549c86c99c` نفّذ `gradle testDebugUnitTest :source-parsers:test --stacktrace` بنجاح: `BUILD SUCCESSFUL in 3m 5s`. بذلك اجتازت مجموعة الاختبارات بعد إصلاح توقيع JUnit.
+- فشل التشغيل ككل بعد الاختبارات فقط لأن خطوة رفع JUnit XML لم تستطع إنشاء artifact بسبب امتلاء حصة GitHub Actions storage؛ لم يكن الفشل في الاختبارات.
+- أزيلت خطوة رفع التقارير المؤقتة حتى لا تمنع البناء؛ commit التطبيق `026832d967cb0c9ccc016fc22efc5859f8d03155`: [إصلاح workflow](https://github.com/osamahosny2/iruma_manga_v2/commit/026832d967cb0c9ccc016fc22efc5859f8d03155).
+- التشغيل التالي مطلوب لإثبات APK build وتوليد/حفظ Room schema snapshots.
