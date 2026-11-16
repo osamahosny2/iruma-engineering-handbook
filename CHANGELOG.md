@@ -97,3 +97,11 @@
 - Add Robolectric regression coverage for the Manga Pro offline page downloader.
 - Use the same Azoramoon novel classifier in list/search and details.
 - Commit `8ce70650772a4ad6a50a522ce5a813fda58074b0`; run 97 pending. Previous run 96 passed unit tests and APK build but artifact upload failed due to GitHub Actions storage quota.
+
+
+## 2026-11-16 — اعتماد مراجع نظام القراءة وتأجيل الحسابات
+- تثبيت Tachiyomi كمرجع برمجي لدراسة سجل القراءة وحالة الفصل.
+- اعتماد قارئ مانجا عربي (Hamako) مرجعًا للميزات والسلوك وتجربة الاستخدام، مع توضيح عدم توفر مصدر عام موثوق عُثر عليه وعدم افتراض تفاصيل تنفيذه الداخلية.
+- استبعاد Hikari Manga من مراجع المشروع.
+- تأجيل نظام الحسابات والمزامنة إلى ما بعد إكمال المهام الثماني.
+- اشتراط مقارنة السلوك الفعلي للمرجعين قبل اقتراح تصميم سجل القراءة، ثم موافقة المستخدم قبل التنفيذ.
