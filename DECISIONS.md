@@ -125,3 +125,11 @@
 - Room schema v3 snapshot ملتزم في `app/schemas/com.example.data.AppDatabase/3.json` ضمن commit `38819eb4034059142340a18c4f9432def35ee600`.
 - حُذف Release `v1.4.0` بعد التحقق من APK الخاص بـ`v1.4.1`.
 - التنفيذ البرمجي للمهمة 1 مكتمل؛ اختبار ترقية قاعدة بيانات الهاتف الفعلية ما زال مطلوبًا قبل اعتبار التحقق الميداني كاملًا.
+
+### 22. Stable Android APK signing key and version 1.5.0 — 2026-11-17
+- The user confirmed that the old 1.4.0 installation had been removed and approved replacing the unavailable 1.4.1 signing key with a new permanent key.
+- A new RSA-4096 PKCS12 upload keystore was generated; its private material and passwords are stored only as encrypted GitHub Actions repository secrets in `osamahosny2/iruma_manga_v2` (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`). Secret values must never be committed, printed, or copied into this handbook.
+- CI materializes the keystore only in the runner workspace, signs the debug APK with the stable key, then removes the temporary keystore file. Local builds without CI secrets retain the normal Android debug signing behavior.
+- All future distributed APKs must use this same key. Losing or replacing it would prevent Android from accepting future in-place updates; maintain a secure backup outside the repository.
+- Version target is `versionName=1.5.0`, `versionCode=10500`. Application commit: `4d9079a220c88b27019f8fdcb4185e35b7739137` on `fix/room-storage`.
+- CI run `44110140411` is the validation for signing and build configuration; record its final outcome and APK signature only after the run completes.
