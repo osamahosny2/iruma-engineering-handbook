@@ -31,3 +31,13 @@
 2. نجاح `assembleDebug` باستخدام PKCS12 الجديد.
 3. استخراج شهادة APK الناتج والتحقق من بصمتها.
 4. عدم نشر Release حتى اكتمال بقية نطاق العمل وموافقة التحقق النهائي.
+
+
+## نتيجة أول بناء بالمفتاح الجديد
+- Run `44110140411`: `success`.
+- Unit tests: `BUILD SUCCESSFUL` (4m 28s).
+- `assembleDebug`: `BUILD SUCCESSFUL` (3m 29s).
+- `validateSigningDebug` و`packageDebug` و`assembleDebug` كلها نجحت باستخدام ملف keystore المؤقت المستخرج من أسرار GitHub Actions.
+- ملف keystore المؤقت حُذف بنجاح من runner بعد البناء.
+- لم يُنشر Release بعد؛ نشر 1.5.0 مؤجل حتى اكتمال المهام 1–3 والتحقق النهائي.
+- لم تُسجل بصمة شهادة مستقلة لأن الـworkflow لم يرفع APK أو يشغل `apksigner --print-certs` في هذا التشغيل. يجب إضافة هذا التحقق قبل نشر النسخة النهائية.

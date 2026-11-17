@@ -24,3 +24,13 @@
 - هذه الجولة تثبت إعداد المفتاح والإصدار فقط بعد نجاح CI؛ ولا تعني اكتمال المهام 1–3.
 - لم يبدأ تعديل المهمة 2 أو 3 في هذا التحديث.
 - يجب تحديث هذا الملف بنتيجة CI الفعلية، ونتيجة فحص APK، ثم توثيق كل تعديل لاحق في نفس جولة العمل.
+
+
+## نتيجة التحقق من توقيع 1.5.0 — 2026-11-17
+- Workflow run `44110140411` اكتمل `success` على commit التطبيق `4d9079a220c88b27019f8fdcb4185e35b7739137`.
+- `gradle testDebugUnitTest :source-parsers:test --stacktrace`: `BUILD SUCCESSFUL` في 4m 28s.
+- `gradle assembleDebug --stacktrace`: `BUILD SUCCESSFUL` في 3m 29s.
+- خطوات `validateSigningDebug`, `packageDebug`, `assembleDebug` نجحت، وخطوة حذف `app/iruma-upload-key.p12` المؤقت نجحت.
+- خطوة نشر Release كانت `skipped` عمدًا؛ لم يُنشر APK ولم يُنشأ Release في هذه المرحلة. لم يُرفع artifact لأن workflow الحالي لا يرفع artifacts على push.
+- تحقق Gradle يثبت نجاح قراءة keystore والتوقيع والبناء؛ بصمة شهادة APK لم تُستخرج بعد من ملف APK مستقل. أضف تحقق `apksigner` عند بناء النسخة النهائية قبل النشر.
+- المهمة 1: مراجعة Room v3 وMigration 2→3 والاختبارات القائمة مكتملة آليًا؛ لم يُغيّر مخطط Room في هذه الجولة ولم يُجر اختبار ترقية على هاتف فعلي.
