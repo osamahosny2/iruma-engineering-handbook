@@ -46,3 +46,12 @@
 - commit: `49405a420792728ab482cf88bd61b8577ec438a6`.
 - CI run `44115444539` أُلغي بسبب تعليق Setup Android SDK قبل الاختبارات؛ لا توجد نتيجة اختبار لهذا التشغيل.
 - CI الجديد `44116165269` قيد التنفيذ.
+
+
+## CI signing verification diagnosis and correction — 2026-11-18
+- Workflow run `44116165269` completed with failure after `Run unit tests` and `Build Debug APK` both succeeded.
+- The failing step was `Verify APK signature matches stable key`; publishing and schema commit were skipped. No `v1.5.0` Release was created.
+- Job log showed `apksigner` output as `V2 Signer: certificate SHA-256 digest: ...`, while the workflow parser searched for `Signer #1 certificate SHA-256 digest: ...`. The extracted actual fingerprint was therefore empty; the run does not establish that the configured keystore is wrong.
+- Corrected only the output parser to match the stable `certificate SHA-256 digest:` portion, preserving normalization and comparison against the keystore certificate.
+- Application workflow commit: `b4360e73faba53e74e29d3ad3aa38466701091e7` on `fix/room-storage` (`fix(ci): parse apksigner certificate fingerprint`).
+- The corrected workflow must still pass a fresh CI run before the signing key or `1.5.0` APK can be considered verified.
