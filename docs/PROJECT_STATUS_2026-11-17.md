@@ -74,3 +74,10 @@
 - commit التطبيق النهائي للمهمة 3 حتى الآن: `49405a420792728ab482cf88bd61b8577ec438a6`.
 - run `44115444539` أُلغي بعد بقائه عالقًا في `Setup Android SDK` أكثر من خمس دقائق؛ لم يصل إلى الاختبارات، ولا يُعد فشلًا في الكود.
 - CI الجديد: run `44116165269` قيد التنفيذ على commit `49405a4`.
+
+
+## Update — 2026-11-18: CI signing check
+- Previous run `44116165269` on commit `49405a420792728ab482cf88bd61b8577ec438a6` completed with unit tests and APK build successful, but signature verification failed.
+- Root cause identified in workflow output parsing: it expected `Signer #1 certificate SHA-256 digest`, but `apksigner` emitted `V2 Signer: certificate SHA-256 digest`. This made the extracted fingerprint empty; it was not proof of a wrong keystore.
+- Workflow parser corrected in application commit `b4360e73faba53e74e29d3ad3aa38466701091e7` on `fix/room-storage`.
+- A new CI run and successful fingerprint verification are still required. `v1.5.0` has not been published.
