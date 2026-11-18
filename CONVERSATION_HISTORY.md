@@ -157,3 +157,186 @@ https://github.com/osamahosny2/iruma-engineering-handbook
 </table>
 
 > تنبيه توثيقي: الأعداد والقوائم الواردة في تقرير الجرد السابق لا تُعتمد نهائيًا قبل إعادة التحقق من اكتمال جلب ملفات المحللات وربط كل تعريف بمصدره. لا تُختلق نتائج مفقودة ولا تُحوّل دفعة جلب جزئية إلى إحصاء نهائي.
+
+
+## ملحق 2026-11-18 — النص الكامل لنتيجة الجرد المشار إليها
+
+**المستخدم:** ليه ما اكملتش الجرد اجرد الانجلزي و 18+
+فقط اكمل الجرد بالكامل.
+
+**ChatGPT — الرد الكامل:**
+
+## المهمة 3 — تقرير جرد محرك المصادر
+
+أكملت الجرد على المستودع `iruma_manga_v2`، الفرع `fix/room-storage`، عند commit:
+
+`b4360e73faba53e74e29d3ad3aa38466701091e7`
+
+### 1. الأرقام الفعلية للمصادر
+
+بعد فحص ملفات المحللات وتعريفاتها، وليس الاعتماد على أسماء الملفات فقط:
+
+| الفئة | العدد |
+|---|---:|
+| محللات الإنجليزية | 401 |
+| محللات العربية | 67 |
+| إجمالي المحللات | **468** |
+| معلّمة `@Broken` | **153** |
+| غير معلّمة `@Broken` | 315 |
+| مصادر 18+ من نوع HENTAI | **105** |
+| مصادر 18+ إنجليزية | 94 |
+| مصادر 18+ عربية | 11 |
+
+هذه الأعداد تخص المحللات الموجودة في نسخة المكتبة المثبّتة داخل مشروعنا. ووجود محلل غير معلّم `@Broken` لا يعني أنه يعمل حاليًا على الموقع؛ يحتاج اختبار اتصال حقيقي.
+
+### 2. جرد مصادر 18+
+
+اعتمدت في التصنيف على `ContentType.HENTAI` داخل تعريف المحلل نفسه، وليس على اسم الموقع فقط.
+
+**المصادر العربية — 11:**
+
+Hentaman، HentaiSlayer، ArabToons، Arabs Hentai، Manhatic، Niji Translations، WebtoonEmpire، PeachBl، ArabsDoujin، MangaHub.link، Yurimoonsub.blogspot.com.
+
+**المصادر الإنجليزية — 94:**
+
+Hentalk، HeyToon، Manhwa18.com، Manhwa18.net، ManhwaRead، ManhwasMen، Pururin، YaoiMangaOnline، HentaiNexus، HentaiRead، Hachirumi، OmegaScans.
+
+AdultWebtoon، AllPornComic، BibiManga، BoysLove، CoComic، ComicsValley، Comiz، DecadenceScans، DuckManga، FreeComicOnline، GedeComix، Hentai3z، Hentai4Free، HentaiManga، HentaiWebtoon، Hentai x Comic، HentaiXYuri، Hentai x Dickgirl، HiperToon، InstaManhwa، Kiara18، LilyManga، LoliconMobi، MadaraDex، Manga18.xyz، Manga18h، Manga18x، Manga1k، MangaBee، MangaDass، MangaDistrict، MangaDna، MangaForFree، MangaHolic، MangaHentai، MangaManiacs، MangaOwlYaoi.
+
+MangaRyu، MangaOwl.one، Manhwa18.app، Manhwa18.org، Manhwa68، ManhwaHentai، ManhwaHentai.to، ManhwaRaw.com، ManhwaToon، ManhwaDen، ManyComic، ManyToon، ManyToon.me، MilfToon، NovelCrow، Paritehaber، PawManga، Petrotech Society، PonyManga، PornComix.online، SumManga، ToonGod، Toonizy، WebtoonScan، Webtoon.xyz، YaoiHub، Yaoi.Mobi، YaoiScan، ZinChanManga.Com، TheBlank، BeeHentai، TooniTube، Toonily.Me.
+
+Hentai3z.cc، Manga18، 18PornComic، ToonTop.io، ConstellarComic، DexHentai، EHentaiManga، Hentai20، LunarScan.org، ManhuaScan.Us، ManhwaLover، ManhwaX.
+
+**ملاحظة مهمة:** المصادر الـ105 موجودة في المكتبة، لكنها مخفية افتراضيًا لأن خيار محتوى البالغين يبدأ مغلقًا، ويتطلب تأكيدًا قبل تفعيله.
+
+### 3. جرد المحللات المعطلة
+
+وجدت **153 محللًا معلّمًا صراحةً بـ`@Broken`** في المكتبة المثبّتة:
+
+- 20 محللًا عربيًا.
+- 133 محللًا إنجليزيًا.
+
+**المحللات العربية المعطلة — 20:**
+
+FlixScans.net، MangaStorm، ProChan، VipManga، ComicArab، GateManga، MangaPeak، MangaTime، MangaArabic، Manga-Spark، NovelsTown، ShadowXManga، MangaNoon، NoonScan.com، MangaSwat، PotatoManga، ScarManga، VexManga، ArabsDoujin، Hijala.
+
+**المحللات الإنجليزية المعطلة — 133:**
+
+ComicExtra، Comikuro، Comix، FlixScans.org، MangaOwl.to، Po2Scans، Pururin، ReadComicOnline، SnowMTL، SolarMTL، Lua Scans، ReaperComics، TempleScan، MangaGalaxy، AgsComics، LaidBackScans.
+
+AnshScans، ArcaneScans، BestManhua.com، BibiManga، BoysLove، ColoredManga، CreepyScans، Dark-Scan، DuckManga، EliteManga، FreeComicOnline، FreeWebtoonCoins، GoodGirls، HariManga، Hentai3z، HunLight، EnHuntersScan، ImmortalUpdates، InfamousScans، InstaManhwa، Kiara18، LsComic، LikeManga.in، LoliconMobi، LuffyManga، LuxManga، Manga1001، Manga18.xyz، Manga18h، Manga1k، Manga68، MangaAction، MangaBob، MangaCultivator، MangaEffect، MangaHolic، MangaOwlnet.com، MangaOwlYaoi، MangaPure، MangaQueen، Toon69.
+
+MangaRuby، MangaRyu، MangaYY، MangaOwl.one، Mangasy، Mangaus، ManhuaZonghe، ManhuaSy، Manhwa18.app، ManhwaNew، ManyComic، MmScans، MortalsGroove، MsyPublisher، NewManhua، Night Comic، NvManga، OnlyManhwa، PianManga، PonyManga، ReadFreeComics، `READMANHUA`، AquaScans.com، 1StKissManga.net، 1stKissManga.com، TeenManhua، TheGuildScans، ToonChill، TreeManga، VyvyManga، Webtoon.uk، Yaoi.Mobi، ZinManga.cc، ZinManga.ms، TheBlank، BeeHentai، MangaBuddy، MangaCute، MangaPuma، MangaXyz، kaliscan.io، TooniTube، Toonily.Me.
+
+TrueManga، Comic1000، MangaNelo.com، MangaIro، Manganato، MangaHubIO، AltayScans، AnigliScans، AscalonScans، BirdManga، ConstellarComic، CosmicScans.com، DrakeComic، ElarcPage، FreakComic، FreakScans، KomikLab، RadiantScans، ManhwaFreak، ManhwaLover، NoonScan.net، ReadersPoint، RizzComic، SkyManga، SnowScans، SpiderScans، HiveToon، VoidScans، YdComics، Zahard، Manga4Life، MangaSee، `OTAKUSAN_EN`.
+
+بعض الأسماء لها معرّفات مختلفة عن الاسم الظاهر؛ مثل VipManga الذي يحمل المعرّف `CROWSCANS`، وMangaSwat الذي يحمل `NORMOYUN`. لذلك لن أعتمد على الاسم وحده أثناء الإصلاح.
+
+### 4. هل يمكن إصلاح الـ153 كلها؟
+
+ليس بالضرورة بنفس الطريقة. راجعت أسباب `@Broken` المكتوبة في الكود، ووجدت:
+
+- **115 محللًا** لا تحتوي على سبب واضح داخل التعليق.
+- **38 محللًا** لها أسباب موضحة.
+
+الأسباب المسجلة تشمل:
+
+- مواقع أُغلقت أو اختفت نطاقاتها.
+- مواقع غيّرت تصميمها أو قالبها.
+- مصادر تحوّل المستخدم إلى مصدر آخر.
+- مشاكل Cloudflare أو حماية الصور.
+- مواقع تُرجع 503 أو 404.
+- مشكلة عرض الصور على شكل شرائط.
+
+هذا يعني أن الإصلاح سيكون حسب السبب: تحديث المحلل، إصلاح استخراج الصور، تحديث النطاق، أو ربطه بمصدر بديل بعد التحقق من أن البديل هو الموقع الصحيح. الموقع المغلق نهائيًا لا يمكن إصلاحه بمجرد تعديل كود المحلل.
+
+### 5. نتائج فحص بنية المحللات والتوجيه
+
+وجدت نقاطًا مهمة جدًا:
+
+1. **المحللات المحلية:** يوجد محلل محلي واحد فقط، وهو `Azoramoon`. باقي المصادر تعتمد على مكتبة Kotatsu.
+2. **Manga Pro:** له Connector مستقل بمعرّف `PROCOMIC` وموقع `procomic.pro`.
+3. **ProChan:** مصدر مستقل بمعرّف `PROCHAN` ومعلّم `@Broken` بسبب مشكلة تحميل الصور على شكل شرائط. لن أستبدل Manga Pro به.
+4. **Manga Starz:** يوجد ملف `StarzConnector.kt`، لكن لم أجد استدعاءه في مسار التوجيه الرئيسي داخل `ConnectorEngine`. وجود الملف لا يعني أن التطبيق يستخدمه.
+5. **المصادر المعطلة:** التطبيق يمنع تفعيلها من الإعدادات إذا كان `isBroken=true`.
+6. **تفعيل المصادر:** جميع المصادر تبدأ معطلة في التهيئة الأولى، وعلى المستخدم تفعيل المصادر التي يريد استخدامها.
+
+### 6. نتيجة فحص الكابتشا — مشكلة حقيقية في التنفيذ
+
+هنا وجدت أسبابًا محتملة تفسّر فشل تجاربك:
+
+**أولًا: تصنيف 403 في Manga Pro**
+
+`ProComicConnector` يعتبر استجابة HTTP 403 سببًا كافيًا لبدء التحقق البشري في بعض المسارات، حتى لو لم تكن صفحة تحقق فعلية. هذا قد يسبب ظهور الكابتشا عند وجود منع أو خطأ صلاحيات عادي.
+
+في المقابل، `CloudFlareHelper` في المكتبة يفحص محتوى الصفحة وعلامات التحدي، ولا يعتبر كل 403 كابتشا تلقائيًا.
+
+**ثانيًا: تأكيد نجاح الكابتشا**
+
+واجهة `WebviewScreen` تتأكد من وجود `cf_clearance`، لكنها لا تختبر بنفسها أن الخادم قبل الكوكي وأن الطلب الأصلي أصبح يعمل. كما أنها تفحص الكوكي على أكثر من عنوان، وليس فقط نطاق الطلب الذي بدأ التحقق.
+
+**ثالثًا: تخزين نجاح التحقق**
+
+منسق الكابتشا يحتفظ بنجاح التحقق لمدة 30 ثانية. هذا النجاح لا يرتبط بتأكيد أن الطلب الأصلي نجح بالفعل بعد إعادة المحاولة.
+
+**رابعًا: إعادة المحاولة**
+
+محرك المصادر يعيد تنفيذ الطلب بعد التحقق مرة واحدة. لا توجد دورة تحقق متكاملة تضمن أن الخادم قبل الكوكي بالفعل، ثم تتعامل مع نتيجة إعادة المحاولة بشكل صحيح.
+
+**خامسًا: Manga Pro وTurnstile**
+
+Manga Pro يستخدم مسار Turnstile للحصول على رمز تحقق، بينما المتصفح العام ينتظر `cf_clearance`. يجب اختبار الربط بين المسارين؛ فهما ليسا آلية تحقق واحدة.
+
+### 7. الاختبارات الموجودة وما ينقصها
+
+| الاختبار | الموجود |
+|---|---:|
+| منسق جلسات الكابتشا | 4 اختبارات |
+| فحص كوكي الكابتشا | 3 اختبارات |
+| Manga Pro Connector | 6 اختبارات |
+| منع اختيار محلل بالتخمين | اختباران |
+| تهيئة وتفعيل المصادر | 3 اختبارات |
+
+المشكلة أن هذه الاختبارات لا تختبر دورة الكابتشا الحقيقية من طلب الموقع إلى WebView ثم حفظ الكوكي وإعادة الطلب. كما لا يوجد اختبار فعلي لكل موقع من مواقع المحللات.
+
+ومكتبة المحللات نفسها تحتوي على 17 ملف اختبار Kotlin فقط، منها 6 ملفات مرتبطة بمصادر محددة. لذلك نجاح اختبارات CI لا يثبت أن مئات المواقع تعمل حاليًا.
+
+### 8. أشياء ناقصة في المهمة الثالثة
+
+وجدت أن بعض المتطلبات التي وافقت عليها لم تُنفّذ بعد:
+
+- البحث الشامل Global Search غير موجود؛ واجهة المحرك تتطلب اختيار مصدر محدد.
+- الفلترة والترتيب داخل المصادر غير موصولين بالكامل بالواجهة؛ المحرك يستخدم ترتيبًا افتراضيًا، ولا يستقبل اختيارات المستخدم.
+- بحث Manga Pro يستخدم ترتيبًا ثابتًا `popular`، ولا يتيح حاليًا خيارات الترتيب والفلاتر للمستخدم.
+
+أما تفاصيل الأعمال والفصول والصفحات، فقد راجعت مساراتها ولم أغيّرها، احترامًا لطلبك بالحفاظ عليها.
+
+---
+
+## خلاصة الجرد
+
+- 468 محللًا عربيًا وإنجليزيًا.
+- 153 محللًا معلّمًا Broken.
+- 105 مصدرًا مصنفًا 18+.
+- 315 محللًا غير معلّم Broken.
+
+**لم أعدّل أي كود أو أغيّر أي إصدار خلال الجرد.**
+
+
+## ملحق 2026-11-18 — تشخيص أول محلل عربي حسب الشهرة
+
+**المستخدم:** هل اضفت هذه الاجابة و السوال الي المستودع التعليمي لانه اجباري و اكمل العمل
+الي ملهوش سبب موضح حاول تتاكد من سبب تعطل و اصلح الاشهر ثم الاقل شهرة حدا لو الموقع 18+ او انجليزي او عربي
+لكن كل نوع لوحده و المهم كل محادثة نعملها نحدث مستودع التعليمي و نحدث سجل المحادثة بيني و بينك لكن داخل المستودع التعليمي
+
+**ChatGPT:**
+
+تحققت من أن المحادثة السابقة لم تكن قد أُدرجت كاملة، لذلك أضفت الآن السؤال والرد الكامل إلى `CONVERSATION_HISTORY.md`، إلى جانب تحديث تقرير المهمة الثالثة وحالة المشروع. أرقام الجرد أُعيدت مطابقتها من ملفات الإنتاج: 470 ملف Kotlin (403 مسارات إنجليزية و67 عربية)، و468 تعريف Parser (401 إنجليزي و67 عربي)، و153 معلّمًا Broken، و105 مصنّفًا HENTAI؛ يوجد ملفان بلا تعريف Parser. هذه الأرقام تخص نسخة المكتبة المثبتة عند الالتزام `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8`.
+
+بدأت المجموعة العربية العامة بالمصدر الأعلى انتشارًا الذي أمكن التحقق منه: Hijala. موقعه الحالي نشط، وتقدير زيارات سبتمبر 2026 حوالي 1.56 مليون، وتعرض صفحة Lookism أكثر من ألفي متابع وفصولًا منشورة حديثًا. روابط الأدلة: https://semlogin.toolsduniya.com/website/hijala.com/overview/?source=trending-websites وhttps://hijala.com/lookism/ وhttps://hijala.com/lookism-617/.
+
+السبب الجذري المبدئي: ملف `Hijala.kt` في المكتبة المثبتة يستخدم `ZeistMangaParser`، الذي يطلب Blogger Feed من `/feeds/posts/default/`، بينما الموقع الحالي يعرض الأعمال في `/lookism/`، والفصول في `/lookism-617/`، وصور القراءة في `/wp-content/uploads/manga/...`. هذا تعارض بين محلل Blogger قديم وموقعه الحالي، وليس مجرد كابتشا أو فشل اتصال. يوجد أيضًا عائق في `KotatsuSourceEngine`: يرفض المحلل المعلّم `Broken` قبل السماح للمحلل المحلي بتجاوزه، كما أن `getCatalogSources()` لا يحاول إنشاء override محلي للمصادر المعطلة.
+
+وجدت مرجعًا برمجيًا عامًا أقدم لمحلل Hijala في https://github.com/MohammedAdel224/Manga-Favorate-List/blob/main/manga/hijala.py، يستخدم `div#chapterlist` و`li[data-num]` و`span.chapterdate` لقائمة الفصول. هذا دليل مساعد قديم، وليس تأكيدًا أن DOM الحالي لم يتغير. لم أستخدمه كإثبات نهائي ولا أنسخ منه كودًا.
+
+**الحالة:** لم يُعدّل كود التطبيق بعد. لا أكتب محللًا جديدًا اعتمادًا على selectors غير متحققة. الخطوة التالية التحقق من DOM الحالي لصفحة العمل والفصل، ثم بناء Parser محلي واختباره للبحث والتفاصيل والفصول والصفحات. يظل ترتيب المجموعات: العربية العامة، ثم الإنجليزية العامة، ثم 18+ (مع فصل العربية والإنجليزية). لا تغيير لمسارات تفاصيل الأعمال والفصول والصفحات المشتركة أو لقارئ التطبيق، ولا خلط بين `PROCOMIC` و`PROCHAN`.

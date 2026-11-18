@@ -73,3 +73,15 @@
 - لا تخلط `PROCOMIC` / Manga Pro مع `PROCHAN` / ProChan. يلزم التحقق المستقل من النطاق والهوية والتحويلات قبل أي توحيد.
 - لم يبدأ أي تعديل كود في التطبيق ضمن هذا التحديث. الخطوة التالية: إعادة بناء جرد موثوق، ثم معالجة المجموعة الأولى حسب الشهرة مع اختبارات لكل Parser، وتوثيق كل تعديل في مستودع المعرفة في نفس جولة التنفيذ.
 - المستودع التعليمي: `osamahosny2/iruma-engineering-handbook`، الفرع `main`. سجل المحادثة الإلزامي هو `CONVERSATION_HISTORY.md`.
+
+
+## 2026-11-18 — تشخيص Hijala وترتيب الإصلاح
+
+- أُعيد فحص ملفات الإنتاج كاملة: 470 ملف Kotlin ضمن مسارات اللغة العربية والإنجليزية (403 en، 67 ar). تحتوي على 468 تعريف Parser (401 en، 67 ar)؛ ملفان بلا annotation. ضمن التعريفات: 153 `@Broken`، و105 `ContentType.HENTAI`. لا تخلط عدد ملفات Kotlin بعدد تعريفات Parser.
+- المجموعة الأولى: العربية العامة غير 18+، مرتبة بحسب الانتشار/النشاط المثبت. تليها الإنجليزية العامة غير 18+، ثم 18+ مقسمة إلى عربية وإنجليزية.
+- أول مصدر عربي بحسب الانتشار الذي أمكن توثيقه: Hijala (`HIJALA`). تقدير زيارات سبتمبر 2026 نحو 1.56M بحسب Semlogin ToolsDuniya، والموقع وصفحات العمل والفصل ما زالت مفهرسة وتعرض محتوى حديثًا. المصادر: https://semlogin.toolsduniya.com/website/hijala.com/overview/?source=trending-websites ، https://hijala.com/lookism/ ، https://hijala.com/lookism-617/.
+- السبب الجذري: upstream `Hijala.kt` عند الالتزام المثبت يمدد `ZeistMangaParser`؛ هذا الأساس يطلب Blogger feed `/feeds/posts/default/-/...` ويعتمد JSON `feed.entry`. الموقع الحالي يعرض صفحات أعمال مثل `/lookism/` وفصولًا مثل `/lookism-617/` وصورًا تحت `/wp-content/uploads/manga/`. إذًا التنفيذ القديم لا يطابق بنية الموقع الحالية. لا تُعامل هذه الحالة ككابتشا.
+- مرجع خارجي مساعد قديم: `MohammedAdel224/Manga-Favorate-List` ملف `manga/hijala.py` يستخدم `div#chapterlist`, `li[data-num]`, `span.chapterdate`. هذا مرجع قديم وغير كافٍ لإثبات selectors الحالية؛ يجب التحقق من DOM قبل اعتماده.
+- عائق في التطبيق: `KotatsuSourceEngine.getCatalogSources()` لا يحاول local override عند `parserSource.isBroken`، و`resolveParser()` يرفض `candidate.isBroken` قبل محاولة `LocalSourceParserRegistry.create()`. هذا يمنع إصلاح أي Parser معطّل عبر override محلي حتى لو أُضيف له implementation. يجب إصلاح أولوية local override واختبارها ضمن تنفيذ أول مجموعة.
+- لم يُعدّل كود التطبيق بعد في هذه الجولة. لا تكتب selectors تخمينية. قبل اعتماد Hijala يجب التحقق من DOM الحالي لصفحة العمل والفصل، ثم اختبار البحث والتفاصيل والفصول والصفحات والصور. لا تُزل `@Broken` حتى تنجح الاختبارات.
+- لا تعديل لمسارات تفاصيل الأعمال والفصول والصفحات المشتركة أو قارئ التطبيق؛ الإصلاح المحلي للمصدر يجب ألا يغير تلك المسارات. لا تخلط `PROCOMIC` و`PROCHAN`.
