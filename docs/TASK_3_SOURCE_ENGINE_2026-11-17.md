@@ -85,3 +85,16 @@
 - عائق في التطبيق: `KotatsuSourceEngine.getCatalogSources()` لا يحاول local override عند `parserSource.isBroken`، و`resolveParser()` يرفض `candidate.isBroken` قبل محاولة `LocalSourceParserRegistry.create()`. هذا يمنع إصلاح أي Parser معطّل عبر override محلي حتى لو أُضيف له implementation. يجب إصلاح أولوية local override واختبارها ضمن تنفيذ أول مجموعة.
 - لم يُعدّل كود التطبيق بعد في هذه الجولة. لا تكتب selectors تخمينية. قبل اعتماد Hijala يجب التحقق من DOM الحالي لصفحة العمل والفصل، ثم اختبار البحث والتفاصيل والفصول والصفحات والصور. لا تُزل `@Broken` حتى تنجح الاختبارات.
 - لا تعديل لمسارات تفاصيل الأعمال والفصول والصفحات المشتركة أو قارئ التطبيق؛ الإصلاح المحلي للمصدر يجب ألا يغير تلك المسارات. لا تخلط `PROCOMIC` و`PROCHAN`.
+
+
+## 2026-11-20 — إعادة فحص عائق Local Parser Override
+
+- أُعيد الوصول إلى مشروع التطبيق الخاص عبر اتصال GitHub Composio النشط، الفرع `fix/room-storage`، HEAD `b4360e73faba53e74e29d3ad3aa38466701091e7`.
+- تمت قراءة الملفات الحالية مباشرة: `app/src/main/java/com/example/connector/kotatsu/KotatsuSourceEngine.kt`، `source-parsers/src/main/kotlin/com/example/connector/kotatsu/parsers/LocalSourceParserRegistry.kt`، `app/src/main/java/com/example/connector/ConnectorEngine.kt`، و`app/src/main/java/com/example/data/SourceCatalogActivation.kt`.
+- تأكد من الكود أن `getCatalogSources()` يستخدم `if (parserSource.isBroken) null else context.newParserInstance(...)`، ثم يحسب `unavailable` باستخدام `parserSource.isBroken` دون اعتبار وجود local override. هذا يمنع ظهور المصدر المعطّل على أنه قابل للتشغيل حتى لو أُضيف له Parser محلي.
+- تأكد أن `resolveParser()` يرفض `candidate == null || candidate.isBroken` ويضيف المصدر إلى `missingParserCache` قبل استدعاء `LocalSourceParserRegistry.create(...)`. لذلك لا يمكن حاليًا لأي local implementation تجاوز `@Broken` upstream.
+- `LocalSourceParserRegistry` الحالي يعيد `IrumaAzoramoonParser` للمعرّف `AZORAMOON` فقط، ولا يحتوي على `HIJALA`.
+- الاستنتاج: يجب جعل وجود local override أسبق من فحص `isBroken` في الكتالوج والحل، وإضافة API واضح مثل `supports(sourceId)`، ثم اختبارات تثبت أن المصدر upstream المعلّم Broken يصبح قابلًا للإنشاء فقط عند وجود override محلي فعلي. لا يكفي أن تكون `supports` صحيحة إذا فشل إنشاء Parser.
+- لا كود تطبيق عُدّل ولا اختبارات شُغّلت في هذه الجولة. بقيت الخطوة التالية تنفيذ إصلاح الأولوية واختباراته ضمن المهمة 3، ثم بناء Parser Hijala بعد فحص DOM الحالي.
+- تعذر استخدام Browserless في هذه الجلسة؛ عُرض TinyFish كبديل متاح للمتصفح السحابي، لكن لم يتم ربطه بعد. لا يجوز الادعاء بأنه متصل أو تنفيذ فحص حي به قبل اكتمال الربط من المستخدم.
+- لم يتغير ترتيب المجموعات أو حدود النطاق: العربية العامة أولًا، الإنجليزية العامة ثانيًا، ثم 18+ مع فصل العربية والإنجليزية. لا تعديل لمسارات التفاصيل والفصول والصفحات المشتركة أو القارئ، ولا خلط بين `PROCOMIC` و`PROCHAN`.
