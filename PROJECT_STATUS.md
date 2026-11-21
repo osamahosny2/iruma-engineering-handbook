@@ -280,3 +280,16 @@
 - CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
 - أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
 - CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.
+
+
+## 2026-11-21 — نجاح CI ومراجعة الكابتشا على فرع Hijala
+
+- الفرع: `fix/hijala-parser`، HEAD: `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- GitHub Actions run `44853813290` (run #121) اكتمل بـ`success`؛ Unit Tests وBuild Debug APK وVerify APK signature كلها `success`.
+- خطوة نشر private test pre-release كانت `skipped`، وقائمة Artifacts لهذا التشغيل فارغة. لم يُنشر APK جديد ولم يتغير رقم الإصدار.
+- قائمة Releases لا تزال تعرض `v1.5.0` فقط كأحدث إصدار، وهو مبني من commit أقدم `b4360e73faba53e74e29d3ad3aa38466701091e7`، وليس من Hijala commit الحالي.
+- مراجعة الكابتشا: `KotatsuCloudFlareInterceptor` مشترك في OkHttp المستخدم بمحرك المصادر؛ عند `PROTECTION_CAPTCHA` يرفع `KotatsuBrowserActionRequiredException`. `KotatsuSourceEngine.withBrowserVerification` ينسق WebView التفاعلي ثم يعيد الطلب. `WebviewScreen` يتحقق من clearance cookie، و`AndroidCookieJar` يشارك كوكيز WebView مع OkHttp.
+- Manga Pro يملك مسار Turnstile خاصًا به مع رمز مؤقت لأربع دقائق وإعادة محاولة بعد 403؛ هذا المسار ليس حلًا عامًا لكل المواقع.
+- فجوات مؤكدة: `PROTECTION_BLOCKED` يتحول إلى IOException ولا يبدأ التحقق التفاعلي؛ لم يثبت نجاح التحقق حيًا على Hijala أو كل المصادر؛ لا يوجد إثبات أن جميع أنواع الكابتشا غير Cloudflare مدعومة.
+- النتيجة: دعم Cloudflare مشترك موجود جزئيًا، لكن مشكلة الكابتشا ليست محلولة بالكامل ولا يجوز إعلانها كذلك. يلزم اختبار حي بعد التحقق لكل مصدر قبل اعتباره صالحًا.
+- المهمة 3 مستمرة؛ لا دمج إلى `main` ولا Release ولا تغيير إصدار.
