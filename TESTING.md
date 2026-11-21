@@ -91,3 +91,9 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - Added `SourceParserResolutionTest` with coverage for local override precedence over upstream `@Broken`, no silent fallback after local-constructor failure, rejection of broken upstream without override, normal upstream creation, stable-ID matching despite duplicate display names, and DivaScans adult classification.
 - Commit: `dfdfde17935986e4075340909d9dd8e91f69b6b4`.
 - CI run: `44849756102` (Build APK) was still running the unit-test step at the time of this record. Record the final result only after checking unit tests, APK build and signature verification.
+
+## تحديث CI — 2026-11-21
+
+- Run `44849756102`, commit `dfdfde17935986e4075340909d9dd8e91f69b6b4`: **Run unit tests = success**.
+- **Build Debug APK = in progress** عند آخر فحص؛ **Verify APK signature = pending**.
+- لا تسجل نجاح البناء أو التوقيع قبل أن تظهر خطواتهما `success` في GitHub Actions.

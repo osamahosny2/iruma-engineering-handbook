@@ -146,3 +146,12 @@
 - لا تغيير لمسارات تفاصيل العمل أو الفصول أو صفحات القراءة أو القارئ ضمن هذا الإصلاح.
 - لا تغيير لرقم الإصدار أثناء الاختبار؛ الهدف بعد اكتمال المهمة يبقى `1.5.1`.
 - المهمة 3 ما زالت قيد التنفيذ، ولا تُعلن مكتملة بعد هذا الإصلاح وحده.
+
+## تحديث فحص المراجع والهدف الأول — 2026-11-21
+
+- تمت مطابقة جميع مصادر المستخدم الـ22 التي لها ملفات Parser مع الإصدار المثبّت `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8`; لا يحمل أي منها `@Broken` في ذلك الإصدار. Elfoon لا يملك ملف Parser مطابقًا.
+- عائلات الوراثة الدقيقة: Madara (10)، FoolSlide (DeathToll)، PagedManga (Demonic/Diva/KDT)، MangaReader (EnThunder/Hentai20/Lagoon)، Iken (EzManga)، Keyoapp (Kewn)، Manga18 (Hentai3z.cc)، GalleryAdults (HentaiNexus)، FuzzyDoodle (HentaiSlayer).
+- `Hentai3z.cc` هو `HENTAI3ZCC`، وليس Parser `HENTAI3Z` المنفصل.
+- `HIJALA` يحمل `@Broken` في المكتبة المثبتة ويرث `ZeistMangaParser` القديم المعتمد على Blogger Feed. فحص REST endpoints العامة الخاصة بـWordPress أعاد `bot_blocked` لكل من `/wp-json/` و`/wp-json/wp/v2/types` و`/wp-json/wp/v2/posts?per_page=1`. لم يتم تجاوز Cloudflare.
+- يظل Hijala أول هدف عربي عام حسب ترتيب المستخدم. لا تُكتب selectors أو Parser محلي قبل الحصول على HTML/DOM حالي من وصول طبيعي للموقع.
+- CI run `44849756102`: Unit Tests نجحت؛ Debug APK ما زال قيد البناء عند آخر فحص، وفحص التوقيع لم يبدأ بعد.

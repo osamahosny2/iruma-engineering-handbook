@@ -91,7 +91,15 @@
 - Manga18: Hentai3z.cc.
 - GalleryAdults: HentaiNexus.
 - FuzzyDoodle: HentaiSlayer.
-- محللات مخصصة: DemonicScans، DivaScans، KDTScans.
+- PagedMangaParser: DemonicScans، DivaScans، KDTScans (مع تنفيذ مخصص لكل موقع).
 - لم يُعثر على Parser مطابق لـElfoon في الشجرة المفحوصة.
 
 لم يُرفع PDF الثنائي إلى GitHub في هذا التحديث بسبب مشكلة مساحة التخزين التي أبلغ عنها المستخدم؛ هذا الملف النصي يسجل القائمة المؤكدة دون تكرار رفع الملف الثنائي.
+
+## تدقيق مطابق للإصدار المثبّت — 2026-11-21
+
+تم فحص ملفات الـ22 Parser المطابقة للقائمة على commit المكتبة المثبّت `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8` نفسه، وليس على فرع أحدث فقط. النتيجة: **22 ملف Parser، ولا واحد منها يحمل `@Broken`** في هذا الإصدار.
+
+- `Hentai3z.cc` تحديدًا هو `HENTAI3ZCC` وملفه `Hentai3zCc.kt` ويرث `Manga18Parser`. يوجد Parser منفصل آخر اسمه `HENTAI3Z`؛ لا تخلط بينهما.
+- عائلات الوراثة الدقيقة عند الإصدار المثبّت: `MadaraParser` (10 مصادر)، `FoolSlideParser` (DeathTollScans)، `PagedMangaParser` (DemonicScans وDivaScans وKDTScans)، `MangaReaderParser` (EnThunderScans وHentai20 وLagoonScans)، `IkenParser` (EzManga)، `KeyoappParser` (KewnScans)، `Manga18Parser` (Hentai3z.cc)، `GalleryAdultsParser` (HentaiNexus)، و`FuzzyDoodleParser` (HentaiSlayer).
+- `Elfoon` غير موجود كملف Parser في الشجرة المثبتة، فلا نضيف له دعمًا تخمينيًا.

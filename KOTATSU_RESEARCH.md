@@ -118,10 +118,23 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - Manga18: مثال لاستخراج روابط الصفحات المشفرة من بيانات JavaScript.
 - GalleryAdults: بعض المواقع تحتاج التنقل إلى صفحة كل صورة ثم استخراج `gimg` بدل افتراض أن رابط الفصل نفسه صورة.
 - FuzzyDoodle: مثال آخر لقائمة وفصول متعددة الصفحات.
-- DemonicScans وDivaScans وKDTScans أمثلة لمحللات مخصصة؛ KDT يتعامل مع chunks مشفرة ورؤوس Referer، وDivaScans يستخدم API JSON.
+- DemonicScans وDivaScans وKDTScans ترث `PagedMangaParser` لتوحيد pagination، مع تنفيذ خاص لكل موقع؛ KDT يتعامل مع chunks مشفرة ورؤوس Referer، وDivaScans يستخدم API JSON.
 
 ### نتيجة مقارنة مهمة للتصميم
 لا يوجد Parser عام واحد يصلح لكل المواقع. يجب أن يبقى العقد موحدًا (قائمة، تفاصيل، فصول، صفحات، وروابط صور)، بينما تختلف آلية استخراج البيانات وفق CMS/API الفعلي. المصادر التي لا تملك Parser لا يُنشأ لها دعم تخميني.
 
 ### تطبيق النتائج في إيروما منجا
 أول إصلاح في 2026-11-21 جعل إنشاء المحلل المحلي يسبق رفض المصدر بسبب `@Broken`، وجعل هوية Parser تعتمد على ID ثابت بدل الاسم المعروض لتجنب التباس المصادر ذات الأسماء المتشابهة. لم يتم نسخ BaseParser أو WebView من upstream، ولم تتم ترقية المكتبة.
+
+## تدقيق عائلات الوراثة والهدف العربي الأول — 2026-11-21
+
+### عائلات إضافية تم التحقق منها عند commit المثبّت
+- `PagedMangaParser` يوحّد pagination للقائمة والبحث ويترك `getListPage()` لكل موقع؛ تستخدمه DemonicScans وDivaScans وKDTScans.
+- `IkenParser` (EzManga) يوفّر مسار API للقائمة `/api/query` والفصول `/api/chapters` مع fallback لاستخراج صور HTML عند الحاجة.
+- `KeyoappParser` هو أساس KewnScans، وليس EzManga.
+
+### Hijala (`HIJALA`)
+- ملف `Hijala.kt` في commit `68f3fed...` يحمل `@Broken` صراحةً ويرث `ZeistMangaParser` مع النطاق `hijala.com`.
+- `ZeistMangaParser` القديم يبني Blogger Feed من `/feeds/posts/default/-/...` ويقرأ `feed.entry`، بينما صفحات Hijala الحالية التي فُحصت سابقًا تبدو WordPress-like. لذلك لا يكفي إزالة `@Broken` أو إعادة استخدام selectors القديمة.
+- جرى فحص REST paths العامة `/wp-json/` و`/wp-json/wp/v2/types` و`/wp-json/wp/v2/posts?per_page=1`؛ جميعها أعادت `bot_blocked`. لم تتم محاولة تجاوز Cloudflare أو استخدام stealth/proxy للتحايل.
+- النتيجة: Hijala ما زال أول هدف عربي عام حسب ترتيب المهمة، لكن كتابة Parser محلي تتطلب DOM/HTML حاليًا من جلسة مستخدم يمكنها فتح الصفحة طبيعيًا.
