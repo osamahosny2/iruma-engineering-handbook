@@ -273,3 +273,10 @@
 - خطوة **Build Debug APK** بدأت؛ فحص بصمة التوقيع لم يبدأ بعد عند آخر فحص.
 - لا يوجد Release جديد ولا تغيير لرقم الإصدار. لا تعتبر الشريحة متحققة بالكامل حتى نجاح البناء وفحص التوقيع.
 - محاولات الوصول العادية إلى Hijala REST endpoints أعادت `bot_blocked`؛ لم يتم تجاوز Cloudflare.
+
+
+## 2026-11-21 — إصلاح أول فشل Compile في Hijala
+
+- CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
+- أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.

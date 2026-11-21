@@ -97,3 +97,10 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - Run `44849756102`, commit `dfdfde17935986e4075340909d9dd8e91f69b6b4`: **Run unit tests = success**.
 - **Build Debug APK = in progress** عند آخر فحص؛ **Verify APK signature = pending**.
 - لا تسجل نجاح البناء أو التوقيع قبل أن تظهر خطواتهما `success` في GitHub Actions.
+
+
+## 2026-11-21 — إصلاح أول فشل Compile في Hijala
+
+- CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
+- أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.

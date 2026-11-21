@@ -155,3 +155,10 @@
 - `HIJALA` يحمل `@Broken` في المكتبة المثبتة ويرث `ZeistMangaParser` القديم المعتمد على Blogger Feed. فحص REST endpoints العامة الخاصة بـWordPress أعاد `bot_blocked` لكل من `/wp-json/` و`/wp-json/wp/v2/types` و`/wp-json/wp/v2/posts?per_page=1`. لم يتم تجاوز Cloudflare.
 - يظل Hijala أول هدف عربي عام حسب ترتيب المستخدم. لا تُكتب selectors أو Parser محلي قبل الحصول على HTML/DOM حالي من وصول طبيعي للموقع.
 - CI run `44849756102`: Unit Tests نجحت؛ Debug APK ما زال قيد البناء عند آخر فحص، وفحص التوقيع لم يبدأ بعد.
+
+
+## 2026-11-21 — إصلاح أول فشل Compile في Hijala
+
+- CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
+- أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.

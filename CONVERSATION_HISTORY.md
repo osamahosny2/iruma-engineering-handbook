@@ -485,3 +485,6 @@ AdultWebtoon (الرابط الظاهر: https://adultwebtoon.org/)، 1stKissMan
 **ملاحظة بحثية:** بيانات upstream صنّفت DivaScans كـMANHWA، لكن المستخدم أكد أن تصنيف الموقع الصحيح 18+؛ لذلك تم اعتماد تصحيح المستخدم في التطبيق. كما أثبتت annotations أن LekManga.org وLekManga.com وHentaiSlayer عربية، وأن Elfoon لم يُعثر له على Parser مطابق في شجرة kotatsu-parsers-redo الحالية؛ لا يُخمن له Parser أو لغة.
 
 **ChatGPT — تحديث التنفيذ والبحث:** نجحت اختبارات الوحدات الثمانية في GitHub Actions، وانتقل الـWorkflow إلى بناء Debug APK. كما أكد فحص ملفات الإصدار المثبّت أن 22 Parser من قائمة المستخدم لا تحمل `@Broken`، وأن `HIJALA` هو Parser معطّل صراحةً. جُرّبت REST endpoints العامة لـHijala دون تجاوز أي حماية، لكنها أعادت `bot_blocked`؛ لذلك لا توجد DOM موثوقة لكتابة Parser محلي حتى الآن.
+
+
+**ChatGPT — متابعة CI:** فشل أول CI run `44853363425` في compile لأن `PagedMangaParser` يتطلب `getFilterOptions()`. تم تنفيذ الدالة في commit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`، وبدأ CI جديد `44853813290`؛ كان في إعداد Gradle عند آخر فحص.
