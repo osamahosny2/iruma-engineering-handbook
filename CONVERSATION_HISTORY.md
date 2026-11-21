@@ -459,3 +459,27 @@ Please summarize and present these results.
 AdultWebtoon (الرابط الظاهر: https://adultwebtoon.org/)، 1stKissManga.com، 1stKissManga.net، 4QScans، A95Comics (قراءة غير مؤكدة)، 19PornComic (قراءة غير مؤكدة)، ALLPornComic (قراءة غير مؤكدة)، Arenascans، ArabToons، ArabsDoujin، BananaScan.com، BeeHentai، BeeToon.net، BestManga.com.
 
 هذه ليست قائمة كاملة، ولا تعني أن كل اسم يحمل علامة صح. يجب مطابقة الاسم والعلامة مع المصدر الفعلي في كتالوج التطبيق.
+
+## 2026-11-21 — بدء المهمة الثالثة وتثبيت مرجع المصادر
+
+**المستخدم:** أوضح أن علامة الصح تعني اجتياز الموقع كل الاختبارات: الموقع يفتح، ويعرض منهوات حقيقية، وفصولًا حقيقية، وصورًا حقيقية داخل الفصول.
+
+**ChatGPT:** ثبّت تعريف النجاح الكامل، وأكد أن فتح الموقع أو ظهور أسماء فصول فقط لا يكفي.
+
+**المستخدم:** كتب أسماء المصادر التي عليها علامة صح في الصفحة الثانية فقط: DecadenceScans، DeathTollScans، DemonicScans، DivaScans، Elfoon، EnThunderScans، EzManga، GDScans، GedeComix، Grabber، Hentai x Comic، Hentai x Dickgirl، Hentai20، Hentai3z.cc، HentaiNexus، HentaiSlayer، KDTScans، KewnScans، KsGroupScans، Lagoon Scans، LekManga.org، LekManga.com، LHTranslation. وأوضح أن الصفحة الرابعة لا تدخل في هذا الجرد لأنها لا تحتوي علامات صح.
+
+**ChatGPT:** قدّم جدول تصنيف أوليًا، لكن بعض التصنيفات كانت غير دقيقة؛ جرى تصحيحها لاحقًا بمطابقة بيانات المحللات الفعلية في Kotatsu-Redo، مع تقديم تصحيح المستخدم لـDivaScans على بيانات upstream.
+
+**المستخدم:** طلب عدم إضاعة الوقت في التصنيفات المبدئية، وأن الأولوية الآن للمصادر ضمن المهمة الثالثة.
+
+**ChatGPT:** أعاد تحديد نطاق المهمة الثالثة لمحرك المصادر، وطلب تأكيد النطاق قبل التنفيذ.
+
+**المستخدم:** أكد أن المصادر الناجحة ليست المرجع الوحيد، وطلب دراسة Kotatsu وKotatsu-Redo أيضًا.
+
+**ChatGPT:** وسّع مراجع العمل لتشمل كود Kotatsu الأصلي، وKotatsu-Redo، وKotatsu-Parsers-Redo، إلى جانب المصادر الناجحة في جرد إيروما، مع عدم نسخ أي مشروع بالكامل.
+
+**المستخدم:** «ابدا» — موافقة صريحة على بدء المهمة الثالثة ضمن النطاق المتفق عليه.
+
+**ChatGPT — نتيجة أول شريحة تنفيذية:** فُحص المستودع `osamahosny2/iruma_manga_v2` على `fix/room-storage`، وثُبت أن محرك المصادر كان يرفض `@Broken` قبل تجربة المحلل المحلي. نُفّذ أول إصلاح: أولوية المحلل المحلي على `@Broken`، وربط المحلل بالـID الثابت بدل الاسم المعروض لتجنب خلط المواقع ذات الأسماء المتطابقة، وتصحيح تصنيف DivaScans إلى 18+ في كتالوج التطبيق. أضيفت اختبارات وحدات لهذه السياسات.
+
+**ملاحظة بحثية:** بيانات upstream صنّفت DivaScans كـMANHWA، لكن المستخدم أكد أن تصنيف الموقع الصحيح 18+؛ لذلك تم اعتماد تصحيح المستخدم في التطبيق. كما أثبتت annotations أن LekManga.org وLekManga.com وHentaiSlayer عربية، وأن Elfoon لم يُعثر له على Parser مطابق في شجرة kotatsu-parsers-redo الحالية؛ لا يُخمن له Parser أو لغة.

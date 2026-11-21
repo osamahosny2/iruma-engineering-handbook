@@ -99,3 +99,29 @@ The current Manga Pro/ProComic parser reference is the separate `keiyoushi/exten
 
 ## Turnstile helper source
 The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` `core/src/main/kotlin/keiyoushi/utils/TurnstileHelper.kt` at commit `d0478bb62bbc485753d2830102aef4e1b87cb336` (Apache-2.0). This is not a Kotatsu-Redo component. The app contains its own adaptation and license attribution; no upstream runtime dependency or fork was added.
+
+## دراسة فعلية مقارنة — 2026-11-21
+
+### المراجع والإصدارات
+- تمت مراجعة كود تطبيق Kotatsu الأصلي وكود Kotatsu-Redo، وليس README فقط.
+- تمت مراجعة مكتبة `kotatsu-parsers-redo`، والعقد `MangaParser` و`MangaSourceParser` ونماذج `MangaChapter` و`MangaPage`، إضافة إلى `AbstractMangaParser` و`CloudFlareHelper` و`OkHttpWebClient`.
+- التطبيق يثبت `kotatsu-parsers-redo` عند commit `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8` في `source-parsers/build.gradle.kts`. لم يتم تغيير هذا الاعتماد أو ترقية نسخته خلال هذه الشريحة.
+
+### طبقة التطبيق والشبكة
+تمت مقارنة ملفات `MangaLoaderContextImpl` و`ParserMangaRepository` و`CloudFlareInterceptor` و`WebViewExecutor` في Kotatsu الأصلي وRedo. كما تمت مراجعة إضافات Redo ذات الصلة مثل `WebViewRequestInterceptorExecutor` و`CaptchaHandler`، ومزامنة CookieJar وCommonHeadersInterceptor. الاستفادة الأساسية هي الفصل بين سياق Parser، وHTTP client، وCookie/session state، وتنفيذ التحديات داخل WebView عند الحاجة؛ لا ينبغي نقل هذه المكونات كاملة أو تجاوز تحديات الحماية.
+
+### عائلات المحللات المؤكدة من قائمة المستخدم
+- Madara: عدة مواقع متشابهة يمكنها مشاركة BaseParser مع تخصيصات صغيرة لكل موقع.
+- FoolSlide: له مسار مختلف لاستخراج القائمة والفصول وصفحات الصور من JSON مضمّن في الصفحة، وقد يتطلب قبول بوابة العمر.
+- MangaReader: عائلة مستقلة لاستخراج القائمة والتفاصيل والفصول والصفحات، مع دعم صور/مصادر مشفرة في بعض المواقع.
+- KeyoApp: بنية مختلفة للبحث والفصول واستخراج CDN URL.
+- Manga18: مثال لاستخراج روابط الصفحات المشفرة من بيانات JavaScript.
+- GalleryAdults: بعض المواقع تحتاج التنقل إلى صفحة كل صورة ثم استخراج `gimg` بدل افتراض أن رابط الفصل نفسه صورة.
+- FuzzyDoodle: مثال آخر لقائمة وفصول متعددة الصفحات.
+- DemonicScans وDivaScans وKDTScans أمثلة لمحللات مخصصة؛ KDT يتعامل مع chunks مشفرة ورؤوس Referer، وDivaScans يستخدم API JSON.
+
+### نتيجة مقارنة مهمة للتصميم
+لا يوجد Parser عام واحد يصلح لكل المواقع. يجب أن يبقى العقد موحدًا (قائمة، تفاصيل، فصول، صفحات، وروابط صور)، بينما تختلف آلية استخراج البيانات وفق CMS/API الفعلي. المصادر التي لا تملك Parser لا يُنشأ لها دعم تخميني.
+
+### تطبيق النتائج في إيروما منجا
+أول إصلاح في 2026-11-21 جعل إنشاء المحلل المحلي يسبق رفض المصدر بسبب `@Broken`، وجعل هوية Parser تعتمد على ID ثابت بدل الاسم المعروض لتجنب التباس المصادر ذات الأسماء المتشابهة. لم يتم نسخ BaseParser أو WebView من upstream، ولم تتم ترقية المكتبة.

@@ -85,3 +85,9 @@
 Six Robolectric tests now cover: content mapping and stable identity; Arabic/unlocked chapter mapping and URL shape; locked chapter variants; rejection of text-only novels and login-blocked series; pagination past API pages with no readable results; and the reader slot/check protocol.
 
 Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `43056952825` (run 90). Previous run 89 attempt 2 passed tests and Debug APK assembly but failed only at Upload APK because GitHub Actions storage quota was reached.
+
+## 2026-11-21 — Source parser resolution regression tests
+
+- Added `SourceParserResolutionTest` with coverage for local override precedence over upstream `@Broken`, no silent fallback after local-constructor failure, rejection of broken upstream without override, normal upstream creation, stable-ID matching despite duplicate display names, and DivaScans adult classification.
+- Commit: `dfdfde17935986e4075340909d9dd8e91f69b6b4`.
+- CI run: `44849756102` (Build APK) was still running the unit-test step at the time of this record. Record the final result only after checking unit tests, APK build and signature verification.

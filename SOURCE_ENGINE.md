@@ -180,3 +180,22 @@ Kotatsu-Redo:
 - تم إصلاح `DownloadManager` ليمرر صفحات الفصل إلى `downloadPageImageBytes(page.imageUrl, source, page.headers)` بدل downloader عام؛ هذا ضروري لعناوين قارئ Manga Pro الافتراضية التي تحتاج WebView session. أضيف اختبار Robolectric يثبت اختيار المعالج الصحيح.
 - تم توحيد novel classifier في Azoramoon بين نتائج البحث والتفاصيل. commit `8ce70650772a4ad6a50a522ce5a813fda58074b0`.
 - run 96: Unit Tests وDebug APK نجحا؛ Upload APK فشل بسبب امتلاء GitHub Actions artifact storage quota. run 97 لهذا commit كان قيد Unit Tests عند آخر فحص.
+
+## تحديث 2026-11-21 — أولوية Local Parser وهوية المصدر
+
+### السبب المؤكد
+كان `getCatalogSources()` يرفض المصدر مباشرةً عند `parserSource.isBroken`، كما كان `resolveParser()` يرفض `candidate.isBroken` قبل محاولة `LocalSourceParserRegistry`. هذا يمنع أي تنفيذ محلي صحيح من تجاوز Parser upstream معلّم `@Broken`.
+
+### الإصلاح الأول
+- أضيف `LocalSourceParserRegistry.supports(sourceId)` مع خريطة مصانع صريحة للمحللات المحلية.
+- أضيفت سياسة `createSourceParser`: إذا كان هناك override محلي، يجربه أولًا حتى لو كان upstream معلّمًا Broken. إذا فشل إنشاء override فلا يحدث fallback صامت إلى upstream؛ يبقى المصدر غير متاح.
+- إذا لم يوجد override وكان upstream معلّمًا Broken، لا يتم إنشاء Parser.
+- أصبح `getCatalogSources()` و`resolveParser()` يستخدمان مسار إنشاء/تخزين موحدًا، مع cache ومفتاح missing-cache مبنيين على ID المصدر.
+- أزيل fallback بالاسم المعروض. مطابقة Parser تتم بالـstable source ID فقط، لأن أسماء المواقع قد تتكرر، خصوصًا تحذير المستخدم بشأن مصدر آخر اسمه Hentai x Dickgirl.
+- أضيف تصحيح كتالوج خاص بـ`DIVASCANS` إلى `ContentType.HENTAI` حسب تأكيد المستخدم أن تصنيفه 18+.
+
+### الاختبارات المضافة
+`SourceParserResolutionTest` يختبر: override محلي مع upstream Broken، أولوية المحلي حتى مع upstream سليم، رفض Broken بلا override، فشل المحلي دون fallback، استخدام upstream عند غياب المحلي، منع التباس الاسم المتكرر عبر ID، وتصنيف DivaScans 18+ مع الحفاظ على بقية التصنيفات.
+
+### حالة التنفيذ
+التغييرات في commit `dfdfde17935986e4075340909d9dd8e91f69b6b4` على `fix/room-storage`. رقم الإصدار لم يتغير. CI run `44849756102` بدأ لاختبارات الوحدة وبناء APK؛ لا تُسجل نتيجة نهائية حتى اكتمال جميع الخطوات.

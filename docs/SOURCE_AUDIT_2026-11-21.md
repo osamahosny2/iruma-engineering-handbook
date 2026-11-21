@@ -44,3 +44,54 @@
 4. أصلح المصادر المعطلة التي لديها محللات فقط، واختبر تدفق البيانات الفعلي.
 5. اترك المصادر التي لا تملك محللات خارج نطاق العمل الحالي.
 6. لا تعدّل كود التطبيق أو ملفات المستودع التشغيلي أثناء مرحلة التوثيق دون موافقة مستقلة من المستخدم.
+
+## قائمة المصادر المؤكدة بعلامة الصح — الصفحة الثانية فقط
+أكد المستخدم أن كل اسم في هذه القائمة اجتاز الاختبارات الأربعة كاملة: فتح الموقع، ظهور أعمال حقيقية، ظهور فصول حقيقية، وظهور صور حقيقية داخل الفصول. هذه ليست مجرد مواقع تفتح.
+
+| الاسم كما كتبه المستخدم | Parser ID المطابق في kotatsu-parsers-redo | اللغة | التصنيف المرجعي |
+|---|---|---|---|
+| DecadenceScans | `DECADENCESCANS` | EN | 18+ |
+| DeathTollScans | `DEATHTOLLSCANS` | EN | غير 18+ |
+| DemonicScans | `DEMONICSCANS` | EN | غير 18+ |
+| DivaScans | `DIVASCANS` | EN | **18+ حسب تصحيح المستخدم** |
+| Elfoon | غير موجود باسم مطابق في شجرة المحللات التي فُحصت | غير محسوم | غير محسوم |
+| EnThunderScans | `ENTHUNDERSCANS` | EN | غير 18+ |
+| EzManga | `EZMANGA` | EN | غير 18+ |
+| GDScans | `GDSCANS` | EN | غير 18+ |
+| GedeComix | `GEDECOMIX` | EN | 18+ |
+| Grabber | `GRABBER` | EN | غير 18+ (نوع upstream: COMICS) |
+| Hentai x Comic | `HENTAIXCOMIC` | EN | 18+ |
+| Hentai x Dickgirl | `HENTAIXDICKGIRL` | EN | 18+ |
+| Hentai20 | `HENTAI20` | EN | 18+ |
+| Hentai3z.cc | `HENTAI3ZCC` | EN | 18+ |
+| HentaiNexus | `HENTAINEXUS` | EN | 18+ |
+| HentaiSlayer | `HENTAISLAYER` | AR | 18+ |
+| KDTScans | `KDTSCANS` | EN | غير 18+ |
+| KewnScans | `KEWNSCANS` | EN | غير 18+ |
+| KsGroupScans | `KSGROUPSCANS` | EN | غير 18+ |
+| Lagoon Scans | `LAGOONSCANS` | EN | غير 18+ |
+| LekManga.org | `LEKMANGAORG` | AR | غير 18+ |
+| LekManga.com | `LEKMANGACOM` | AR | غير 18+ |
+| LHTranslation | `LHTRANSLATION` | EN | غير 18+ |
+
+**مصدر اللغة والتصنيف:** `@MangaSourceParser` في ملفات المحللات عند commit المكتبة المثبت في التطبيق `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8`. التصنيف غير 18+ هنا يعني أن annotation لا تضع `ContentType.HENTAI`؛ ولا يعني أن كل الأعمال من نوع Manga تحديدًا.
+
+### استثناءات وهوية المصادر
+- `DivaScans`: annotation upstream تقول `MANHWA`، لكن تصحيح المستخدم هو المرجع: 18+. أضيف override محلي في كتالوج التطبيق إلى `HENTAI`.
+- `Hentai x Dickgirl`: الـID المعتمد للمصدر الناجح هو `HENTAIXDICKGIRL`. حذّر المستخدم من مصدر آخر يحمل الاسم نفسه لكنه معطّل؛ لذلك يجب عدم مطابقة Parser بالاسم المعروض. محرك التطبيق أصبح يطابق بالـID الثابت فقط.
+- `LekManga.org` و`LekManga.com` و`HentaiSlayer` مصادر عربية وفق locale في annotations، لا وفق التخمين من الاسم.
+- `Elfoon`: لم يظهر ملف Parser مطابق في شجرة Kotatsu-Parsers-Redo المفحوصة. يظل ضمن قائمة المصادر التي أكد المستخدم نجاحها، لكن لا يُنشأ له Parser بالتخمين؛ يلزم تحديد ID/رابطه إن ظهر في كتالوج التطبيق.
+- الصفحة الرابعة مستبعدة من قائمة النجاح في هذه الجولة؛ المستخدم أكد أنها لا تحتوي علامة صح.
+
+### عائلات المحللات التي تمثلها المصادر الناجحة
+- Madara: DecadenceScans، GdScans، GedeComix، Grabber، Hentai x Comic، Hentai x Dickgirl، KsGroupScans، LekManga.org، LekManga.com، LHTranslation.
+- FoolSlide: DeathTollScans.
+- MangaReader: EnThunderScans، Hentai20، Lagoon Scans.
+- KeyoApp: EzManga، KewnScans.
+- Manga18: Hentai3z.cc.
+- GalleryAdults: HentaiNexus.
+- FuzzyDoodle: HentaiSlayer.
+- محللات مخصصة: DemonicScans، DivaScans، KDTScans.
+- لم يُعثر على Parser مطابق لـElfoon في الشجرة المفحوصة.
+
+لم يُرفع PDF الثنائي إلى GitHub في هذا التحديث بسبب مشكلة مساحة التخزين التي أبلغ عنها المستخدم؛ هذا الملف النصي يسجل القائمة المؤكدة دون تكرار رفع الملف الثنائي.
