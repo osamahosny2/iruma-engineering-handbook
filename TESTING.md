@@ -104,3 +104,13 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
 - أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
 - CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.
+
+
+## 2026-11-21 — تدقيق تغطية CAPTCHA/Cloudflare
+
+- CI run `44853813290`, commit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`: Unit Tests, Debug APK build, stable signing-key verification كلها نجحت. Release publishing step skipped، ولا يوجد workflow artifact.
+- يوجد اعتراض Cloudflare مشترك في OkHttp: `PROTECTION_CAPTCHA` يتحول إلى `KotatsuBrowserActionRequiredException`، ثم `withBrowserVerification` ينتظر تحقق WebView ويعيد تنفيذ الطلب.
+- WebView لا يعلن النجاح لمجرد اختفاء شاشة التحدي؛ ينتظر حالة الصفحة السليمة ووجود `cf_clearance` في ثلاث قراءات متتالية. `AndroidCookieJar` يربط CookieManager مع OkHttp.
+- Manga Pro لديه Turnstile flow مستقل، token cache لمدة 4 دقائق، ثم إعادة طلب بعد 403.
+- القيود: `PROTECTION_BLOCKED` يُرجع IOException؛ لا يوجد حل عام مثبت لأنواع CAPTCHA الأخرى؛ لم يتم اختبار نجاح Hijala أو كل مصادر الجرد حيًا بعد التحقق.
+- لا تعتبر الكابتشا محلولة على مستوى كل المصادر حتى إجراء source smoke/device tests واقعية.
