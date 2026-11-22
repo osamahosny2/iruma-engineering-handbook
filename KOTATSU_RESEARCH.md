@@ -171,3 +171,47 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - يجب انتظار نتيجة callback عند نقل Cookies إلى WebView، ثم flush، ومنع التكرار والتسريب بين النطاقات.
 - لا يعتمد التصميم النهائي على Room أو DataStore قبل فحص اعتماديات المشروع واختيار الأنسب لها.
 - لا توجد تعديلات برمجية منفذة حتى الآن في جلسة 2026-11-22.
+
+
+## 2026-11-22 — تدقيق التنفيذ الفعلي للكوكيز على fix/hijala-parser
+
+### حالة Git والفروع
+- تمت مقارنة `fix/room-storage...fix/hijala-parser`: النتيجة `ahead_by=3`, `behind_by=0`، أي أن الفرع الأحدث يحتوي تاريخ الفرع القديم كاملًا، ويضيف ثلاثة commits: `aa8031d` (إضافة Hijala parser)، `bd8f381` (اختبار التسجيل المحلي)، `83e033d` (خيارات فلترة Hijala). لا حاجة إلى merge من room-storage إلى hijala-parser.
+- تمت مقارنة `main...fix/hijala-parser`: `ahead_by=101`, `behind_by=0`. لا تدمج إلى main أثناء المهمة؛ يبقى main خارج نطاق الكتابة.
+- الفروع الحالية في المستودع: `fix/hijala-parser`, `fix/room-storage`, `main`.
+
+### ملفات التطبيق التي فُحصت
+- `app/src/main/java/com/example/network/AndroidCookieJar.kt`
+- `app/src/main/java/com/example/network/NetworkClientProvider.kt`
+- `app/src/main/java/com/example/connector/kotatsu/KotatsuSourceEngine.kt`
+- `app/src/main/java/com/example/connector/kotatsu/AndroidKotatsuWebViewExecutor.kt`
+- `app/src/main/java/com/example/ui/screens/WebviewScreen.kt`
+- `app/src/main/java/com/example/connector/ProComicConnector.kt`
+- `app/src/main/java/com/example/connector/ConnectorEngine.kt`
+- `app/src/main/java/com/example/IrumaMangaApplication.kt` و`app/src/main/java/com/example/di/AppContainer.kt`
+
+### عيوب التنفيذ الحالية المثبتة من الكود
+1. `AndroidCookieJar.loadForRequest()` يقرأ `CookieManager.getCookie(url)` ثم يقسم النص إلى `name=value` ويستعمل `Cookie.parse(url, pair)`. ناتج WebView لا يحمل Domain/Path/expiry/HttpOnly/Secure/SameSite الأصلية؛ لذلك يعيد OkHttp بناء Cookies بنطاق المضيف ومسار افتراضي من URL، ولا يمكن اعتبار هذا استيرادًا كاملًا لخصائص WebView الأصلية.
+2. `saveFromResponse()` يستدعي `CookieManager.setCookie()` دون callback أو انتظار تأكيد الكتابة، ثم ينفذ `flush()` مباشرة. يجب تنسيق الإكمال قبل الاعتماد على انتقال الجلسة إلى WebView.
+3. `NetworkClientProvider` ينشئ `AndroidCookieJar()`، كما أن `KotatsuSourceEngine` ينشئ Jar آخر عبر `.newBuilder().cookieJar(AndroidCookieJar())`. يجب توحيد مصدر الحقيقة ومشاركة CookieJar واحد؛ اختلاف الكائنات الحالية لا يضمن مشاركة مخزن داخلي مستقبلي.
+4. `ProComicConnector.kt` يضع Cookies يدويًا في Request headers في عدة مواضع، و`ConnectorEngine.kt` يفعل ذلك أيضًا. هذه المسارات تتجاوز إدارة CookieJar أو تخلطها بترويسات Cookie يدوية؛ يجب توحيدها مع الحفاظ على السلوك الخاص `safe_browsing=off` وعدم إسقاطه.
+5. `IrumaMangaApplication.onCreate()` يهيئ WebView executor، بينما `AppContainer` ينشئ Room عند الطلب. يجب تهيئة CookieJar/قاعدة البيانات قبل أول طلب شبكة، لا بعده.
+
+### بنية التخزين الموجودة
+- `AppDatabase` حاليًا version 3 ويحتوي جداول المكتبة والتصنيفات والمصادر وحالة القراءة والتقدم.
+- `Room` runtime/ktx/compiler مثبتة على 2.7.0، وOkHttp مثبت على 4.10.0 في `gradle/libs.versions.toml`.
+- لا يوجد حاليًا جدول Cookie أو Cookie DAO أو اختبار مستقل لـCookieJar.
+- يمكن إضافة Cookie table بترحيل `MIGRATION_3_4` دون إنشاء قاعدة ثانية، بشرط الحفاظ على بيانات المستخدم واختبار migration من schema 3.
+
+### التصميم المقترح — لم يُنفذ ولم يعتمد بعد
+- CookieJar واحد singleton مشترك بين NetworkClientProvider وKotatsuSourceEngine وكل طلبات ProComic/Coil/ConnectorEngine.
+- Room version 4 وجدول Cookie منفصل بمفتاح فريد مركب من `name + domain + path` وحقول domain/hostOnly/path/expiresAt/secure/httpOnly/persistent وأي خصائص يدعمها إصدار OkHttp المثبت فعليًا. لا تفترض SameSite قبل التحقق من API في 4.10.0.
+- تشفير قيمة كل Cookie عند التخزين باستخدام AES-GCM ومفتاح Android Keystore؛ لا تسجل القيم في Log ولا ترفعها إلى GitHub. تعامل مع فقد/إبطال المفتاح بحذف السجلات غير القابلة للفك وطلب تحقق يدوي جديد، لا بتسريب القيمة.
+- لأن `okhttp3.CookieJar` واجهته synchronous، يجب أن تكون عمليات DAO المتزامنة محصورة في خيوط OkHttp الخلفية مع منع الاستدعاء من Main Thread؛ لا تستخدم `runBlocking` على Main ولا تكتب إلى DB بطريقة fire-and-forget إذا كان المطلوب ضمان الاستمرار بعد إغلاق العملية.
+- عند `loadForRequest`: اجلب Cookies الداخلية غير المنتهية وطابق Domain/hostOnly/Path/Secure عبر قواعد OkHttp، ثم أضف snapshot من `CookieManager.getCookie(requestUrl)` بوصفه بيانات URL-scoped فقط. لا توسّع Cookie من WebView إلى parent domain لأن API لا يكشف Domain/Path الأصليين.
+- عند `saveFromResponse`: احفظ Cookies الواردة من OkHttp مع خصائصها التي يدعمها OkHttp، واحذف Cookies المنتهية/المحذوفة، ثم جدْول مزامنتها إلى WebView. انتظر callback الخاص بـ`setCookie` ثم `flush()` قبل أن يبدأ WebView تنقلًا يعتمد على تلك القيم.
+- بعد تحقق المستخدم في WebView: أبقِ CookieManager مصدرًا صالحًا للكوكيز التي لم يمكن استعادة نطاقها، واجعل OkHttp يقرأ snapshot حسب URL المطلوب؛ يمكن تخزين نسخة host-only للمضيف الحالي فقط إذا كان ذلك مفيدًا، مع توثيق أنها ليست نسخة كاملة من خصائص Cookie الأصلية.
+- أزل حقن Cookie headers اليدوي من المسارات العامة، وحافظ على Cookie الخاص `safe_browsing=off` بطريقة محددة النطاق/الطلب دون تكرار أو استبدال Cookies التي يضيفها Jar.
+- اختبارات مطلوبة: name/domain/path key، host-only مقابل domain، path matching، HTTPS/Secure، expiry، Max-Age=0/deletion، replacement، منع تسريب Cookie بين المضيفين، فك/تشفير AES-GCM، الاستمرار بعد إعادة إنشاء Jar وإعادة تشغيل قاعدة البيانات، WebView setCookie callback/flush، الدمج دون تكرار، وإثبات أن طلبات ProComic/Coil/Kotatsu تستخدم Jar نفسه.
+
+**قرار الحالة:** هذه نتائج تدقيق وتصميم مرشح فقط. لم يتم تعديل كود التطبيق أو تغيير رقم الإصدار أو تشغيل build في هذه الجولة. يجب أخذ موافقة المستخدم على تصميم التخزين/التشفير قبل تنفيذه.

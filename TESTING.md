@@ -125,3 +125,32 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - فجوة اختبارات مؤكدة: لا توجد اختبارات CookieJar تغطي host-only/domain وPath وSecure وexpiry وMax-Age=0 والاستبدال ومنع التسريب والاستمرار بعد إعادة تشغيل التطبيق ومزامنة WebView.
 - HijalaMarkupTest يعتمد HTML fixtures اصطناعية، ولا يثبت نجاح بحث Hijala الحي أو DOM الحالي للموقع.
 - لا تعتبر المهمة الثالثة مكتملة حتى تنفيذ الاختبارات الناقصة، نجاح CI مع Artifact قابل للتنزيل، واختبار الهاتف الحي للبحث والتفاصيل والفصول والصور والتنزيلات بعد تحقق المستخدم.
+
+
+## 2026-11-22 — خطة اختبارات CookieJar بعد التدقيق
+
+### الوضع الحالي
+- لا يوجد اختبار مستقل لـ`AndroidCookieJar` أو مخزن Cookie دائم.
+- `WebviewScreenTest` يختبر فقط التعرف على `cf_clearance` في نص Cookie، ولا يختبر استيراد جميع خصائص Cookie أو نجاح طلب OkHttp بعد التحقق.
+- `AppDatabaseTest` يغطي ترحيلات Room حتى schema version 3؛ إضافة جدول Cookie تتطلب اختبار migration 3→4 مع الحفاظ على بيانات المكتبة والتقدم الحالية.
+
+### مصفوفة القبول المقترحة (غير منفذة)
+1. قبول Cookie host-only على المضيف المطابق ورفضه على subdomain.
+2. قبول domain Cookie على النطاقات الفرعية المسموح بها فقط.
+3. Path matching: `/foo` يطابق `/foo/bar` ولا يطابق `/foobar`.
+4. Secure Cookie لا يرسل عبر HTTP ويرسل عبر HTTPS فقط.
+5. حذف Cookie عند انتهاء الصلاحية أو `Max-Age=0`، واستبدال Cookie بنفس `(name, domain, path)`.
+6. عدم تسريب Cookie بين مصدرين/مضيفين غير متطابقين.
+7. حفظ CookieJar وإعادة إنشائه ثم التأكد من استمرار Cookies الدائمة، وعدم استمرار Cookies session-only بعد إعادة التشغيل إذا كانت سياسة المنتج كذلك.
+8. تشفير القيمة وفكها باستخدام Android Keystore/AES-GCM؛ فشل فك التشفير لا يطبع القيمة ويؤدي إلى إبطال السجل وطلب تحقق جديد.
+9. مزامنة OkHttp→WebView: لا يبدأ WebView تحميل صفحة تعتمد على Cookie قبل نجاح setCookie callback وflush.
+10. مزامنة WebView→OkHttp: بعد التحقق اليدوي، يرسل OkHttp Cookies التي يعيدها CookieManager للـURL المطلوب، دون تخمين Domain/Path أوسع.
+11. جميع العملاء (Kotatsu/ProComic/Coil/ConnectorEngine) يستخدمون CookieJar موحدًا ولا يضيفون Cookie header مكررًا.
+12. اختبار خاص يحافظ على سلوك `safe_browsing=off` دون استبدال Cookie header كاملًا.
+13. اختبار تزامن طلبات متعددة للمضيف نفسه، واستبدال/حذف Cookies المتزامنة دون فقد تحديث أحدث.
+
+### شروط نجاح الجولة
+- Unit/Robolectric tests + Room migration tests + CI build/signature checks.
+- اختبار يدوي على الهاتف: افتح المصدر، أكمل CAPTCHA بنفسك، أعد محاولة البحث/الفصول/الصور، أغلق التطبيق وافتحه، ثم أعد الاختبار للتأكد من استمرار الجلسة.
+- لا يُعلن النجاح من مجرد وجود `cf_clearance` أو نجاح WebView؛ يجب نجاح طلب OkHttp الفعلي.
+- لم يبدأ التنفيذ أو البناء في 2026-11-22؛ هذه خطة قبول فقط.

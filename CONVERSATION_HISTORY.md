@@ -558,3 +558,19 @@ AdultWebtoon (الرابط الظاهر: https://adultwebtoon.org/)، 1stKissMan
 أُعيد فحص الفروع وتواريخ HEAD مباشرة: `fix/hijala-parser` عند `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe` بتاريخ 2026-11-21 02:04:21 UTC، و`fix/room-storage` عند `dfdfde17935986e4075340909d9dd8e91f69b6b4` بتاريخ 2026-11-21 01:22:04 UTC. لذلك `fix/hijala-parser` هو الأحدث والمعتمد للاستكمال. لم يتم إنشاء فرع جديد ولم يتم تعديل كود التطبيق.
 
 تم تصحيح `AI_INSTRUCTIONS.md` لإلغاء الحصر القديم في `fix/room-storage`، وتحديث `PROJECT_STATUS.md` و`CONVERSATION_HISTORY.md` لتسجيل قرار المستخدم والأدلة. لا تعديل على `main` ولا دمج ولا Release دون إذن منفصل.
+
+
+## 2026-11-22 — متابعة الخطوة التالية وسؤال دمج الفروع
+
+**المستخدم:**
+> اولا اكمل العمل علي الخطوة التالية
+> ملحوظة: سوال هل يمكن تمج الفروع القديمة بالجديد ليكونو كلهم فرع واحد؟ ولا ده يقصر علي العمل
+
+**ChatGPT — فحص الفروع:**
+تمت مقارنة `fix/room-storage...fix/hijala-parser`: الفرع الأحدث متقدم بثلاثة commits ومتأخر بصفر؛ أي أن جميع commits الفرع القديم موجودة بالفعل في الفرع الجديد. لا حاجة لدمج room-storage داخل hijala-parser. مقارنة `main...fix/hijala-parser` أظهرت أن فرع الإصلاح متقدم بـ101 commit؛ لا دمج إلى main أثناء المهمة. القرار الحالي الاحتفاظ بالفروع القديمة كنسخ احتياطية ومواصلة العمل على fix/hijala-parser دون حذف أو دمج.
+
+**ChatGPT — تدقيق الخطوة التقنية:**
+تمت مراجعة التنفيذ الفعلي لـAndroidCookieJar وNetworkClientProvider وKotatsuSourceEngine وAndroidKotatsuWebViewExecutor وWebviewScreen وProComicConnector وConnectorEngine وتهيئة Application/DI. النتائج: لا يوجد CookieJar داخلي دائم؛ قراءة WebView تعيد name/value فقط ولا تكشف خصائص Domain/Path/expiry الأصلية؛ `setCookie` لا ينتظر callback؛ Kotatsu ينشئ Jar آخر؛ وبعض مسارات ProComic/ConnectorEngine تضيف Cookie headers يدويًا. Room موجودة بالفعل بإصدار 3، وRoom 2.7.0 وOkHttp 4.10.0 مثبتان.
+
+**التصميم المرشح غير المنفذ:**
+CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفير قيم Cookies بـAES-GCM/Android Keystore، مزامنة WebView/OkHttp مع احترام حدود CookieManager، إزالة حقن Cookie اليدوي مع الحفاظ على `safe_browsing=off`، واختبارات شاملة للنطاق والمسار والانتهاء والحذف والاستمرار والتزامن. لم يُعدل كود التطبيق ولم يتغير رقم الإصدار ولم يتم build. ينتظر التنفيذ اعتماد المستخدم للتصميم.

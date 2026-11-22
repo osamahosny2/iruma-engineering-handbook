@@ -318,3 +318,19 @@
 - يبقى ممنوعًا تعديل `main` أو الدمج أو إصدار Release دون إذن منفصل. إنشاء فرع جديد — إذا أصبح ضروريًا — يكون من أحدث فرع إصلاح مناسب بعد التحقق من HEAD، وليس من `main` تلقائيًا.
 - لم يحدث أي تعديل على كود التطبيق في هذه الخطوة؛ التغيير توثيقي فقط في المستودع التعليمي.
 - الحالة التالية: استكمال المهمة 3 على `fix/hijala-parser` وفق `/برمجة`، مع تحديث مستودع المعرفة في نفس جولة أي تعديل برمجي.
+
+
+## 2026-11-22 — استكمال خطوة تصميم الكوكيز ومراجعة دمج الفروع
+
+### قرار الفروع بعد المقارنة الفعلية
+- مقارنة `fix/room-storage...fix/hijala-parser`: `ahead_by=3`, `behind_by=0`. الفرع الأحدث descendant من الفرع القديم ويحتوي جميع commits القديمة؛ لا حاجة إلى merge بينهما.
+- `main...fix/hijala-parser`: `ahead_by=101`, `behind_by=0`. لا merge إلى `main` أثناء العمل. نحتفظ بالفروع القديمة كنسخ مرجعية/احتياطية ولا نحذفها في هذه المرحلة.
+- فرع التنفيذ الحالي: `fix/hijala-parser`، HEAD `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe` وقت الفحص.
+
+### نتائج تدقيق الكوكيز
+- فُحصت ملفات AndroidCookieJar وNetworkClientProvider وKotatsuSourceEngine وAndroidKotatsuWebViewExecutor وWebviewScreen وProComicConnector وConnectorEngine وApplication وAppContainer.
+- التنفيذ الحالي يعتمد CookieManager، لا يملك مخزن Cookie داخليًا، لا ينتظر callback لـsetCookie، ويعيد إنشاء Jar في عميل Kotatsu. كما توجد ترويسات Cookie يدوية في ProComicConnector وConnectorEngine.
+- Room موجودة في الفرع الحالي بإصدار schema 3، وRoom 2.7.0 وOkHttp 4.10.0 مثبتان. لا يوجد جدول Cookie أو DAO أو اختبار CookieJar.
+- الخطوة التالية المقترحة: تصميم CookieJar singleton مع تخزين Room version 4، تشفير قيم Cookies بـAES-GCM/Android Keystore، مطابقة صحيحة للخصائص، مزامنة WebView/OkHttp مع انتظار callbacks، وتوحيد جميع العملاء وإزالة الحقن اليدوي مع الحفاظ على `safe_browsing=off`.
+- قيد مهم: `CookieManager.getCookie(url)` يعرض أزواج name/value فقط ولا يكشف جميع خصائص Domain/Path/expiry/HttpOnly/Secure/SameSite؛ لذلك WebView-to-OkHttp يجب أن يكون URL-scoped ولا يجوز توسيع نطاق Cookie المستوردة تخمينًا.
+- هذا التصميم مرشح غير منفذ وغير معتمد بعد. لا يوجد تعديل على كود التطبيق، ولا build جديد، ولا تغيير إصدار. ننتظر موافقة المستخدم على التصميم قبل التنفيذ.
