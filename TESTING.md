@@ -161,3 +161,12 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - وافق المستخدم على التصميم وبدأت المهمة على `fix/hijala-parser` عند HEAD `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
 - شروط الاختبار: Room migration 3→4 مع حفظ بيانات المكتبة/التقدم؛ Cookie key `(name, domain, path)`؛ host-only/domain؛ path؛ Secure؛ expiry وMax-Age=0؛ replacement؛ منع التسريب؛ AES-GCM/Keystore؛ استمرار البيانات بعد إعادة التشغيل؛ مزامنة WebView callback ثم flush؛ مشاركة Jar وعدم تكرار Cookie headers؛ الحفاظ على `safe_browsing=off`؛ اختبارات تزامن.
 - هذه قائمة قبول وليست نتائج نجاح. يجب تسجيل الاختبارات التي أُنشئت ونتائجها الفعلية منفصلة، ثم التحقق من CI وAPK artifact واختبار الهاتف.
+
+
+## 2026-11-22 — CI run لتنفيذ Room v4
+
+- Commit: `0ddcec4a25439592fa62b61f588a49e14c0c347a`، branch `fix/hijala-parser`.
+- Workflow run `45039776683` (#122): إعداد runner وCheckout وJDK وAndroid SDK وGradle ومفتاح التوقيع نجحت؛ `Run unit tests` كان لا يزال in_progress عند آخر فحص.
+- اختبارات جديدة: composite Cookie key/replacement؛ migration 3→4 يحافظ على MangaEntity وReadingProgressEntity ويضيف جدول cookies؛ migration v2→v4 مع إعادة فتح القاعدة.
+- لا توجد نتيجة نهائية بعد. انتظر نتائج unit tests ثم Debug APK build وsignature verification وschema snapshot step.
+- لم يتم اختبار AES-GCM على جهاز Android حقيقي أو اختبار مزامنة WebView/OkHttp حيًا بعد.

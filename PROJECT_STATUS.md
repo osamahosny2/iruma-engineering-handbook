@@ -344,3 +344,16 @@
 - نطاق التنفيذ: مخزن Room دائم، تشفير القيم، مشاركة Jar بين العملاء، مزامنة WebView مع انتظار callback/flush، إزالة الترويسات اليدوية المكررة مع الحفاظ على `safe_browsing=off`، واختبارات شاملة.
 - قيد قبول أساسي: WebView `getCookie(url)` لا يكشف خصائص Domain/Path/expiry الأصلية؛ لا يجوز توسيع نطاق Cookies المستوردة تخمينًا.
 - الحالة الآن: التنفيذ بدأ؛ لم يُعلن نجاح أي اختبار أو build بعد.
+
+
+## 2026-11-22 — تنفيذ Room v4 وبدء CI
+
+- Commit التطبيق: `0ddcec4a25439592fa62b61f588a49e14c0c347a` على `fix/hijala-parser`.
+- الملفات العشرة المحدثة: `AppDatabase.kt`, `CookieValueCipher.kt`, `AndroidCookieJar.kt`, `NetworkClientProvider.kt`, `KotatsuSourceEngine.kt`, `ProComicConnector.kt`, `AndroidKotatsuWebViewExecutor.kt`, `IrumaMangaApplication.kt`, `ConnectorEngine.kt`, `AppDatabaseTest.kt`.
+- تم رفع Room schema إلى 4 وإضافة `http_cookies` بمفتاح مركب `(name, domain, path)` وفهرس expiry وترحيل 3→4. القيم مشفرة AES-GCM بمفتاح Android Keystore.
+- `CookieJarProvider` يهيئ قاعدة البيانات والـJar قبل الشبكة؛ NetworkClientProvider وKotatsuSourceEngine يستخدمان نفس المثيل.
+- أزيلت الترويسات اليدوية Cookie من مسارات ProComic وConnectorEngine وWebView image interception. يستمر إعداد `safe_browsing=off` من WebView CookieManager ويقرأه Jar حسب URL.
+- أضيفت اختبارات DAO للمفتاح المركب والاستبدال، واختبار ترحيل مباشر من schema 3 إلى 4 يحافظ على المكتبة والتقدم، إضافة إلى ترحيل v2→v4.
+- تم التحقق من AndroidManifest وأن `IrumaMangaApplication` هو Application class.
+- CI run `45039776683` / #122 على commit `0ddcec4` بدأ؛ `Run unit tests` كان in_progress عند آخر فحص. build/signature/Artifact لم تُحسم بعد.
+- لا تغيير في `versionName=1.5.0` أو `versionCode=10500`، ولا Release أو merge أو تعديل main.

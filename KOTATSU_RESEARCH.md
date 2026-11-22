@@ -224,3 +224,11 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 لا يجوز افتراض خصائص غير متاحة في OkHttp 4.10.0 أو WebView API. بيانات `CookieManager.getCookie(url)` تظل URL-scoped ولا تُحوّل إلى Domain Cookie أوسع. إزالة Cookie headers اليدوية يجب أن تحافظ على `safe_browsing=off` دون تكرار أو استبدال غير مقصود.
 
 الحالة: التصميم معتمد وبدأ التنفيذ على `fix/hijala-parser` عند `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`. لم تُسجل نتائج اختبار حتى الآن.
+
+
+### تنفيذ التصميم المعتمد — 2026-11-22
+- نُفذ التصميم على `fix/hijala-parser` في commit التطبيق `0ddcec4a25439592fa62b61f588a49e14c0c347a`.
+- `CookieJarProvider` يوفر المثيل المشترك؛ `AndroidCookieJar` يخزن قيم OkHttp المشفرة وخصائص المطابقة في Room، ويقرأ WebView snapshot حسب URL فقط.
+- مزامنة OkHttp→WebView تستعمل `setCookie` callback ثم `flush`; القيم غير مسجلة في Logs.
+- إزالة حقن Cookie headers اليدوي من ProComic وConnectorEngine ومسار اعتراض الصور في WebView. إعداد `safe_browsing=off` لا يزال يضبط عبر WebView `prepareProComicCookies()`، ويقرأه Jar من CookieManager للمضيف/URL المطابق.
+- CI run `45039776683` بدأ وكان في اختبارات الوحدة عند آخر فحص؛ لا توجد نتيجة تحقق نهائية بعد.

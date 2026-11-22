@@ -589,3 +589,9 @@ CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفي�
 بدأت المهمة 3 — تنفيذ نظام CookieJar الدائم. النطاق: تخزين Cookies الواردة من OkHttp بخصائصها المدعومة، تشفير القيم، مزامنة WebView/OkHttp مع انتظار callbacks، توحيد العملاء وإزالة Cookie headers المكررة مع الحفاظ على `safe_browsing=off`، ثم اختبارات Room migration وCookie matching والتشفير والاستمرار والتزامن. يجب عدم تخمين Domain/Path/expiry لبيانات WebView لأن `getCookie(url)` لا يكشفها.
 
 يجب تحديث هذا السجل وملفات الحالة والاختبار بعد كل تقدم. لم يُعلن أي نجاح build أو اختبار هاتف قبل تشغيله والتحقق منه فعليًا.
+
+
+**ChatGPT — تنفيذ الكود وبدء التحقق:**
+تم إنشاء Commit التطبيق `0ddcec4a25439592fa62b61f588a49e14c0c347a` على `fix/hijala-parser`، بعنوان `feat(network): persist shared cookies with Room v4 and AES-GCM`. شمل 10 ملفات: إضافة CookieEntity/CookieDao وترحيل MIGRATION_3_4 وتحديث نسخة قاعدة البيانات إلى 4؛ إضافة CookieValueCipher؛ استبدال AndroidCookieJar بجسر دائم بين Room وWebView؛ مشاركة CookieJarProvider في NetworkClientProvider وKotatsuSourceEngine؛ تهيئته في Application.onCreate؛ إزالة Cookie headers اليدوية من ProComicConnector وConnectorEngine ومسار WebView image interception؛ وإضافة اختبارات DAO والمهاجرة.
+
+تم التأكد من تسجيل `IrumaMangaApplication` في AndroidManifest. بدأ GitHub Actions run `45039776683` (run #122) على commit `0ddcec4`، والـworkflow في مرحلة `Run unit tests` عند آخر فحص؛ لم تظهر نتيجة نهائية بعد. لا يُعلن build أو signature أو نجاح اختبارات قبل ظهورها مكتملة.
