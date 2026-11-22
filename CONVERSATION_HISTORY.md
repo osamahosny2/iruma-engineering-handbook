@@ -574,3 +574,18 @@ AdultWebtoon (الرابط الظاهر: https://adultwebtoon.org/)، 1stKissMan
 
 **التصميم المرشح غير المنفذ:**
 CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفير قيم Cookies بـAES-GCM/Android Keystore، مزامنة WebView/OkHttp مع احترام حدود CookieManager، إزالة حقن Cookie اليدوي مع الحفاظ على `safe_browsing=off`، واختبارات شاملة للنطاق والمسار والانتهاء والحذف والاستمرار والتزامن. لم يُعدل كود التطبيق ولم يتغير رقم الإصدار ولم يتم build. ينتظر التنفيذ اعتماد المستخدم للتصميم.
+
+
+## 2026-11-22 — موافقة المستخدم وبدء تنفيذ Room v4 CookieJar
+
+**المستخدم:**
+> اوافق علي التنفيذ v4
+
+**ChatGPT:**
+وافق المستخدم صراحةً على تنفيذ التصميم المقترح: Room schema v4 مع ترحيل 3→4، وتشفير AES-GCM بمفتاح Android Keystore، وتوحيد جميع اتصالات التطبيق في CookieJar واحد. هذه موافقة على التنفيذ المحدد وليست إذنًا لتغيير رقم الإصدار أو الدمج إلى main أو إصدار APK/Release.
+
+قبل التنفيذ أعيد فحص GitHub: أحدث فرع `fix/` هو `fix/hijala-parser`، وHEAD الحالي `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe` بتاريخ 2026-11-21 02:04:21 UTC. سيظل هو فرع العمل؛ لا إنشاء فرع جديد ما دام مناسبًا.
+
+بدأت المهمة 3 — تنفيذ نظام CookieJar الدائم. النطاق: تخزين Cookies الواردة من OkHttp بخصائصها المدعومة، تشفير القيم، مزامنة WebView/OkHttp مع انتظار callbacks، توحيد العملاء وإزالة Cookie headers المكررة مع الحفاظ على `safe_browsing=off`، ثم اختبارات Room migration وCookie matching والتشفير والاستمرار والتزامن. يجب عدم تخمين Domain/Path/expiry لبيانات WebView لأن `getCookie(url)` لا يكشفها.
+
+يجب تحديث هذا السجل وملفات الحالة والاختبار بعد كل تقدم. لم يُعلن أي نجاح build أو اختبار هاتف قبل تشغيله والتحقق منه فعليًا.

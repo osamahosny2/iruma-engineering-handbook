@@ -334,3 +334,13 @@
 - الخطوة التالية المقترحة: تصميم CookieJar singleton مع تخزين Room version 4، تشفير قيم Cookies بـAES-GCM/Android Keystore، مطابقة صحيحة للخصائص، مزامنة WebView/OkHttp مع انتظار callbacks، وتوحيد جميع العملاء وإزالة الحقن اليدوي مع الحفاظ على `safe_browsing=off`.
 - قيد مهم: `CookieManager.getCookie(url)` يعرض أزواج name/value فقط ولا يكشف جميع خصائص Domain/Path/expiry/HttpOnly/Secure/SameSite؛ لذلك WebView-to-OkHttp يجب أن يكون URL-scoped ولا يجوز توسيع نطاق Cookie المستوردة تخمينًا.
 - هذا التصميم مرشح غير منفذ وغير معتمد بعد. لا يوجد تعديل على كود التطبيق، ولا build جديد، ولا تغيير إصدار. ننتظر موافقة المستخدم على التصميم قبل التنفيذ.
+
+
+## 2026-11-22 — موافقة التنفيذ وبدء Room v4 CookieJar
+
+- وافق المستخدم صراحةً على تنفيذ التصميم: Room schema v4 / migration 3→4، AES-GCM عبر Android Keystore، وCookieJar singleton مشترك.
+- أعيد التحقق من الفروع مباشرة: أحدث فرع إصلاح `fix/hijala-parser` عند HEAD `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`؛ سيظل فرع التنفيذ.
+- بدأ تنفيذ المهمة 3 على هذا الفرع. لا تعديل على `main`، لا merge، لا تغيير إصدار، ولا Release دون إذن مستقل.
+- نطاق التنفيذ: مخزن Room دائم، تشفير القيم، مشاركة Jar بين العملاء، مزامنة WebView مع انتظار callback/flush، إزالة الترويسات اليدوية المكررة مع الحفاظ على `safe_browsing=off`، واختبارات شاملة.
+- قيد قبول أساسي: WebView `getCookie(url)` لا يكشف خصائص Domain/Path/expiry الأصلية؛ لا يجوز توسيع نطاق Cookies المستوردة تخمينًا.
+- الحالة الآن: التنفيذ بدأ؛ لم يُعلن نجاح أي اختبار أو build بعد.

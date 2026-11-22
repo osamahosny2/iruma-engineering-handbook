@@ -154,3 +154,10 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - اختبار يدوي على الهاتف: افتح المصدر، أكمل CAPTCHA بنفسك، أعد محاولة البحث/الفصول/الصور، أغلق التطبيق وافتحه، ثم أعد الاختبار للتأكد من استمرار الجلسة.
 - لا يُعلن النجاح من مجرد وجود `cf_clearance` أو نجاح WebView؛ يجب نجاح طلب OkHttp الفعلي.
 - لم يبدأ التنفيذ أو البناء في 2026-11-22؛ هذه خطة قبول فقط.
+
+
+## 2026-11-22 — بدء تنفيذ اختبارات CookieJar v4
+
+- وافق المستخدم على التصميم وبدأت المهمة على `fix/hijala-parser` عند HEAD `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- شروط الاختبار: Room migration 3→4 مع حفظ بيانات المكتبة/التقدم؛ Cookie key `(name, domain, path)`؛ host-only/domain؛ path؛ Secure؛ expiry وMax-Age=0؛ replacement؛ منع التسريب؛ AES-GCM/Keystore؛ استمرار البيانات بعد إعادة التشغيل؛ مزامنة WebView callback ثم flush؛ مشاركة Jar وعدم تكرار Cookie headers؛ الحفاظ على `safe_browsing=off`؛ اختبارات تزامن.
+- هذه قائمة قبول وليست نتائج نجاح. يجب تسجيل الاختبارات التي أُنشئت ونتائجها الفعلية منفصلة، ثم التحقق من CI وAPK artifact واختبار الهاتف.

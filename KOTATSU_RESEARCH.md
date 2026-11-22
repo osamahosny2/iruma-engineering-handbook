@@ -215,3 +215,12 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - اختبارات مطلوبة: name/domain/path key، host-only مقابل domain، path matching، HTTPS/Secure، expiry، Max-Age=0/deletion، replacement، منع تسريب Cookie بين المضيفين، فك/تشفير AES-GCM، الاستمرار بعد إعادة إنشاء Jar وإعادة تشغيل قاعدة البيانات، WebView setCookie callback/flush، الدمج دون تكرار، وإثبات أن طلبات ProComic/Coil/Kotatsu تستخدم Jar نفسه.
 
 **قرار الحالة:** هذه نتائج تدقيق وتصميم مرشح فقط. لم يتم تعديل كود التطبيق أو تغيير رقم الإصدار أو تشغيل build في هذه الجولة. يجب أخذ موافقة المستخدم على تصميم التخزين/التشفير قبل تنفيذه.
+
+
+## 2026-11-22 — اعتماد تصميم CookieJar v4 للتنفيذ
+
+وافق المستخدم على التصميم المقترح بعد تدقيق الكود. التنفيذ المعتمد: Room version 4 مع migration 3→4، تخزين Cookies القادمة من OkHttp بخصائصها المدعومة، تشفير القيم بـAES-GCM ومفتاح Android Keystore، CookieJar singleton مشترك، ومزامنة WebView/OkHttp مع انتظار `setCookie` callback ثم `flush()`.
+
+لا يجوز افتراض خصائص غير متاحة في OkHttp 4.10.0 أو WebView API. بيانات `CookieManager.getCookie(url)` تظل URL-scoped ولا تُحوّل إلى Domain Cookie أوسع. إزالة Cookie headers اليدوية يجب أن تحافظ على `safe_browsing=off` دون تكرار أو استبدال غير مقصود.
+
+الحالة: التصميم معتمد وبدأ التنفيذ على `fix/hijala-parser` عند `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`. لم تُسجل نتائج اختبار حتى الآن.
