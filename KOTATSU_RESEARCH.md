@@ -232,3 +232,8 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - مزامنة OkHttp→WebView تستعمل `setCookie` callback ثم `flush`; القيم غير مسجلة في Logs.
 - إزالة حقن Cookie headers اليدوي من ProComic وConnectorEngine ومسار اعتراض الصور في WebView. إعداد `safe_browsing=off` لا يزال يضبط عبر WebView `prepareProComicCookies()`، ويقرأه Jar من CookieManager للمضيف/URL المطابق.
 - CI run `45039776683` بدأ وكان في اختبارات الوحدة عند آخر فحص؛ لا توجد نتيجة تحقق نهائية بعد.
+
+
+### ملاحظة CI — تصحيح test coroutine
+- كود الإنتاج اجتاز compileDebugKotlin في run `45039776683`. الفشل كان في compileDebugUnitTestKotlin فقط بسبب استدعاء suspend DAO من اختبار ترحيل 3→4 دون Coroutine.
+- تم تعديل الاختبار إلى `runBlocking` في commit `8d71e9d0166d5b6350bfde86aa5386abd2849b40`. CI retry `45040379978` بدأ؛ النتيجة غير محسومة بعد.

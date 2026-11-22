@@ -357,3 +357,11 @@
 - تم التحقق من AndroidManifest وأن `IrumaMangaApplication` هو Application class.
 - CI run `45039776683` / #122 على commit `0ddcec4` بدأ؛ `Run unit tests` كان in_progress عند آخر فحص. build/signature/Artifact لم تُحسم بعد.
 - لا تغيير في `versionName=1.5.0` أو `versionCode=10500`، ولا Release أو merge أو تعديل main.
+
+
+## 2026-11-22 — إصلاح أول فشل CI
+
+- CI run `45039776683` فشل عند compileDebugUnitTestKotlin. سجل البناء أكد نجاح compileDebugKotlin؛ السبب المحدد أن اختبار `versionThreeMigrationAddsCookieTableAndPreservesLibraryAndProgress` استدعى `suspend` DAO methods خارج Coroutine.
+- تم تصحيح الاختبار فقط باستخدام `runBlocking`. Commit التصحيح: `8d71e9d0166d5b6350bfde86aa5386abd2849b40` على `fix/hijala-parser`.
+- CI جديد تلقائي: run `45040379978` (#123) على commit التصحيح؛ ما زال بحاجة إلى التحقق من النتيجة. لم يُنتج APK من run السابق لأن خطوة الاختبارات فشلت.
+- لا تعديل على كود الإنتاج بعد run الأول؛ لا تغيير إصدار أو Release أو merge.

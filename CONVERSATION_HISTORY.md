@@ -595,3 +595,9 @@ CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفي�
 تم إنشاء Commit التطبيق `0ddcec4a25439592fa62b61f588a49e14c0c347a` على `fix/hijala-parser`، بعنوان `feat(network): persist shared cookies with Room v4 and AES-GCM`. شمل 10 ملفات: إضافة CookieEntity/CookieDao وترحيل MIGRATION_3_4 وتحديث نسخة قاعدة البيانات إلى 4؛ إضافة CookieValueCipher؛ استبدال AndroidCookieJar بجسر دائم بين Room وWebView؛ مشاركة CookieJarProvider في NetworkClientProvider وKotatsuSourceEngine؛ تهيئته في Application.onCreate؛ إزالة Cookie headers اليدوية من ProComicConnector وConnectorEngine ومسار WebView image interception؛ وإضافة اختبارات DAO والمهاجرة.
 
 تم التأكد من تسجيل `IrumaMangaApplication` في AndroidManifest. بدأ GitHub Actions run `45039776683` (run #122) على commit `0ddcec4`، والـworkflow في مرحلة `Run unit tests` عند آخر فحص؛ لم تظهر نتيجة نهائية بعد. لا يُعلن build أو signature أو نجاح اختبارات قبل ظهورها مكتملة.
+
+
+**نتيجة CI وتصحيح الاختبار — 2026-11-22:**
+فشل GitHub Actions run `45039776683` عند `:app:compileDebugUnitTestKotlin`. سجل البناء أثبت أن `:app:compileDebugKotlin` نجح، وأن سبب الفشل الوحيد الظاهر هو استدعاء دالتين suspend (`mangaDao().findById` و`readingProgressDao().findByMangaAndChapter`) من اختبار ترحيل 3→4 غير معلن كـCoroutine. لم يبدأ بناء APK.
+
+أعيد فحص فرع `fix/hijala-parser` وكان HEAD `0ddcec4a25439592fa62b61f588a49e14c0c347a`. تم إصلاح الاختبار بإضافة `= runBlocking { ... }` فقط، ورفع commit `8d71e9d0166d5b6350bfde86aa5386abd2849b40` على نفس الفرع. بدأ CI جديد تلقائيًا: run `45040379978` (#123) من commit التصحيح؛ نتيجته لم تُحسم عند تسجيل هذه الملاحظة.

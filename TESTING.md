@@ -170,3 +170,10 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - اختبارات جديدة: composite Cookie key/replacement؛ migration 3→4 يحافظ على MangaEntity وReadingProgressEntity ويضيف جدول cookies؛ migration v2→v4 مع إعادة فتح القاعدة.
 - لا توجد نتيجة نهائية بعد. انتظر نتائج unit tests ثم Debug APK build وsignature verification وschema snapshot step.
 - لم يتم اختبار AES-GCM على جهاز Android حقيقي أو اختبار مزامنة WebView/OkHttp حيًا بعد.
+
+
+## 2026-11-22 — فشل CI ثم إصلاح test coroutine
+
+- run `45039776683` فشل في `:app:compileDebugUnitTestKotlin`؛ compileDebugKotlin نجح. الخطأ: suspend `findById` و`findByMangaAndChapter` استدعيتا من اختبار عادي.
+- التصحيح: جعل اختبار ترحيل schema 3→4 يعمل داخل `runBlocking`. Commit: `8d71e9d0166d5b6350bfde86aa5386abd2849b40`.
+- run retry `45040379978` (#123) بدأ بعد التصحيح؛ انتظر نتيجة الاختبارات ثم APK build/signature/schema snapshot.
