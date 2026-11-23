@@ -7,13 +7,13 @@
 2. اقرأ [HOW_TO_WORK_WITH_THE_USER.md](HOW_TO_WORK_WITH_THE_USER.md) لفهم آلية الأسئلة والموافقات والتوثيق المستمر.
 3. اقرأ [PROGRAMMING_METHOD.md](PROGRAMMING_METHOD.md) عند بدء أي مهمة برمجية.
 4. اقرأ [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) و[PROJECT_STATUS.md](PROJECT_STATUS.md) لفهم التطبيق وحالته.
-5. اقرأ [أحدث حالة مؤرخة](docs/PROJECT_STATUS_2026-11-16.md) و[ترتيب العمل المعتمد](docs/USER_APPROVED_WORK_ORDER_2026-11-16.md).
+5. اقرأ `PROJECT_STATUS.md` بوصفه سجل الحالة الحالي، ثم راجع أحدث ملحق مؤرخ فيه؛ ملف `docs/PROJECT_STATUS_2026-11-16.md` تاريخي وليس أحدث حالة. اقرأ أيضًا [ترتيب العمل المعتمد](docs/USER_APPROVED_WORK_ORDER_2026-11-16.md).
 6. اقرأ [سياسة تحديث المعرفة مع كل تغيير](docs/CHANGE_POLICY.md).
 7. اقرأ [DECISIONS.md](DECISIONS.md) قبل اقتراح تغيير سبق مناقشته.
 
 ## المستودعات
 - **كود التطبيق:** https://github.com/osamahosny2/iruma_manga_v2
-- **فرع العمل المسموح للتطبيق:** `fix/room-storage`
+- **فرع العمل:** أحدث فرع `fix/` بعد التحقق الحي؛ آخر تحقق 2026-11-23 كان `fix/hijala-parser` عند `212295bdfbf7ad59cffc7e8de92ee93c44ed3547`.
 - **مستودع المعرفة الحالي:** https://github.com/osamahosny2/iruma-engineering-handbook
 - المستودع القديم `iruma_manga` ممنوع تعديله.
 
