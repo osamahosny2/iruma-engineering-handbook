@@ -664,3 +664,9 @@ CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفي�
 - اكتُشفت معلومات قديمة في أعلى ملفات التعليم: README وHOW_TO_WORK يذكران `fix/room-storage` كفرع وحيد، وAI_INSTRUCTIONS يذكر HEAD قديمًا، ورأس PROJECT_STATUS مؤرخ 2026-11-12. جرى تصحيح هذه المراجع في هذا التحديث، مع الإبقاء على السجلات القديمة بوصفها تاريخًا وعدم تقديمها كحالة حالية.
 - آخر حالة تطبيق تم التحقق منها عبر Composio قبل إصدار 1.5.1: `fix/hijala-parser` عند `212295bdfbf7ad59cffc7e8de92ee93c44ed3547`، `versionName=1.5.0`, `versionCode=10500`، والـtags الموجودة `v1.5.0`, `v1.4.1`, `v1.4.0` ولا يوجد `v1.5.1`. Workflow `Build APK` يدعم `publish_release` و`release_version`.
 - الحالة التالية المصرح بها: تجهيز commit نسخة 1.5.1 (`versionCode=10501`) ثم تشغيل Workflow بخيار نشر Private Test Pre-release. لا تحذف `v1.5.0` قبل نجاح التثبيت والتحقق وموافقة المستخدم.
+
+
+**تحديث متابعة الإصدار — 2026-11-23:**
+- تم تنفيذ طلب المستخدم بتجهيز الإصدار `1.5.1`: commit التطبيق `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f` على `fix/hijala-parser`، مع `versionName=1.5.1` و`versionCode=10501`.
+- بدأ GitHub Actions run #126 / `45210080619` تلقائيًا من push؛ الحالة عند آخر تحقق `in_progress` في Setup Gradle. لم يتم إنشاء Release بعد.
+- بعد نجاح CI فقط، الخطوة التالية هي تشغيل `Build APK` عبر `workflow_dispatch` مع `publish_release=true` و`release_version=1.5.1` لإنشاء Private Test Pre-release وإرفاق APK.
