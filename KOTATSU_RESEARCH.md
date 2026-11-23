@@ -244,3 +244,11 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - اختبار `ConnectorEngineNoFallbackTest` يمرر `CookieJar.NO_COOKIES` وعميل OkHttp اختباريًا، لتجنب الاعتماد على تهيئة Android Application في اختبار JVM.
 - اختبار Room 3→4 ينهي `runBlocking` بـ`Unit` صريح لضمان توقيع JUnit void.
 - Commit `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`. CI #125 (`45197200521`) قيد التنفيذ؛ لا توجد نتيجة نهائية بعد.
+
+
+## 2026-11-23 — تحقق CI لطبقة CookieJar/Room v4
+
+- نجح CI run #125 `45197200521`: unit tests، Debug APK build، APK signature verification، وحفظ Room schema v4. هذا يثبت نجاح البناء والاختبارات الآلية في CI فقط، ولا يثبت سلوك CookieManager/OkHttp على جهاز حي.
+- schema snapshot يثبت وجود جدول `http_cookies` مع `encryptedValue`, `initializationVector`, `domain`, `path`, `expiresAt`, `secure`, `httpOnly`, `hostOnly`, `persistent` ومفتاح `(name, domain, path)`.
+- ما زالت نقاط التحقق الحية: استمرارية Cookie بعد restart، callback/flush قبل WebView navigation، دمج CookieManager snapshot مع OkHttp حسب URL، وعدم التسريب بين المضيفين.
+- لا توجد artifacts محفوظة للـAPK في run #125؛ يجب رفع APK كـworkflow artifact في build لاحق بعد موافقة المستخدم. لا تنشر Release كبديل دون موافقة.

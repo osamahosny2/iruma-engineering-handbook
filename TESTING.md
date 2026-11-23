@@ -187,3 +187,14 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - الإصلاح على commit `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`: أضيف Unit صريح؛ أضيف حقن CookieJar مع production default؛ الاختبار يمرر CookieJar.NO_COOKIES.
 - بدأ run #125 / `45197200521` على نفس HEAD، مع `publish_release=false`. آخر حالة عند التوثيق: Setup Android SDK in_progress، والاختبارات pending.
 - انتظر النتيجة النهائية، ثم راجع Debug APK وsignature وRoom schema snapshot. لا تعتمد نجاحًا قبل اكتمال كل الخطوات.
+
+
+## 2026-11-23 — نتيجة CI #125
+
+- Workflow run `45197200521` (#125) اكتمل بنجاح على `fix/hijala-parser` من commit `66f6ef1`.
+- نجحت خطوة `Run unit tests` للأمر `gradle testDebugUnitTest :source-parsers:test`.
+- نجح `gradle assembleDebug`، ونجح `apksigner verify` وتطابقت بصمة الشهادة مع المفتاح الثابت؛ APK SHA-256: `c15f026506256f4d708e39e0f87d4728ddc617fa53c8aad0757aaa7a3e1a6d8a`.
+- نجحت خطوة Room schema snapshot؛ ملف `app/schemas/com.example.data.AppDatabase/4.json` موجود، وRoom version=4 وجدول `http_cookies` حاضر.
+- لم ينشر Release، وGitHub Actions run لم يحتفظ بأي artifact (0 artifacts). لذلك لم يتم تسليم APK للاختبار على الهاتف.
+- اختبارات الجهاز الفعلية لا تزال Pending: إعادة تشغيل التطبيق مع Cookies دائمة، OkHttp/WebView session sharing، host/domain/path isolation، secure/expiry/deletion، فتح مصدر محمي بعد CAPTCHA يدويًا، والتحقق من طلبات الفصول/الصفحات.
+- لا تعتبر Room v4 مكتملة نهائيًا ولا ترفع الإصدار إلى 1.5.1 حتى نجاح الاختبارات اليدوية وتسجيل النتائج.

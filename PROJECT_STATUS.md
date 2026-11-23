@@ -375,3 +375,14 @@
 - CI run #125 / `45197200521` بدأ يدويًا على HEAD الحالي، مع `publish_release=false` و`release_version=1.5.0`. آخر حالة: in_progress، وSetup Android SDK قيد التنفيذ.
 - الإصدار لا يزال 1.5.0 / 10500؛ لا يتم رفعه قبل نجاح CI الكامل والتحقق اليدوي من CookieJar/Room على جهاز Android.
 - لم يحدث merge إلى main أو نشر Release.
+
+
+## 2026-11-23 — CI #125 ناجح؛ انتظار اختبار الهاتف
+
+- تأكد نجاح Workflow run #125 / `45197200521` على commit `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e` في `fix/hijala-parser`.
+- جميع خطوات CI نجحت: unit tests، `assembleDebug`، تحقق التوقيع الثابت، إزالة keystore من workspace، وRoom schema snapshot.
+- `app/schemas/com.example.data.AppDatabase/4.json` أصبح موجودًا على الفرع ويعرّف Room v4 وجدول `http_cookies` مع القيم المشفرة وخصائص المطابقة.
+- الـworkflow لم ينشر Release (`publish_release=false`) ولم ينتج أي GitHub artifact قابل للتنزيل (artifacts=0).
+- HEAD الفرع بعد run: `212295bdfbf7ad59cffc7e8de92ee93c44ed3547`؛ يجب إعادة التحقق قبل أي تعديل.
+- `versionName=1.5.0`, `versionCode=10500` دون تغيير. لا يثبت CI وحده سلامة مزامنة WebView/OkHttp على هاتف حقيقي.
+- الخطوة التالية: توفير Debug APK كـworkflow artifact بعد موافقة المستخدم على تعديل workflow، ثم اختبار الاستمرار/مطابقة النطاقات/مشاركة الجلسة على جهاز Android. لا CAPTCHA automation؛ المستخدم يتعامل معها بنفسه. لا Release ولا رفع إصدار قبل نتيجة الهاتف.

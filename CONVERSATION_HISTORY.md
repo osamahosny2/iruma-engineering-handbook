@@ -620,3 +620,25 @@ CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفي�
 - CI الجديد run #125 / ID `45197200521` على commit `66f6ef1` كان `in_progress` عند آخر فحص؛ خطوات setup/checkout/JDK نجحت، وSetup Android SDK كان قيد التنفيذ، ولم تبدأ الاختبارات بعد.
 - رابط CI: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/45197200521
 - الإصدار لا يزال `versionName=1.5.0`, `versionCode=10500`. لم يُرفع إلى 1.5.1 لأن خطوة Room v4 لم تكتمل بعد (الاختبارات/البناء/التوقيع/Room schema snapshot واختبار الهاتف ما زالت غير محسومة).
+
+
+## 2026-11-23 — المستخدم طلب التحقق من CI ومتابعة الخطوة التالية
+
+**المستخدم:** «اذن شوف لو نجح لو كده اكمل العمل»
+
+**المساعد:** أعاد التحقق عبر اتصال GitHub الخاص بالمستودع، ثم أكد نجاح run #125 بعد ظهور النتيجة النهائية.
+
+### النتيجة المؤكدة لـ CI #125
+- المستودع: `osamahosny2/iruma_manga_v2`، الفرع `fix/hijala-parser`، commit مصدر التشغيل `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`.
+- Workflow run #125 / ID `45197200521`، النتيجة `completed / success` بتاريخ 2026-11-23.
+- كل خطوات job `build` نجحت: Unit tests (`gradle testDebugUnitTest :source-parsers:test`)، Debug APK (`gradle assembleDebug`)، التحقق من توقيع APK مقابل المفتاح الثابت، حذف keystore من workspace، وCommit Room schema snapshots.
+- تحقق apksigner من APK وظهر `Verified using v2 scheme: true`، وبصمة APK SHA-256 في log هي `c15f026506256f4d708e39e0f87d4728ddc617fa53c8aad0757aaa7a3e1a6d8a`. لا تُسجل أي أسرار أو قيم مفاتيح.
+- `app/schemas/com.example.data.AppDatabase/4.json` موجود على فرع العمل، وRoom version=4، ويحتوي جدول `http_cookies` بالحقول المشفرة `encryptedValue` و`initializationVector` مع Domain/Path/expiry/Secure/HttpOnly/hostOnly/persistent ومفتاح مركب `(name, domain, path)`.
+- workflow لم ينشر Release؛ خطوة `Publish APK as private GitHub pre-release` كانت `skipped` لأن `publish_release=false`. قائمة artifacts للـrun فارغة (0 artifacts)، لذلك APK غير متاح حاليًا للتنزيل من صفحة Actions.
+- الإصدار لا يزال `versionName=1.5.0`, `versionCode=10500`. لم يُرفع إلى 1.5.1 لأن اختبار الهاتف الحقيقي واستمرارية WebView/OkHttp لم يكتمل بعد.
+- آخر HEAD تم قراءته بعد التشغيل للفرع `fix/hijala-parser` هو `212295bdfbf7ad59cffc7e8de92ee93c44ed3547`؛ يجب إعادة فحصه قبل أي كتابة لاحقة. سجل الـworkflow يبين أن خطوة schema أنشأت commit محليًا `efdf210` ثم جرى rebase على الفرع الأحدث، وتم تخطي commit مطبق سابقًا وانتهى الأمر بـ `Everything up-to-date`.
+
+### الخطوة التالية والقيود
+- يلزم توفير APK للمستخدم لتثبيته على هاتف Android وإجراء اختبار يدوي: Cookie persistence بعد إغلاق التطبيق وإعادة فتحه، مشاركة الجلسة بين WebView وOkHttp، عدم تسريب Cookies بين النطاقات، فتح مصدر يحتاج جلسة مثل ProComic بعد أن يكمل المستخدم CAPTCHA بنفسه، ثم اختبار الفصول والصفحات.
+- workflow الحالي لا يرفع APK كـartifact؛ لا يمكن بدء اختبار الهاتف من هذا التشغيل لأن artifacts=0. يلزم قرار/موافقة على إضافة خطوة `actions/upload-artifact` للـDebug APK في workflow وتشغيل build جديد، دون Release.
+- لا ترفع الإصدار ولا تنشر Release قبل نجاح الاختبار اليدوي.
