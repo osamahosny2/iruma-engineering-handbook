@@ -237,3 +237,10 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 ### ملاحظة CI — تصحيح test coroutine
 - كود الإنتاج اجتاز compileDebugKotlin في run `45039776683`. الفشل كان في compileDebugUnitTestKotlin فقط بسبب استدعاء suspend DAO من اختبار ترحيل 3→4 دون Coroutine.
 - تم تعديل الاختبار إلى `runBlocking` في commit `8d71e9d0166d5b6350bfde86aa5386abd2849b40`. CI retry `45040379978` بدأ؛ النتيجة غير محسومة بعد.
+
+
+### حقن CookieJar لعزل الاختبارات — 2026-11-23
+- `ConnectorEngine` و`KotatsuSourceEngine` يقبلان الآن CookieJar قابلًا للحقن. يظل `CookieJarProvider.jar` هو القيمة الافتراضية في التطبيق الفعلي، لذلك لا يتغير مسار الإنتاج.
+- اختبار `ConnectorEngineNoFallbackTest` يمرر `CookieJar.NO_COOKIES` وعميل OkHttp اختباريًا، لتجنب الاعتماد على تهيئة Android Application في اختبار JVM.
+- اختبار Room 3→4 ينهي `runBlocking` بـ`Unit` صريح لضمان توقيع JUnit void.
+- Commit `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`. CI #125 (`45197200521`) قيد التنفيذ؛ لا توجد نتيجة نهائية بعد.

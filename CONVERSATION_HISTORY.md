@@ -601,3 +601,22 @@ CookieJar singleton مشترك، Room schema v4 مع migration 3→4، تشفي�
 فشل GitHub Actions run `45039776683` عند `:app:compileDebugUnitTestKotlin`. سجل البناء أثبت أن `:app:compileDebugKotlin` نجح، وأن سبب الفشل الوحيد الظاهر هو استدعاء دالتين suspend (`mangaDao().findById` و`readingProgressDao().findByMangaAndChapter`) من اختبار ترحيل 3→4 غير معلن كـCoroutine. لم يبدأ بناء APK.
 
 أعيد فحص فرع `fix/hijala-parser` وكان HEAD `0ddcec4a25439592fa62b61f588a49e14c0c347a`. تم إصلاح الاختبار بإضافة `= runBlocking { ... }` فقط، ورفع commit `8d71e9d0166d5b6350bfde86aa5386abd2849b40` على نفس الفرع. بدأ CI جديد تلقائيًا: run `45040379978` (#123) من commit التصحيح؛ نتيجته لم تُحسم عند تسجيل هذه الملاحظة.
+
+
+## رسالة المستخدم — متابعة الخطوة التالية وتغيير الإصدار عند اكتمالها (2026-11-23)
+
+**المستخدم:** «اذن اكمل العمل يا شات علي الخطوة التالية و لو لقيت ان انك نفذت الخطوة الي القديمة دي بالكامل اجعل الاصدار من 1.5.0 الي 1.5.1»
+
+**المساعد:** بدأ بالتحقق من أحدث فرع ونتائج CI قبل الحكم على اكتمال الخطوة؛ لا يتم رفع الإصدار إلا بعد اكتمال الاختبارات والبناء والتحقق والتأكد من المتطلبات.
+
+### فحص CI السابق وإصلاح فشل الاختبارين
+- أحدث فرع `fix/hijala-parser` كان عند HEAD `8d71e9d0166d5b6350bfde86aa5386abd2849b40` قبل التعديل الجديد.
+- Workflow run #123 / ID `45040379978` فشل بعد ترجمة كود التطبيق والاختبارات، لأن `:app:testDebugUnitTest` سجل فشل اختبارين من 42: `ConnectorEngineNoFallbackTest.domainAloneDoesNotSelectParserOrCreateGenericContent` بسبب `IllegalStateException` عند إنشاء ConnectorEngine، و`AppDatabaseTest.initializationError` بسبب JUnit InvalidTestClassError.
+- السبب الأول: اختبار ترحيل Room 3→4 كان ينتهي بتعبير Boolean داخل `runBlocking` بدل Unit. تمت إضافة `Unit` صريحًا.
+- السبب الثاني: `ConnectorEngine` و`KotatsuSourceEngine` كانا يقرآن `CookieJarProvider.jar` الافتراضي أثناء إنشاء المحرك؛ اختبار JVM لم يهيئ Application. أُضيف حقن CookieJar مع الإبقاء على `CookieJarProvider.jar` هو الافتراضي الإنتاجي، واستخدم الاختبار `CookieJar.NO_COOKIES` مع OkHttpClient اختباري معزول.
+- Commit التطبيق الجديد: `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`، بعنوان `fix(test): inject shared cookie jar and correct Room test signature`، ويتضمن 4 ملفات.
+- تحقق الفرع: `fix/hijala-parser` HEAD أصبح `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`.
+- تم تشغيل Workflow يدويًا بأمان عبر `workflow_dispatch` مع `publish_release=false` و`release_version=1.5.0`، حتى نتحقق دون نشر Release.
+- CI الجديد run #125 / ID `45197200521` على commit `66f6ef1` كان `in_progress` عند آخر فحص؛ خطوات setup/checkout/JDK نجحت، وSetup Android SDK كان قيد التنفيذ، ولم تبدأ الاختبارات بعد.
+- رابط CI: https://github.com/osamahosny2/iruma_manga_v2/actions/runs/45197200521
+- الإصدار لا يزال `versionName=1.5.0`, `versionCode=10500`. لم يُرفع إلى 1.5.1 لأن خطوة Room v4 لم تكتمل بعد (الاختبارات/البناء/التوقيع/Room schema snapshot واختبار الهاتف ما زالت غير محسومة).

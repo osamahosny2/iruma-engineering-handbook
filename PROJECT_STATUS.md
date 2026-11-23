@@ -365,3 +365,13 @@
 - تم تصحيح الاختبار فقط باستخدام `runBlocking`. Commit التصحيح: `8d71e9d0166d5b6350bfde86aa5386abd2849b40` على `fix/hijala-parser`.
 - CI جديد تلقائي: run `45040379978` (#123) على commit التصحيح؛ ما زال بحاجة إلى التحقق من النتيجة. لم يُنتج APK من run السابق لأن خطوة الاختبارات فشلت.
 - لا تعديل على كود الإنتاج بعد run الأول؛ لا تغيير إصدار أو Release أو merge.
+
+
+## 2026-11-23 — إصلاح فشل CI وإعادة تشغيل التحقق
+
+- فرع العمل الحالي `fix/hijala-parser`، HEAD `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`.
+- Workflow #123 (`45040379978`) فشل عند `:app:testDebugUnitTest`: 42 اختبارًا، 2 فشلا. الأول `ConnectorEngineNoFallbackTest` لأن CookieJarProvider لم يكن مهيأ في اختبار JVM؛ والثاني `AppDatabaseTest.initializationError` بسبب إرجاع Boolean من اختبار ترحيل 3→4 بدل Unit.
+- إصلاحات Commit `66f6ef1`: أضيف `Unit` في اختبار Room؛ أضيف حقن CookieJar إلى ConnectorEngine وKotatsuSourceEngine مع إبقاء CookieJarProvider.jar هو الافتراضي؛ عُزل اختبار ConnectorEngine باستخدام CookieJar.NO_COOKIES.
+- CI run #125 / `45197200521` بدأ يدويًا على HEAD الحالي، مع `publish_release=false` و`release_version=1.5.0`. آخر حالة: in_progress، وSetup Android SDK قيد التنفيذ.
+- الإصدار لا يزال 1.5.0 / 10500؛ لا يتم رفعه قبل نجاح CI الكامل والتحقق اليدوي من CookieJar/Room على جهاز Android.
+- لم يحدث merge إلى main أو نشر Release.

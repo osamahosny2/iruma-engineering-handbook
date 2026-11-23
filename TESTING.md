@@ -177,3 +177,13 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - run `45039776683` فشل في `:app:compileDebugUnitTestKotlin`؛ compileDebugKotlin نجح. الخطأ: suspend `findById` و`findByMangaAndChapter` استدعيتا من اختبار عادي.
 - التصحيح: جعل اختبار ترحيل schema 3→4 يعمل داخل `runBlocking`. Commit: `8d71e9d0166d5b6350bfde86aa5386abd2849b40`.
 - run retry `45040379978` (#123) بدأ بعد التصحيح؛ انتظر نتيجة الاختبارات ثم APK build/signature/schema snapshot.
+
+
+## 2026-11-23 — نتائج run #123 وإعادة الاختبار #125
+
+- Run #123 / `45040379978` على commit `8d71e9d` فشل في `:app:testDebugUnitTest`: `42 tests completed, 2 failed`.
+- فشل `ConnectorEngineNoFallbackTest.domainAloneDoesNotSelectParserOrCreateGenericContent` بسبب IllegalStateException عند إنشاء ConnectorEngine الذي كان يعتمد على CookieJarProvider.jar دون تهيئة Application.
+- فشل `AppDatabaseTest.initializationError` بسبب `InvalidTestClassError`: اختبار migration كان inferred return type له Boolean من `context.deleteDatabase(name)` داخل runBlocking.
+- الإصلاح على commit `66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`: أضيف Unit صريح؛ أضيف حقن CookieJar مع production default؛ الاختبار يمرر CookieJar.NO_COOKIES.
+- بدأ run #125 / `45197200521` على نفس HEAD، مع `publish_release=false`. آخر حالة عند التوثيق: Setup Android SDK in_progress، والاختبارات pending.
+- انتظر النتيجة النهائية، ثم راجع Debug APK وsignature وRoom schema snapshot. لا تعتمد نجاحًا قبل اكتمال كل الخطوات.
