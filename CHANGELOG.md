@@ -38,16 +38,8 @@
 - CI للـ commit الثاني قيد التنفيذ عند آخر تحقق.
 - توثيق مشكلات Manga Pro الحالية وخطته في `docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-10.md`.
 
-## 2026-11-10 — ProComic/Manga Pro reader reconstruction
-- The previous HTML-only path was not a reliable source of real chapter data. Manga Pro now uses its public JSON API for search, content details and paginated chapter lists; the app must reject placeholder chapters and report an empty/invalid API response instead of inventing data.
-- The reader path is being rebuilt around the site's actual lazy reader slots. A chapter page is not assumed to be one image: the slot can expose one CDN image or several positioned pieces that must be composed in order.
-- A persistent WebView session is required because page slots load lazily and the site may only serve image requests in browser context. The app proxies the reader's image requests through its shared OkHttp client and retains captured bytes until the reader consumes them.
-- ProComic and ProChan may move between `procomic.pro` and `procomic.net`; the reader must preserve the current host and retry the alternate host only when the chapter route fails. CDN image hosts remain under `*.procomic.im`.
-- The site documents a minimum five-second spacing between listing API calls and uses `safe_browsing=off`. Later listing pages may additionally require a short-lived Turnstile token; this remains an explicit follow-up until implemented and tested.
-- Upstream research was read from `keiyoushi/extensions-source`, especially `Procomic.kt`, `Dto.kt`, and `assets/slot.js` at commit `4591fbc9bb571ad03aaea0f7428f7f403350e90e`, plus `TurnstileHelper.kt` at `d9420cd1c66ecd3385946b616aacfcf8f6314f70`.
-- The app is GPL-3.0 and the upstream ProComic extension is Apache-2.0; these licenses are compatible. The existing `THIRD_PARTY_NOTICES.md` already attributes the adapted files and `LICENSES/Apache-2.0.txt` retains the upstream license text. This is not a fork.
-- Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
-- No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
+## 2026-11-10 — توثيق بحث ProComic
+- أُنشئ بحث تكامل ProComic؛ التفاصيل الفنية وسجل التنفيذ في `PROCOMIC_READER_RESEARCH.md` (المرجع الأساسي)، وليس في سجل التغييرات.
 
 ## 2026-11-10 — تصحيح بروتوكول قارئ Manga Pro
 - مراجعة ملف upstream slot.js بدل الاعتماد على DOM selector تخميني.
@@ -111,3 +103,20 @@
 - توحيد إنشاء Parser وتخزينه المؤقت، ومنع المطابقة حسب اسم العرض لتفادي الخلط بين مصدرين لهما الاسم نفسه.
 - تصحيح تصنيف DivaScans إلى 18+ في كتالوج التطبيق وفق تأكيد المستخدم.
 - إضافة اختبارات وحدات لسياسة الاختيار والهوية والتصنيف. CI run `44849756102` قيد التنفيذ عند كتابة هذا السجل.
+
+
+## 2026-11-25 — توثيق حالة التطبيق وتصحيح قواعد المستودع التعليمي
+- تمت مراجعة المستودع التعليمي كاملًا وجمع قرارات المستخدم بشأن التعارضات والمعلومات القديمة والتكرار والتصنيف.
+- أُلغي شرط مقارنة Hamako؛ Tachiyomi هو المرجع الحالي الوحيد لسلوك سجل القراءة.
+- تم توحيد فهم تقارير JUnit: تقارير تشخيصية اختيارية، ولا يجوز أن تمنع بناء APK أو نجاح CI الأساسي بسبب حصة التخزين.
+- تم توضيح أن مرجعي TurnstileHelper عند `d9420cd` و`d0478bb` يشيران إلى نسختين متطابقتين من الملف نفسه، مع بصمة SHA-256 موثقة في `KOTATSU_RESEARCH.md`.
+- تم تحديث حالة التطبيق من المستودع الحي: `fix/hijala-parser` / `ffe3e9c5...`، إصدار `1.5.1`، CI #126 و#127 ناجحان، وPrivate Test Pre-release منشور. المهمة 3 لا تزال تنتظر اختبار المستخدم على الهاتف.
+- تم توثيق تصحيح المستخدم لاسم Elfoon: لا يُعامل كموقع مستقل أو مصدر مؤكد.
+- لا تعديل على كود التطبيق في هذه الجولة؛ التغييرات هنا توثيقية فقط.
+
+
+## 2026-11-25 — توثيق تحديثات التطبيق حتى 1.5.1
+- Room v4/CookieJar: `0ddcec4a25439592fa62b61f588a49e14c0c347a`، ثم إصلاحات CI `8d71e9d0166d5b6350bfde86aa5386abd2849b40` و`66f6ef1b8e8ce5a78e9b65075f3866c0b61e802e`.
+- Local parser override وHijala: `dfdfde17935986e4075340909d9dd8e91f69b6b4`، `aa8031d805`، `bd8f381fd4`، `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
+- إعداد إصدار الاختبار 1.5.1: `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`؛ CI #126 و#127 نجحا، وRelease `v1.5.1` منشور. تفاصيل التحقق والـSHA في `PROJECT_STATUS.md` و`TESTING.md`.
+- لا يعني هذا أن المهمة 3 اكتملت؛ اختبار الهاتف ما زال مطلوبًا.

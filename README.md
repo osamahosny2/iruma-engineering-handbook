@@ -13,7 +13,7 @@
 
 ## المستودعات
 - **كود التطبيق:** https://github.com/osamahosny2/iruma_manga_v2
-- **فرع العمل:** أحدث فرع `fix/` بعد التحقق الحي؛ آخر تحقق 2026-11-23 كان `fix/hijala-parser` عند `212295bdfbf7ad59cffc7e8de92ee93c44ed3547`.
+- **فرع العمل:** أحدث فرع `fix/` بعد التحقق الحي؛ آخر تحقق حي 2026-11-25: `fix/hijala-parser` عند `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`؛ هذه لقطة مؤرخة ويجب إعادة فحص HEAD قبل أي تعديل.
 - **مستودع المعرفة الحالي:** https://github.com/osamahosny2/iruma-engineering-handbook
 - المستودع القديم `iruma_manga` ممنوع تعديله.
 
@@ -35,14 +35,24 @@
 
 لا تضع كلمات مرور أو Tokens أو مفاتيح API أو بيانات شخصية حساسة في هذا المستودع.
 
-## أحدث دراسة هندسية
-- [تقرير دراسة محرك المصادر 2026-11-10](docs/SOURCE_ENGINE_RESEARCH_2026-11-10.md): مراجعة فعلية لكود التطبيق ومكتبة Kotatsu، نتائج الفحص، فرضيات الأسباب الجذرية، ومخاطر نقل المكتبة إلى Module محلي.
+## أحدث مراجع محرك المصادر
+- [جرد المصادر ونتائج المراجعة 2026-11-21](docs/SOURCE_AUDIT_2026-11-21.md): مرجع الجرد اليدوي وتصنيفات المصادر؛ راجع تنبيهات التحقق في آخر تحديث قبل اعتماد أي قائمة نجاح.
+- [سجل المهمة 3 — محرك المصادر](docs/TASK_3_SOURCE_ENGINE_2026-11-17.md): تاريخ التنفيذ والإصلاحات، ويجب الرجوع إلى أحدث ملحق في `PROJECT_STATUS.md` للحالة الحالية.
+- [تقرير دراسة محرك المصادر 2026-11-10](docs/SOURCE_ENGINE_RESEARCH_2026-11-10.md): مرجع بحث تاريخي وليس أحدث حالة تنفيذ.
 
 ## تنفيذ محرك المصادر
 - [سجل تنفيذ محرك المصادر 2026-11-10](docs/SOURCE_ENGINE_IMPLEMENTATION_2026-11-10.md): commits، تغييرات الوحدة المحلية ومحلل Azora، حالة CI، وخطة Manga Pro.
 
-## Current source-engine research
-- [Manga Pro / ProComic reader research and implementation plan](PROCOMIC_READER_RESEARCH.md)
+## مراجع محرك المصادر الحالية
+- [جرد المصادر 2026-11-21](docs/SOURCE_AUDIT_2026-11-21.md)
+- [سجل تنفيذ المهمة 3](docs/TASK_3_SOURCE_ENGINE_2026-11-17.md)
+- [بحث قارئ ProComic](PROCOMIC_READER_RESEARCH.md)
 
 ## مراجعة التخزين وسجل القراءة
 - [تقرير تدقيق المهمة 1 — Room وسجل القراءة 2026-11-16](docs/ROOM_TASK_1_AUDIT_2026-11-16.md): فحص قراءة فقط للتخزين الحالي ومقارنة SQL الفعلية مع Tachiyomi وMihon، مع اتجاه تصميم مبدئي وخطة اختبار بانتظار الاعتماد.
+
+
+## آخر حالة إصدار — 2026-11-25
+- التطبيق عند `fix/hijala-parser` / `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`، والإصدار التجريبي `1.5.1`.
+- Private Test Pre-release: https://github.com/osamahosny2/iruma_manga_v2/releases/tag/v1.5.1
+- المهمة 3 ما زالت تنتظر اختبار المستخدم على الهاتف؛ راجع `PROJECT_STATUS.md` قبل أي عمل.

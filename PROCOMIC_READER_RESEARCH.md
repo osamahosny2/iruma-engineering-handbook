@@ -1,6 +1,7 @@
-# Manga Pro / ProComic — verified source research and implementation plan
+# ProComic website integration — source research and implementation record
 
-Updated: 2026-11-10
+Initial research: 2026-11-10
+Current status last checked: 2026-11-25
 
 ## Why this work exists
 
@@ -110,3 +111,10 @@ The app now has an app-owned adaptation of the upstream `TurnstileHelper.kt` flo
 The reader slot script now distinguishes a reader security `check` row from ordinary lazy loading. It scrolls the status row into view and routes the user to the existing in-app verification screen. Search pagination skips API pages with no readable works using `meta.page` / `meta.pages`. Six Robolectric tests cover the mapping, identity, chapter filters, unreadable content, pagination and reader script contract.
 
 Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1`; CI run `43056952825` (run 90) is pending. Previous run 89 attempt 2 passed unit tests and built the Debug APK, but GitHub rejected the artifact upload because the Actions storage quota was reached (one APK file was found). This is a storage limit, not a compile or APK-generation failure. Live site and phone validation remain mandatory.
+
+
+## 2026-11-25 — current verification from the application repository
+- التطبيق الحالي عند `fix/hijala-parser` / `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`، والإصدار `1.5.1` (`versionCode=10501`).
+- CI #126 و#127 نجحا، وتم نشر Private Test Pre-release `v1.5.1` مع APK. هذه نتائج بناء واختبارات آلية وليست اختبارًا حيًا للموقع على هاتف المستخدم.
+- المهمة 3 ما زالت مفتوحة حتى يختبر المستخدم النسخة ويؤكد نتائج البحث والفصول والصفحات وسلوك الجلسة/الكوكيز. لا تعتبر الخطوات القديمة في «Remaining work» حالة حالية دون مقارنة هذا الملحق بأحدث `PROJECT_STATUS.md`.
+- **تمييز أسماء المصادر:** لا تفترض أن اسم `Manga Pro` في كتالوج التطبيق هو نفسه `ProComic` أو `ProChan`. استخدم Source ID والرابط الفعلي لكل مصدر عند الفحص، ولا تدمجها بالاسم وحده.

@@ -1,5 +1,7 @@
 # استراتيجية الاختبارات ومعايير النجاح
 
+> **تنبيه الحالة الحالية (2026-11-25):** أحدث تحقق CI هو #127 على commit `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`، ونجح مع نشر Release `v1.5.1`. كل نتائج CI الأقدم أدناه سجلات تاريخية؛ اختبار الهاتف لـ1.5.1 ما زال بانتظار المستخدم.
+
 ## مستويات الاختبار
 1. **Static/Build:** فحص التنسيق والأنواع وتجميع التطبيق.
 2. **Unit:** اختبار الدوال والعقود والـ mappers وحالات الفشل.
@@ -48,18 +50,9 @@
 ## بيانات الاختبار
 استخدم fixtures موثقة أو بيانات اختبار مصطنعة لاختبار parser logic، لكن لا تستخدمها لتدّعي أن مصدرًا حقيقيًا يعمل. اختبارات التكامل الواقعية يجب أن تميز بوضوح بين الاختبار الوهمي والاختبار المتصل بموقع حقيقي.
 
-## 2026-11-10 — ProComic/Manga Pro reader reconstruction
-
-- The previous HTML-only path was not a reliable source of real chapter data. Manga Pro now uses its public JSON API for search, content details and paginated chapter lists; the app must reject placeholder chapters and report an empty/invalid API response instead of inventing data.
-- The reader path is being rebuilt around the site's actual lazy reader slots. A chapter page is not assumed to be one image: the slot can expose one CDN image or several positioned pieces that must be composed in order.
-- A persistent WebView session is required because page slots load lazily and the site may only serve image requests in browser context. The app proxies the reader's image requests through its shared OkHttp client and retains captured bytes until the reader consumes them.
-- ProComic and ProChan may move between `procomic.pro` and `procomic.net`; the reader must preserve the current host and retry the alternate host only when the chapter route fails. CDN image hosts remain under `*.procomic.im`.
-- The site documents a minimum five-second spacing between listing API calls and uses `safe_browsing=off`. Later listing pages may additionally require a short-lived Turnstile token; this remains an explicit follow-up until implemented and tested.
-- Upstream research was read from `keiyoushi/extensions-source`, especially `Procomic.kt`, `Dto.kt`, and `assets/slot.js` at commit `4591fbc9bb571ad03aaea0f7428f7f403350e90e`, plus `TurnstileHelper.kt` at `d9420cd1c66ecd3385946b616aacfcf8f6314f70`.
-- The app is GPL-3.0 and the upstream ProComic extension is Apache-2.0; these licenses are compatible. The existing `THIRD_PARTY_NOTICES.md` already attributes the adapted files and `LICENSES/Apache-2.0.txt` retains the upstream license text. This is not a fork.
-- Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
-- No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
-
+## 2026-11-10 — اختبارات ProComic
+- وصف تصميم المصدر وبروتوكول القارئ محفوظ في `PROCOMIC_READER_RESEARCH.md`.
+- هذا الملف يحتفظ بنتائج CI والاختبارات فقط؛ لا تكرر هنا تفاصيل التنفيذ أو البحث.
 
 ## 2026-11-10 — Manga Pro reader slot regression
 
@@ -197,4 +190,13 @@ Commit `f2d863959bd5a3f2126d86a56a10936fde02c7c1` is being verified by CI run `4
 - نجحت خطوة Room schema snapshot؛ ملف `app/schemas/com.example.data.AppDatabase/4.json` موجود، وRoom version=4 وجدول `http_cookies` حاضر.
 - لم ينشر Release، وGitHub Actions run لم يحتفظ بأي artifact (0 artifacts). لذلك لم يتم تسليم APK للاختبار على الهاتف.
 - اختبارات الجهاز الفعلية لا تزال Pending: إعادة تشغيل التطبيق مع Cookies دائمة، OkHttp/WebView session sharing، host/domain/path isolation، secure/expiry/deletion، فتح مصدر محمي بعد CAPTCHA يدويًا، والتحقق من طلبات الفصول/الصفحات.
-- لا تعتبر Room v4 مكتملة نهائيًا ولا ترفع الإصدار إلى 1.5.1 حتى نجاح الاختبارات اليدوية وتسجيل النتائج.
+- **توجيه تاريخي وقت كتابة هذا السطر:** كان رفع الإصدار 1.5.1 ينتظر الاختبار اليدوي. تم لاحقًا نشر 1.5.1 بعد نجاح CI؛ اختبار الهاتف ما زال مطلوبًا، ولا يغيّر ذلك رقم الإصدار أو يعني اكتمال المهمة 3.
+
+
+## أحدث تحقق فعلي — 2026-11-25
+- التطبيق: `osamahosny2/iruma_manga_v2`، الفرع `fix/hijala-parser`، commit `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`.
+- CI #126 / `45210080619`: `completed / success`. CI #127 / `45210409242`: `completed / success`.
+- التشغيل #127 اجتاز Unit Tests (`gradle testDebugUnitTest :source-parsers:test`)، بناء Debug APK، مطابقة شهادة APK مع المفتاح الثابت، حذف keystore المؤقت، وحفظ Room schema snapshots.
+- Release `v1.5.1` منشور ومرفق به APK؛ SHA-256: `fa484f1fd34302b50ae41a9795fbf691ac52bfce86430496bb805e6b9423c9b1`.
+- هذا تحقق CI وبناء/توقيع فقط. لا يوجد بعد تأكيد اختبار هاتف 1.5.1 من المستخدم؛ لا تسجل اختبار Cookies/WebView/OkHttp أو المصدر المحمي ناجحًا قبل تقريره.
+- رابط Release: https://github.com/osamahosny2/iruma_manga_v2/releases/tag/v1.5.1

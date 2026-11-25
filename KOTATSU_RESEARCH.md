@@ -7,8 +7,11 @@
 - التطبيق: https://github.com/Kotatsu-Redo/Kotatsu-Redo
 - المحللات: https://github.com/Kotatsu-Redo/kotatsu-parsers-redo
 
-## الحالة الحالية
-**الدراسة العميقة لم تُوثق على أنها مكتملة بعد.** توجد فرضية تصميمية عامة بأن فصل Parser كل موقع خلف واجهة موحدة طريقة مناسبة، لكن يجب تأكيد تفاصيل التنفيذ من ملفات المصدر والاختبارات الفعلية قبل اعتمادها كحقيقة عن Kotatsu-Redo.
+## الحالة الحالية — تحديث 2026-11-25
+- لم تعد عبارة «الدراسة العميقة لم تُوثق على أنها مكتملة بعد» تصف الحالة الحالية؛ أُضيفت لاحقًا أقسام توثق قراءة كود Kotatsu الأصلي وKotatsu-Redo ومكتبة `kotatsu-parsers-redo` وملفات Parser واختباراتها.
+- هذا لا يعني أن كل ملفات upstream أو كل Parser قد تمت مراجعتها؛ نطاق كل قراءة موضح في القسم المؤرخ الخاص بها.
+- مرجع الاعتماد الأولي `b3c000024563920d3eecde5816f2e9d3734fa467` يخص مرحلة الدراسة/الاعتماد المبكرة. بعد نقل الاعتماد إلى Gradle module المحلي `:source-parsers`، أصبح commit المكتبة المثبت في التطبيق `68f3fed3952f5c9cf1ad8cc00bdb1ff047688dd8` وفق `source-parsers/build.gradle.kts` عند HEAD التطبيق `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`.
+- لا تستخدم المرجع القديم `b3c...` بوصفه pin الحالي؛ احتفظ به كسجل للمرحلة السابقة.
 
 ## خطة الفحص
 1. README وملفات البناء والإصدارات والتبعيات.
@@ -54,7 +57,7 @@
 ## نتائج مؤكدة من ملفات المصدر — 2026-11-10
 
 ### مرجع النسخة
-تم فحص مكتبة `kotatsu-parsers-redo` على commit `b3c000024563920d3eecde5816f2e9d3734fa467`، وهو نفس commit المثبت في `app/build.gradle.kts` بالتطبيق.
+في مرحلة الدراسة الأولى بتاريخ 2026-11-10، كان التطبيق يثبت `kotatsu-parsers-redo` عند commit `b3c000024563920d3eecde5816f2e9d3734fa467` في إعداد Gradle آنذاك. هذا مرجع تاريخي وليس pin الحالي؛ راجع قسم «الحالة الحالية — تحديث 2026-11-25».
 
 ### واجهة التسجيل
 - `MangaParser` يوفر عقدًا موحدًا للقائمة والتفاصيل والفصول والصفحات وروابط الصور ورؤوس الطلبات واعتراض HTTP.
@@ -80,18 +83,9 @@
 - اكتُشف في upstream Azoramoon أن فقدان محدد `astro-island` كان يتحول إلى قائمة فصول فارغة، وأن استجابة API غير الصالحة كانت تتحول إلى نتائج فارغة؛ النسخة المحلية لا تخفي هذين الفشلين.
 - `Manga Pro` ليس محللًا من مكتبة Kotatsu في هذه الدراسة؛ مرجع قارئه الأحدث من `keiyoushi/extensions-source` يستخدم API وقارئ WebView slots، وسيتم بناء تكامل محلي مناسب بدل افتراض أن HTML الثابت كافٍ.
 
-## 2026-11-10 — ProComic/Manga Pro reader reconstruction
-
-- The previous HTML-only path was not a reliable source of real chapter data. Manga Pro now uses its public JSON API for search, content details and paginated chapter lists; the app must reject placeholder chapters and report an empty/invalid API response instead of inventing data.
-- The reader path is being rebuilt around the site's actual lazy reader slots. A chapter page is not assumed to be one image: the slot can expose one CDN image or several positioned pieces that must be composed in order.
-- A persistent WebView session is required because page slots load lazily and the site may only serve image requests in browser context. The app proxies the reader's image requests through its shared OkHttp client and retains captured bytes until the reader consumes them.
-- ProComic and ProChan may move between `procomic.pro` and `procomic.net`; the reader must preserve the current host and retry the alternate host only when the chapter route fails. CDN image hosts remain under `*.procomic.im`.
-- The site documents a minimum five-second spacing between listing API calls and uses `safe_browsing=off`. Later listing pages may additionally require a short-lived Turnstile token; this remains an explicit follow-up until implemented and tested.
-- Upstream research was read from `keiyoushi/extensions-source`, especially `Procomic.kt`, `Dto.kt`, and `assets/slot.js` at commit `4591fbc9bb571ad03aaea0f7428f7f403350e90e`, plus `TurnstileHelper.kt` at `d9420cd1c66ecd3385946b616aacfcf8f6314f70`.
-- The app is GPL-3.0 and the upstream ProComic extension is Apache-2.0; these licenses are compatible. The existing `THIRD_PARTY_NOTICES.md` already attributes the adapted files and `LICENSES/Apache-2.0.txt` retains the upstream license text. This is not a fork.
-- Code commit `8ff18f1b20e1213ac03b2ae62e869d3782651134` introduced the API/reader path. CI run `42895363904` exposed a missing `java.io.IOException` import; that compile fix is commit `5211f99d58d4d7c28a26f2b48cdff1e5b2f020b5`. CI run `42896185574` is the verification run for the fix and was still running when this note was written.
-- No phone-level validation has happened yet. The parser is not considered complete until a real Manga Pro work returns real Arabic chapters, the first/last page of a chapter displays real images, composite pages stitch correctly, and a downloaded chapter opens offline.
-
+## 2026-11-10 — ProComic reader research (canonical document)
+- التفاصيل التقنية الكاملة لبروتوكول API وReader slots وTurnstile والتراخيص وسجل التنفيذ محفوظة في `PROCOMIC_READER_RESEARCH.md`.
+- هذا الملف يركز على دراسة Kotatsu وKotatsu-Redo وعائلات Parser؛ لا تكرر تفاصيل ProComic هنا حتى لا تنشأ نسخ متباينة.
 
 ## ProComic source distinction
 The current Manga Pro/ProComic parser reference is the separate `keiyoushi/extensions-source` ProComic extension, not a Kotatsu-Redo parser. Its API DTOs, lazy reader slot script and Turnstile helper were studied as a separate upstream implementation. The app ports the needed behavior into its own connector/WebView engine; it does not fork Kotatsu-Redo or Keiyoushi, and it does not add an upstream runtime dependency for ProComic. Licensing and attribution are recorded in `PROCOMIC_READER_RESEARCH.md` and the app's `THIRD_PARTY_NOTICES.md`.
@@ -252,3 +246,9 @@ The ProComic Turnstile token flow is adapted from `keiyoushi/extensions-source` 
 - schema snapshot يثبت وجود جدول `http_cookies` مع `encryptedValue`, `initializationVector`, `domain`, `path`, `expiresAt`, `secure`, `httpOnly`, `hostOnly`, `persistent` ومفتاح `(name, domain, path)`.
 - ما زالت نقاط التحقق الحية: استمرارية Cookie بعد restart، callback/flush قبل WebView navigation، دمج CookieManager snapshot مع OkHttp حسب URL، وعدم التسريب بين المضيفين.
 - لا توجد artifacts محفوظة للـAPK في run #125؛ يجب رفع APK كـworkflow artifact في build لاحق بعد موافقة المستخدم. لا تنشر Release كبديل دون موافقة.
+
+
+## توضيح مرجعي TurnstileHelper — 2026-11-25
+- ظهر في السجل مرجعان لملف upstream نفسه `core/src/main/kotlin/keiyoushi/utils/TurnstileHelper.kt`: commit `d9420cd1c66ecd3385946b616aacfcf8f6314f70` وcommit `d0478bb62bbc485753d2830102aef4e1b87cb336`.
+- تمت قراءة الملف مباشرة من المستودع upstream عند كل commit. النسختان متطابقتان byte-for-byte، وحجم كل منهما 10,208 bytes، وبصمة SHA-256 لكلتيهما `392d1c07607034f2bb555cf91940261fa7b37f61c499da6ad83e41fb231b4979`.
+- لذلك اختلاف رقم commit لا يعني اختلاف محتوى `TurnstileHelper.kt` في هاتين اللقطتين؛ إنهما نقطتا تاريخ مختلفتان في المستودع، والملف نفسه لم يتغير بينهما. احتُفظ بالمرجعين لتوثيق موضعي الدراسة/الاقتباس، ولا حاجة لاختيار واحد باعتباره «الصحيح» وحذف الآخر.

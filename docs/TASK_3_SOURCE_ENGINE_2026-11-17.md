@@ -162,3 +162,16 @@
 - CI run `44853363425` على commit `aa8031d...` فشل في `:source-parsers:compileKotlin` لأن `PagedMangaParser` يطلب تنفيذ `getFilterOptions()`.
 - أضيف التنفيذ `MangaListFilterOptions()` في `HijalaParser` بالـcommit `83e033d028ee8404b63ca52da6c3a5dd6ea22ffe`.
 - CI run الجديد `44853813290` على commit `83e033d...` بدأ؛ كان في `Setup Gradle` عند آخر فحص. لم تُعلن الاختبارات أو APK أو التوقيع ناجحة بعد.
+
+
+## 2026-11-25 — تحديث الحالة بعد Release 1.5.1 (مصدره التطبيق الحي)
+- تم التحقق عبر GitHub/Composio من أن فرع التطبيق `fix/hijala-parser` عند HEAD `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`.
+- الإصدار في `app/build.gradle.kts`: `versionName=1.5.1`, `versionCode=10501`.
+- CI #126 (`45210080619`) و#127 (`45210409242`) اكتمل كلاهما بنجاح على commit `ffe3e9c5dee75249a4f2a6dc29a1b6d9d9625a2f`.
+- نُشر Private Test Pre-release `v1.5.1` (Release ID `455656286`) بتاريخ 2026-11-23، ويحتوي `app-debug.apk` بحجم 53,323,253 bytes. SHA-256: `fa484f1fd34302b50ae41a9795fbf691ac52bfce86430496bb805e6b9423c9b1`.
+- رابط Release: https://github.com/osamahosny2/iruma_manga_v2/releases/tag/v1.5.1
+- رابط APK: https://github.com/osamahosny2/iruma_manga_v2/releases/download/v1.5.1/app-debug.apk
+- نجحت الاختبارات الآلية والبناء والتحقق من توقيع APK وحفظ Room schema snapshots في التشغيل #127.
+- **الحالة العملية:** لا يوجد حتى الآن في سجل المستودع تأكيد من المستخدم بأنه اختبر APK 1.5.1 على الهاتف. الاختبارات المطلوبة: استمرار Cookies بعد إغلاق التطبيق وإعادة فتحه، مشاركة الجلسة بين WebView وOkHttp، عزل Cookies بين النطاقات، اختبار مصدر محمي بعد إكمال المستخدم CAPTCHA بنفسه، والتحقق من البحث والتفاصيل والفصول والصفحات الحقيقية.
+- **حالة المهمة 3:** قيد التنفيذ وغير مكتملة؛ نجاح CI ووجود Release لا يغلقان المهمة ولا يثبتان سلوك الهاتف. لا تبدأ المهمة 4 قبل اختبار المستخدم وإغلاق المهمة 3.
+- ملاحظة إعدادات Workflow: قيمة `release_version` الافتراضية في `.github/workflows/build.yml` ما زالت `1.5.0`، لكن إصدار 1.5.1 نُشر بنجاح بعد تمرير القيمة الصحيحة صراحةً. هذه ملاحظة إعداد قديم في كود التطبيق، ولا يتم تغييره دون موافقة مستقلة.
